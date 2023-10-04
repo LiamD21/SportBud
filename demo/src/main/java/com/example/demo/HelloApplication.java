@@ -1,9 +1,9 @@
 package com.example.demo;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -14,7 +14,8 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Create the menu pane and scene
-        Pane menuRoot = new Pane();
+        VBox menuRoot = new VBox();
+        menuRoot.setAlignment(Pos.CENTER);
         Scene menuScene = new Scene(menuRoot, 500,500);
 
         // Create the title text
