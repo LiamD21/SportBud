@@ -1,5 +1,5 @@
-module ApplicationMain {
+module View {
     requires javafx.controls;
 
-    exports ApplicationMain;
+    exports View;
 }
