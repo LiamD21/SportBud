@@ -7,22 +7,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class GroupGames {
+public class SoloGames {
 
-   private final VBox root;
+    private final VBox root;
 
     /**
      * Constructor for the group games menu
      * @param stage The main stage that this scene will be displayed in
      */
-    public GroupGames(Stage stage) {
+    public SoloGames(Stage stage) {
         // create the root
         root = new VBox();
         root.setAlignment(Pos.CENTER);
 
         // Create elements
         Button backButton = new Button("Back");
-        Text titleText = new Text("Group Events");
+        Text titleText = new Text("Solo Events");
 
         // Add to root
         root.getChildren().addAll(backButton, titleText);
@@ -32,7 +32,7 @@ public class GroupGames {
             MainMenu change = new MainMenu();
             change.start(stage);
             stage.setScene(new Scene(change.getRoot(), 500, 500));
-            stage.setTitle("Group Events");
+            stage.setTitle("Solo Events");
         });
     }
 
