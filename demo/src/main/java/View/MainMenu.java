@@ -10,16 +10,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class MainMenu extends Application {
 
-    private VBox menuRoot;
+    private Scene menuScene;
 
     @Override
     public void start(Stage stage) {
         // Create the menu pane and scene
-        menuRoot = new VBox();
+        VBox menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
-        Scene menuScene = new Scene(menuRoot, 500,500);
+        menuScene = new Scene(menuRoot, 500,500);
 
         // Create elements
         Text menuTitle = new Text(180,150,"Sport Bud");
@@ -33,10 +35,16 @@ public class MainMenu extends Application {
         // Add spacing
         menuRoot.setSpacing(30);
 
-        // Event Listening for going to group games screen
+        // Event Listening for going to group games screen or solo games screen
         startButton.setOnAction(event -> {
-            GroupGames change = new GroupGames(stage);
-            stage.setScene(new Scene(change.getRoot(), 500, 500));
+            if (Objects.equals(soloGroup.getValue(), "Group")) {
+                GroupGames nextMenu = new GroupGames(stage);
+                stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+            }
+            else if (Objects.equals(soloGroup.getValue(), "Solo")) {
+                SoloGames nextMenu = new SoloGames(stage);
+                stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+            }
         });
 
         // Add to root
@@ -52,8 +60,8 @@ public class MainMenu extends Application {
      * Getter method for the root for swapping scenes in the same stage
      * @return the VBox root of this scene
      */
-    public VBox getRoot(){
-        return menuRoot;
+    public Scene getScene(){
+        return menuScene;
     }
 
     public static void main(String[] args) {

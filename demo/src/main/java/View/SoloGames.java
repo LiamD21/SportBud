@@ -29,9 +29,9 @@ public class SoloGames {
 
         // Event listener for return to main menu
         backButton.setOnAction(event -> {
-            MainMenu change = new MainMenu();
-            change.start(stage);
-            stage.setScene(new Scene(change.getRoot(), 500, 500));
+            MainMenu menu = new MainMenu();
+            menu.start(stage);
+            stage.setScene(menu.getScene());
             stage.setTitle("Solo Events");
         });
     }
