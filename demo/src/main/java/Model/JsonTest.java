@@ -1,7 +1,7 @@
-package Controller;
+package Model;
 
 import org.json.simple.parser.JSONParser;
-public class Controller {
+public class JsonTest {
     JSONParser p;
 
     public static void main(String[] args) {
