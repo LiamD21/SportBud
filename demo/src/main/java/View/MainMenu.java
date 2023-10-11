@@ -10,11 +10,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class MainMenu extends Application {
 
     private VBox menuRoot;
+
     @Override
     public void start(Stage stage) {
         // Create the menu pane and scene
@@ -34,9 +33,9 @@ public class MainMenu extends Application {
         // Add spacing
         menuRoot.setSpacing(30);
 
-        // Button Event Listening
+        // Event Listening for going to group games screen
         startButton.setOnAction(event -> {
-            TestWindow change = new TestWindow(stage);
+            GroupGames change = new GroupGames(stage);
             stage.setScene(new Scene(change.getRoot(), 500, 500));
         });
 
@@ -49,6 +48,10 @@ public class MainMenu extends Application {
         stage.show();
     }
 
+    /**
+     * Getter method for the root for swapping scenes in the same stage
+     * @return the VBox root of this scene
+     */
     public VBox getRoot(){
         return menuRoot;
     }

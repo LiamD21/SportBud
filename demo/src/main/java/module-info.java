@@ -3,6 +3,5 @@ module java {
     requires json.simple;
 
     exports View;
-    exports Controller;
     exports Model;
 }
