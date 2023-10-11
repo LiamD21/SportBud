@@ -13,10 +13,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainMenu extends Application {
+
+    private VBox menuRoot;
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         // Create the menu pane and scene
-        VBox menuRoot = new VBox();
+        menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
         Scene menuScene = new Scene(menuRoot, 500,500);
 
@@ -25,11 +27,18 @@ public class MainMenu extends Application {
         menuTitle.setFont(new Font(30));
 
         Button startButton = new Button("GO!");
+
         ChoiceBox<String> soloGroup = new ChoiceBox<>();
         soloGroup.getItems().addAll("Solo", "Group");
 
         // Add spacing
         menuRoot.setSpacing(30);
+
+        // Button Event Listening
+        startButton.setOnAction(event -> {
+            TestWindow change = new TestWindow(stage);
+            stage.setScene(new Scene(change.getRoot(), 500, 500));
+        });
 
         // Add to root
         menuRoot.getChildren().addAll(menuTitle, soloGroup, startButton);
@@ -38,6 +47,10 @@ public class MainMenu extends Application {
         stage.setTitle("Menu");
         stage.setScene(menuScene);
         stage.show();
+    }
+
+    public VBox getRoot(){
+        return menuRoot;
     }
 
     public static void main(String[] args) {
