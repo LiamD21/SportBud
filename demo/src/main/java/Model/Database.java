@@ -17,12 +17,15 @@ public class Database {
     }
     public Person GetPerson(String userName) throws ParseException, IOException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
-        System.out.println(array);
+        JSONObject personHT = (JSONObject) array.get(0);
+        JSONArray person = (JSONArray) personHT.get(userName);
+        Person p = new Person((String) person.get(0));
 
-        return null;
+        return p;
     }
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
-        db.GetPerson("person1");
+        Person Braeden = db.GetPerson("person1");
+        System.out.println(Braeden.getName());
     }
 }
