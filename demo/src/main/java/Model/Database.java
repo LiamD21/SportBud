@@ -78,7 +78,7 @@ public class Database {
         Person Braeden = db.GetPerson("person1");
 
         /* Person Class Tests */
-        System.out.println(Braeden.getName());
+        /*System.out.println(Braeden.getName());*/
 
         /* Event Class tests*/
         /*
@@ -127,6 +127,35 @@ public class Database {
         System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getPersonsName());
         System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getType());
         System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
+
+         */
+
+        Person M = db.GetPerson("person2");
+        /* Person Class Tests */
+        //System.out.println(M.getName());
+
+
+        /* Event Class tests*/
+        /*
+        System.out.println(M.getPersonalEvents().get(0).getEventName());
+        System.out.println(M.getPersonalEvents().get(0).getEventType());
+        System.out.println(M.getPersonalEvents().get(0).getIsGroup() + "\n");
+
+         */
+
+        /* Golf1 tests (Score class) */
+        /*
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getPersonsName());
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getType());
+        System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(0).getScores())+"\n");
+
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getPersonsName());
+        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getType());
+        System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
+
+
 
          */
 
