@@ -19,9 +19,6 @@ public class Person {
      */
     private ArrayList<Group> groups;
 
-    /*
-    * To be replaced with opening a JSON file later
-     */
     public Person(String name){
         this.name = name;
         personalEvents = new ArrayList<>();
@@ -32,7 +29,7 @@ public class Person {
         return this.name;
     }
 
-    public ArrayList<Group> getGroupEvents(){
+    public ArrayList<Group> getGroup(){
         return this.groups;
     }
 
@@ -42,17 +39,21 @@ public class Person {
 
     public void addGroup(Group g){
         groups.add(g);
+        g.AddGroupMember(this);
     }
 
     /*
-    * Creates a new event and adds it to the personal events list
+    * add an event to the personal events list
      */
-    public void addPersonalEvent(){
-
+    public void addPersonalEvent(Event e){
+        this.personalEvents.add(e);
     }
 
+    /*
     public static void main(String[] args) {
         Person p = new Person("Braeden Kroetsch");
         System.out.println(p.getName());
     }
+
+     */
 }
