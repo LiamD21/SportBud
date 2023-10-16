@@ -47,10 +47,8 @@ public class Event {
     /*
     Take the scores and add them to the event
      */
-    public void inputScores(ArrayList<Score> inputScores){
-        if (this.scores.size() != inputScores.size())
-            throw new RuntimeException("Error arraylists are not the same size in inputScores");
-        this.scores.addAll(inputScores);
+    public void inputScores(Score inputScore){
+        this.scores.add(inputScore);
     }
 
 }

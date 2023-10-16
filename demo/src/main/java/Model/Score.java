@@ -30,5 +30,19 @@ public class Score {
         /* This needs to be tested */
         this.scores = inputScores.clone();
     }
+    public String getPersonsName(){
+        return this.personsName;
+    }
 
+    public int getEventCounter(){
+        return this.eventCounter;
+    }
+
+    public String getType(){
+        return this.type;
+    }
+
+    public int[] getScores() {
+        return scores;
+    }
 }

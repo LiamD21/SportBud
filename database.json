@@ -1,4 +1,24 @@
 [
-  {"person1" :  ["Braeden Kroetsch","ArrayList Events","ArrayList Groups"] },
-  {"group1" :  ["Golf Team 1","ArrayList People","ArrayList GroupEvents"] }
+  {"person1" :  ["Braeden Kroetsch",
+    [
+
+    [ [ [10,10,10,10,10,10,10,10,10],
+                            [3,3,3,3,3,3,3,3,3],
+                            [3,3,3,3,69,420,3,3,3]
+    ] ,"Golf1","Front 9",false]       ,
+
+     [ [ [1,1,1,1,1,1,1,1,1],
+      [32,34,36,835,31,33,35,343,33],
+       [32,34,36,835,31,33,35,343,33],
+       [32,34,36,835,31,33,35,343,33]
+    ] ,"Golf2","Back 9",false]
+
+    ],
+
+
+    "'ArrayList Groups'"] },
+
+  {"group1" :  ["Golf Team 1",
+    "'ArrayList People'",
+    "'ArrayList GroupEvents'"] }
 ]
