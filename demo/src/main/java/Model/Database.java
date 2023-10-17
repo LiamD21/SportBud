@@ -60,29 +60,34 @@ public class Database {
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
-        for (int i = 0; i < numOfEvents; i++) {
-           String name = (String) ((JSONArray)((JSONArray) person.get(1)).get(i)).get(1);
-           String type = (String) ((JSONArray)((JSONArray) person.get(1)).get(i)).get(2);
-           Boolean isGroup = (Boolean) ((JSONArray)((JSONArray) person.get(1)).get(i)).get(3);
-           p.addPersonalEvent(new Event(name,type,isGroup));
-           int numOfTimesEventHasBeenPlayed = (((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(i)).get(0))).size();
-            for (int j = 0; j < numOfTimesEventHasBeenPlayed; j++){
+        if (((JSONArray) person.get(1)).get(0) != null) {
+            for (int i = 0; i < numOfEvents; i++) {
+                String name = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(1);
+                String type = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(2);
+                Boolean isGroup = (Boolean) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(3);
+                p.addPersonalEvent(new Event(name, type, isGroup));
+                int numOfTimesEventHasBeenPlayed = (((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0))).size();
+                for (int j = 0; j < numOfTimesEventHasBeenPlayed; j++) {
 
-               //The current score array
-               int[] arr = JSONArrayToJavaIntArray(
-                       (JSONArray) ((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(i)).get(0)).get(j));
+                    //The current score array
+                    int[] arr = JSONArrayToJavaIntArray(
+                            (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0)).get(j));
 
-               //Initializes the Score Object
-               p.getPersonalEvents().get(i).inputScores(new Score(type,name,j));
+                    //Initializes the Score Object
+                    p.getPersonalEvents().get(i).inputScores(new Score(type, name, j));
 
-               //Inputs the array into the score object
-               p.getPersonalEvents().get(i).getScores().get(j).inputScore(arr);
-           }
-       }
+                    //Inputs the array into the score object
+                    p.getPersonalEvents().get(i).getScores().get(j).inputScore(arr);
+                }
+            }
+        }
 
         //Adds Groups to Person
-        for (int i = 0; i < numOfGroups; i++){
-            p.addGroup((String) ((JSONArray) person.get(2)).get(i));
+        //System.out.println( ((JSONArray) person.get(2)).get(0) );
+        if (((JSONArray) person.get(2)).get(0) != null) {
+            for (int i = 0; i < numOfGroups; i++) {
+                p.addGroup((String) ((JSONArray) person.get(2)).get(i));
+            }
         }
 
 
@@ -178,9 +183,28 @@ public class Database {
          */
 
         /* Group tests (Person Class)*/
-        System.out.println(M.getGroups());
+        /*System.out.println(M.getGroups());*/
 
+        //Someone with no personal events
+        Person Hunter = db.GetPerson("person3");
+        /* Group tests (Person Class)*/
+        /*System.out.println(Hunter.getGroups());*/
+        //System.out.println(Hunter.getPersonalEvents());
 
+        //Someone with no groups
+        Person Jane = db.GetPerson("person4");
+
+        //Score Class Tests
+        /*System.out.println(Jane.getPersonalEvents().get(0).getEventName());
+        System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(0).getScores()));
+        System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(1).getScores()));
+         */
+
+        //Group tests
+        /*
+        Jane.addGroup("gi");
+        System.out.println(Jane.getGroups());
+        */
 
     }
 }
