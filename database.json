@@ -16,7 +16,8 @@
     ],
 
 
-    "'ArrayList Groups'"],
+    ["Golf Team 1","PGA Proz"]
+  ],
 
     "person2" :  ["Mohammed Golfguy",
       [
@@ -27,7 +28,26 @@
       ],
 
 
-      "'ArrayList Groups'"]
+      ["Golf Team 1"]],
+
+    "person3" :  ["Hunter Fisher",
+      [
+        null
+      ],
+
+
+      ["Golf Team 2"]],
+
+    "person4" :  ["Jane Smith",
+      [
+
+        [ [ [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10],
+          [3,3,3,3,3,3,3,3,3,10,10,10,10,10,10,10,10,10]
+        ] ,"Golf1","18",false]
+      ],
+
+
+      null]
 
 
   },

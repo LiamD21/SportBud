@@ -29,7 +29,7 @@ public class Person {
         return this.name;
     }
 
-    public ArrayList<String> getGroup(){
+    public ArrayList<String> getGroups(){
         return this.groups;
     }
 

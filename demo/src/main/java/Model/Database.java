@@ -19,6 +19,9 @@ public class Database {
         parser = new JSONParser();
     }
 
+    /*
+    * Helper function to convert a JSON array to a Java Int Array
+     */
     private int[] JSONArrayToJavaIntArray(JSONArray jsonArray){
         int[] intArray = new int[jsonArray.size()];
         for (int i = 0; i < intArray.length; ++i) {
@@ -26,6 +29,8 @@ public class Database {
         }
         return intArray;
     }
+
+
     public Person GetPerson(String userName) throws ParseException, IOException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
@@ -47,8 +52,13 @@ public class Database {
             //    (JSONArray) ((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(x)).get(0)).get(0)
       //  );
         //System.out.println(Arrays.toString(testarray));
+        //Group Array
+        //System.out.println( ((JSONArray) person.get(2)) );
+        //Group Array Size
+        //System.out.println(((JSONArray) person.get(2)).size());
 
         int numOfEvents = ((JSONArray) person.get(1)).size();
+        int numOfGroups = ((JSONArray) person.get(2)).size();
 
         for (int i = 0; i < numOfEvents; i++) {
            String name = (String) ((JSONArray)((JSONArray) person.get(1)).get(i)).get(1);
@@ -69,6 +79,11 @@ public class Database {
                p.getPersonalEvents().get(i).getScores().get(j).inputScore(arr);
            }
        }
+
+        //Adds Groups to Person
+        for (int i = 0; i < numOfGroups; i++){
+            p.addGroup((String) ((JSONArray) person.get(2)).get(i));
+        }
 
 
         return p;
@@ -130,6 +145,9 @@ public class Database {
 
          */
 
+        /* Group tests (Person Class)*/
+        /*System.out.println(Braeden.getGroups());*/
+
         Person M = db.GetPerson("person2");
         /* Person Class Tests */
         //System.out.println(M.getName());
@@ -158,6 +176,9 @@ public class Database {
 
 
          */
+
+        /* Group tests (Person Class)*/
+        System.out.println(M.getGroups());
 
 
 
