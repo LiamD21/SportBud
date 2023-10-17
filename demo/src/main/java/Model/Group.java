@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Group {
     private String groupName;
     /* References the every person in the group */
-    private ArrayList<Person> people;
+    private ArrayList<String> people;
     private ArrayList<Event> groupEvents;
     public Group(String name){
         this.groupName = name;
-        people = new ArrayList<Person>();
+        people = new ArrayList<>();
         groupEvents = new ArrayList<Event>();
     }
 
@@ -17,7 +17,7 @@ public class Group {
     * Adds a group member to the people arraylist.
     * Do NOT call from here, use the person class.
      */
-    public void AddGroupMember(Person p){
+    public void AddGroupMember(String p){
         if (people.size() == 4){
             throw new RuntimeException("Error, groups cannot be bigger than 4");
         }
@@ -44,7 +44,7 @@ public class Group {
     /*
     Returns the arraylist containing the people in this group
      */
-    public ArrayList<Person> getPeople(){
+    public ArrayList<String> getPeople(){
         return this.people;
     }
 

@@ -17,7 +17,7 @@ public class Person {
     /*
      * A list of all their group events
      */
-    private ArrayList<Group> groups;
+    private ArrayList<String> groups;
 
     public Person(String name){
         this.name = name;
@@ -29,7 +29,7 @@ public class Person {
         return this.name;
     }
 
-    public ArrayList<Group> getGroup(){
+    public ArrayList<String> getGroup(){
         return this.groups;
     }
 
@@ -37,9 +37,8 @@ public class Person {
         return this.personalEvents;
     }
 
-    public void addGroup(Group g){
+    public void addGroup(String g){
         groups.add(g);
-        g.AddGroupMember(this);
     }
 
     /*
