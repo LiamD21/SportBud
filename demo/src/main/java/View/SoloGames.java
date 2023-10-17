@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class SoloGames {
 
     private final VBox root;
-    private SoloGamesHandler handler;
+    private final SoloGamesHandler handler;
 
     /**
      * Constructor for the group games menu
