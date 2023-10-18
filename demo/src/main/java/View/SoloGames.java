@@ -34,6 +34,7 @@ public class SoloGames {
         handler = new SoloGamesHandler();
 
         // Create elements
+        AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
         Text titleText = new Text("Solo Events");
         HBox newPerson = new HBox();
@@ -62,7 +63,6 @@ public class SoloGames {
         newPerson.setAlignment(Pos.CENTER);
 
         // Anchor Back Button
-        AnchorPane anchorPane = new AnchorPane();
         AnchorPane.setTopAnchor(backButton, 15.0);
         AnchorPane.setLeftAnchor(backButton, 25.0);
 
