@@ -21,6 +21,7 @@ public class SoloGames {
      */
     public SoloGames(Stage stage) {
         // create the root
+        stage.setTitle("Solo Events");
         root = new VBox();
         root.setAlignment(Pos.CENTER);
         handler = new SoloGamesHandler();
@@ -51,7 +52,7 @@ public class SoloGames {
             MainMenu menu = new MainMenu();
             menu.start(stage);
             stage.setScene(menu.getScene());
-            stage.setTitle("Solo Events");
+            stage.setTitle("Menu");
         });
 
         // If button clicked, pass to the controller

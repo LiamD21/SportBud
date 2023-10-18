@@ -18,6 +18,7 @@ public class GroupGames {
      */
     public GroupGames(Stage stage) {
         // create the root
+        stage.setTitle("Group Events");
         root = new VBox();
         root.setAlignment(Pos.CENTER);
 
@@ -25,7 +26,7 @@ public class GroupGames {
         Button backButton = new Button("Back");
         Text titleText = new Text("Group Events");
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
-        Button newGroupButton = new Button();
+        Button newGroupButton = new Button("Create a New Group");
 
         // add all groups as choices in the choice box
         // TODO once we have get groups method
@@ -38,7 +39,14 @@ public class GroupGames {
             MainMenu menu = new MainMenu();
             menu.start(stage);
             stage.setScene(menu.getScene());
-            stage.setTitle("Group Events");
+            stage.setTitle("Menu");
+        });
+
+        //Event listener for newGroupButton (creating a new group); creates new creategroup class with all its
+        // buttons and what not, on button click.
+        newGroupButton.setOnAction(event ->{
+            CreateGroup creategroup = new CreateGroup(stage);
+            stage.setScene(new Scene(creategroup.getRoot(),600,600));
         });
     }
 
