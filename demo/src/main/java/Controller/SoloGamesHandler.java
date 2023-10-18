@@ -42,9 +42,9 @@ public class SoloGamesHandler {
      * Takes a button click event and a string and will create a new person with the given name in the database
      * @param newName the string from the text field to add person
      */
-    public void handleNewPerson(String newName){
+    public void handleNewPerson(String newName, String userName){
         Person person = new Person(newName);
-        db.AddPerson(person);
-        // TODO we might have some problems with this because the person class does not have a username attached?
+        //db.AddPerson(userName, person);
+        // TODO Liam will update this once the add person is done
     }
 }
