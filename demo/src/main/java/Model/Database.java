@@ -86,7 +86,7 @@ public class Database {
         int groupSize = ((JSONArray) group.get(1)).size();
         //Adds group members to group object
         for (int i = 0; i < groupSize; i++){
-            g.AddGroupMember((String) ((JSONArray) group.get(1)).get(0));
+            g.AddGroupMember((String) ((JSONArray) group.get(1)).get(i));
         }
         int x = 0;
 
@@ -100,11 +100,22 @@ public class Database {
             //System.out.println(numOfTimeEventHasBeenPlayed);
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
 
+                for (int k = 0; k < groupSize; k++){
+                   // System.out.println(k);
+                   // System.out.println( ((String) ((JSONArray) group.get(1)).get(k)) );
+                    //this.GetPerson()
+                }
+
+                //System.out.println(groupSize);
+                //System.out.println(groupSize/i+1);
+                //System.out.println(((JSONArray) group.get(1)).get(groupSize/i+1));
                 //The current score array
                 int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j));
 
-                //Initalizes score object
-                g.getGroupEvents().get(i).inputScores(new Score(type,name,j));
+                //Initializes score object
+                for (int k = 0; k < groupSize; k++) {
+                    g.getGroupEvents().get(i).inputScores(new Score(type, ((String) ((JSONArray) group.get(1)).get(k)), j));
+                }
 
                 //Inputs the array into the score object
                 g.getGroupEvents().get(i).getScores().get(j).inputScore(arr);
@@ -226,7 +237,27 @@ public class Database {
         System.out.println(Jane.getGroups());
         */
 
-        Group group = db.GetGroup("group1");
+        //GetGroup() tests
+        Group group1 = db.GetGroup("group1");
+
+        System.out.println(group1.getGroupName());
+        System.out.println(db.GetPerson(group1.getPeople().get(0)).getName());
+        System.out.println(db.GetPerson(group1.getPeople().get(1)).getName());
+        System.out.println(group1.getGroupSize() + "\n");
+        System.out.println(group1.getGroupEvents().get(0).getEventName());
+        System.out.println(group1.getGroupEvents().get(0).getEventType());
+        System.out.println(group1.getGroupEvents().get(0).getIsGroup());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(0).getScores()));
+        System.out.println(group1.getGroupEvents().get(0).getScores().get(0).getPersonsName());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(1).getScores()));
+        System.out.println(group1.getGroupEvents().get(0).getScores().get(1).getPersonsName());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(2).getScores()));
+        System.out.println(group1.getGroupEvents().get(0).getScores().get(2).getPersonsName());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(3).getScores()));
+        System.out.println(group1.getGroupEvents().get(0).getScores().get(3).getPersonsName());
+
+
+
 
     }
 }
