@@ -57,7 +57,7 @@ public class SoloGames {
 
         anchorPane.getChildren().addAll(backButton);
 
-        // Add to root
+        // Add elements to root
         root.getChildren().addAll(anchorPane, titleText, newPerson);
 
         // Event listener for return to main menu
