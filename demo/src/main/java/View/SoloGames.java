@@ -16,6 +16,7 @@ public class SoloGames {
 
     private final VBox root;
     private final SoloGamesHandler handler;
+    private final String[] people;
 
     /**
      * Constructor for the group games menu
@@ -27,7 +28,10 @@ public class SoloGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+
+        // Initialize the handler and use it to get people
         handler = new SoloGamesHandler();
+        people = handler.getPersonList();
 
         // Create elements
         Button backButton = new Button("Back");
@@ -45,7 +49,9 @@ public class SoloGames {
         newPerson.getChildren().addAll(newName, addPersonButton);
 
         // Add choices to choice box based on list of solo people
-        // TODO once we have get people method
+        for (String person : people){
+            personChoice.getItems().add(person);
+        }
 
         // Anchor Back Button
         AnchorPane anchorPane = new AnchorPane();
