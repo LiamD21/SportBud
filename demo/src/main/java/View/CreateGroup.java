@@ -43,8 +43,6 @@ public class CreateGroup {
         // Need a field in which you can choose a member to add to the group
         // coordinates with a handler to access the database for people that are in the database
 
-
-
         //text inputs:
         TextField groupname = new TextField("Set group name here");
         groupname.setPrefColumnCount(20);
@@ -61,7 +59,6 @@ public class CreateGroup {
                 "a");
         availableMembers.setPrefSize(200,200);
         availableMembers.setMaxSize(300,300);
-
 
 
         //setting margins for the text boxes so they arent so close together

@@ -10,12 +10,20 @@ public class SoloGamesHandler {
      */
     private Database db;
 
+    public SoloGamesHandler() {
+        this.setDb();
+    }
+
     /**
      * When the system is initialized, and we enter the solo games page, this is called to get the reference to the database
-     * @param db reference to the current database
      */
-    public void setDb(Database db){
-        this.db = db;
+    public void setDb() {
+        try {
+            this.db = new Database();
+        }
+        catch (Exception e){
+            System.out.println("Error in creating Database");
+        }
     }
 
     /**
