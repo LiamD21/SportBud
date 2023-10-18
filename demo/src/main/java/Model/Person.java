@@ -8,15 +8,7 @@ public class Person {
     * Ex "Jane Smith"
     * */
     private String name;
-
-    /*
-    * A list of all their personal events
-     */
     private ArrayList<Event> personalEvents;
-
-    /*
-     * A list of all their group events
-     */
     private ArrayList<String> groups;
 
     public Person(String name){

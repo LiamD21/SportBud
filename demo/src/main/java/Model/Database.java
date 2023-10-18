@@ -7,12 +7,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    String filePath = "database.json";
-    JSONParser parser;
+    private String filePath = "database.json";
+    private JSONParser parser;
     JSONArray array;
 
     public Database() throws FileNotFoundException, ParseException {
@@ -78,12 +85,12 @@ public class Database {
 
     public Group GetGroup(String groupName) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
-        JSONObject personHT = (JSONObject) array.get(1);
-        JSONArray group = (JSONArray) personHT.get(groupName);
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = (JSONArray) groupHT.get(groupName);
         Group g = new Group((String) group.get(0));
 
-        //Person p = new Person((String) person.get(0));
         int groupSize = ((JSONArray) group.get(1)).size();
+
         //Adds group members to group object
         for (int i = 0; i < groupSize; i++){
             g.AddGroupMember((String) ((JSONArray) group.get(1)).get(i));
@@ -115,8 +122,54 @@ public class Database {
         }
         return g;
     }
+    public void AddPerson(Person person){
+
+    }
+
+    public void AddGroup(Group group){
+
+    }
+
+    /*
+    * Return a string array of all usernames
+     */
+    public String[] GetPeople() throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+        int numOfPeople = personHT.size();
+
+        String[] strArray = personHT.keySet().toString().split(", ");
+        strArray[0] = strArray[0].substring(1);
+        strArray[numOfPeople-1] = strArray[numOfPeople-1].substring(0, strArray[numOfPeople-1].length()-1);
+
+        return strArray;
+    }
+
+    /*
+    * Return a string array of all group usernames
+     */
+    public String GetGroups(){
+        return null;
+    }
+
+    public void AddSoloScores(int[] scores, String eventName){
+
+    }
+
+    public void AddGroupScores(int[] scores, String eventName){
+
+    }
+
+    public void AddPersontoGroup(String personsName){
+
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+
+        //GetPeople() Test
+        /*System.out.println(Arrays.toString(db.GetPeople()));*/
+
         Person Braeden = db.GetPerson("person1");
 
         /* Person Class Tests */
@@ -273,11 +326,10 @@ public class Database {
         System.out.println(proz.getGroupEvents().get(0).getScores().get(4).getPersonsName());
         System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(5).getScores()));
         System.out.println(proz.getGroupEvents().get(0).getScores().get(5).getPersonsName());
+        System.out.println(proz.getGroupName());
+        System.out.println(proz.getGroupSize());
 
          */
-
-
-
 
     }
 }
