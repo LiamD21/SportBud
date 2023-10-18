@@ -41,8 +41,6 @@ public class CreateGroup {
         members.setPadding(new Insets(30));
         members.setPrefSize(300,200);
 
-
-
         //text inputs:
         TextField groupname = new TextField("Set group name here");
         groupname.setPrefColumnCount(20);
@@ -55,7 +53,6 @@ public class CreateGroup {
         enterGroupMember.setMaxWidth(300);
         enterGroupMember.setMinWidth(20);
         enterGroupMember.setPadding(new Insets(8,8,8,8));
-
 
         //setting margins for the text boxes so they arent so close together
         root.setMargin(groupname, new Insets(5));
