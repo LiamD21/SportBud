@@ -139,13 +139,10 @@ public class Database {
         int numOfPeople = personHT.size();
 
         String[] strArray = personHT.keySet().toString().split(", ");
-        System.out.println(Arrays.toString(strArray));
+        strArray[0] = strArray[0].substring(1);
+        strArray[numOfPeople-1] = strArray[numOfPeople-1].substring(0, strArray[numOfPeople-1].length()-1);
 
-
-
-
-
-        return null;
+        return strArray;
     }
 
     /*
@@ -169,7 +166,9 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
-        db.GetPeople();
+
+        //GetPeople() Test
+        /*System.out.println(Arrays.toString(db.GetPeople()));*/
 
         Person Braeden = db.GetPerson("person1");
 
