@@ -1,10 +1,13 @@
 package View;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,7 +23,8 @@ public class GroupGames {
         // create the root
         stage.setTitle("Group Events");
         root = new VBox();
-        root.setAlignment(Pos.CENTER);
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setSpacing(30);
 
         // Create elements
         Button backButton = new Button("Back");
@@ -28,11 +32,21 @@ public class GroupGames {
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
         Button newGroupButton = new Button("Create a New Group");
 
+        // Modify Title text
+        titleText.setFont(new Font(22));
+
         // add all groups as choices in the choice box
         // TODO once we have get groups method
 
+        // Anchor Buttons
+        AnchorPane anchorPane = new AnchorPane();
+        AnchorPane.setTopAnchor(backButton, 15.0);
+        AnchorPane.setLeftAnchor(backButton, 25.0);
+
+        anchorPane.getChildren().addAll(backButton);
+
         // Add to root
-        root.getChildren().addAll(backButton, titleText, groupChoice, newGroupButton);
+        root.getChildren().addAll(anchorPane, titleText, groupChoice, newGroupButton);
 
         // Event listener for return to main menu
         backButton.setOnAction(event -> {

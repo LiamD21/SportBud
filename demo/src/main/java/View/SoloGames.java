@@ -5,8 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -23,7 +25,8 @@ public class SoloGames {
         // create the root
         stage.setTitle("Solo Events");
         root = new VBox();
-        root.setAlignment(Pos.CENTER);
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setSpacing(30);
         handler = new SoloGamesHandler();
 
         // connect the database to the handler
@@ -36,6 +39,9 @@ public class SoloGames {
         HBox newPerson = new HBox();
         newPerson.setAlignment(Pos.CENTER);
 
+        // Modify Title text
+        titleText.setFont(new Font(22));
+
         // create these for new person and add them to the Hbox
         TextField newName = new TextField();
         Button addPersonButton = new Button("Add Person");
@@ -44,8 +50,15 @@ public class SoloGames {
         // Add choices to choice box based on list of solo people
         // TODO once we have get people method
 
+        // Anchor Back Button
+        AnchorPane anchorPane = new AnchorPane();
+        AnchorPane.setTopAnchor(backButton, 15.0);
+        AnchorPane.setLeftAnchor(backButton, 25.0);
+
+        anchorPane.getChildren().addAll(backButton);
+
         // Add to root
-        root.getChildren().addAll(backButton, titleText, newPerson);
+        root.getChildren().addAll(anchorPane, titleText, newPerson);
 
         // Event listener for return to main menu
         backButton.setOnAction(event -> {
