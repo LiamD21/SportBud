@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
@@ -79,8 +85,8 @@ public class Database {
 
     public Group GetGroup(String groupName) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
-        JSONObject personHT = (JSONObject) array.get(1);
-        JSONArray group = (JSONArray) personHT.get(groupName);
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = (JSONArray) groupHT.get(groupName);
         Group g = new Group((String) group.get(0));
 
         int groupSize = ((JSONArray) group.get(1)).size();
@@ -127,7 +133,18 @@ public class Database {
     /*
     * Return a string array of all usernames
      */
-    public String[] GetPeople(){
+    public String[] GetPeople() throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+        int numOfPeople = personHT.size();
+
+        String[] strArray = personHT.keySet().toString().split(", ");
+        System.out.println(Arrays.toString(strArray));
+
+
+
+
+
         return null;
     }
 
@@ -152,6 +169,8 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+        db.GetPeople();
+
         Person Braeden = db.GetPerson("person1");
 
         /* Person Class Tests */
@@ -312,9 +331,6 @@ public class Database {
         System.out.println(proz.getGroupSize());
 
          */
-
-
-
 
     }
 }
