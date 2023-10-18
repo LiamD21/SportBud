@@ -7,12 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.json.simple.parser.*;
 public class Database {
-    String filePath = "database.json";
-    JSONParser parser;
+    private String filePath = "database.json";
+    private JSONParser parser;
     JSONArray array;
 
     public Database() throws FileNotFoundException, ParseException {
@@ -82,8 +83,8 @@ public class Database {
         JSONArray group = (JSONArray) personHT.get(groupName);
         Group g = new Group((String) group.get(0));
 
-        //Person p = new Person((String) person.get(0));
         int groupSize = ((JSONArray) group.get(1)).size();
+
         //Adds group members to group object
         for (int i = 0; i < groupSize; i++){
             g.AddGroupMember((String) ((JSONArray) group.get(1)).get(i));
@@ -115,6 +116,40 @@ public class Database {
         }
         return g;
     }
+    public void AddPerson(Person person){
+
+    }
+
+    public void AddGroup(Group group){
+
+    }
+
+    /*
+    * Return a string array of all usernames
+     */
+    public String[] GetPeople(){
+        return null;
+    }
+
+    /*
+    * Return a string array of all group usernames
+     */
+    public String GetGroups(){
+        return null;
+    }
+
+    public void AddSoloScores(int[] scores, String eventName){
+
+    }
+
+    public void AddGroupScores(int[] scores, String eventName){
+
+    }
+
+    public void AddPersontoGroup(String personsName){
+
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
         Person Braeden = db.GetPerson("person1");
@@ -273,6 +308,8 @@ public class Database {
         System.out.println(proz.getGroupEvents().get(0).getScores().get(4).getPersonsName());
         System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(5).getScores()));
         System.out.println(proz.getGroupEvents().get(0).getScores().get(5).getPersonsName());
+        System.out.println(proz.getGroupName());
+        System.out.println(proz.getGroupSize());
 
          */
 
