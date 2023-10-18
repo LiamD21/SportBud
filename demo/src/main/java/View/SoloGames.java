@@ -2,6 +2,7 @@ package View;
 
 import Controller.SoloGamesHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -29,9 +30,8 @@ public class SoloGames {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
 
-        // Initialize the handler and use it to get people
+        // Initialize the handler
         handler = new SoloGamesHandler();
-        people = handler.getPersonList();
 
         // Create elements
         Button backButton = new Button("Back");
@@ -45,6 +45,7 @@ public class SoloGames {
         // create items for select person and add them to the HBox
         Button selectButton = new Button("Select Person");
         ChoiceBox<String> personChoice = new ChoiceBox<>();
+        people = this.getPeople();
         for (String person : people){
             personChoice.getItems().add(person);
         }
@@ -78,11 +79,20 @@ public class SoloGames {
             stage.setTitle("Menu");
         });
 
-        // If button clicked, pass to the controller
+        // If add person button clicked, pass to the controller
         // New person is only created if the user actually enters a name
         addPersonButton.setOnAction(event -> {
             if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
                 handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
+            }
+        });
+
+        // If select button clicked, pass to the controller
+        // Person is only selected if the user actually selects an option
+        selectButton.setOnAction(event -> {
+            if (personChoice.getValue() != null){
+                PersonSelectEvent menu = new PersonSelectEvent(stage, personChoice.getValue());
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });
     }
@@ -93,5 +103,9 @@ public class SoloGames {
      */
     public VBox getRoot(){
         return root;
+    }
+
+    public String[] getPeople(){
+        return handler.getPersonList();
     }
 }
