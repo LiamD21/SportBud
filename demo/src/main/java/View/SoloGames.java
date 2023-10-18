@@ -29,9 +29,6 @@ public class SoloGames {
         root.setSpacing(30);
         handler = new SoloGamesHandler();
 
-        // connect the database to the handler
-        // TODO
-
         // Create elements
         Button backButton = new Button("Back");
         Text titleText = new Text("Solo Events");
@@ -71,7 +68,7 @@ public class SoloGames {
         // If button clicked, pass to the controller
         addPersonButton.setOnAction(event -> {
             if (newName.getCharacters() != null){
-                handler.handleNewPerson(event, newName.getCharacters().toString());
+                handler.handleNewPerson(newName.getCharacters().toString());
             }
         });
     }

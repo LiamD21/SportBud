@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Database;
+import Model.Person;
 import javafx.event.ActionEvent;
 
 public class SoloGamesHandler {
@@ -28,10 +29,11 @@ public class SoloGamesHandler {
 
     /**
      * Takes a button click event and a string and will create a new person with the given name in the database
-     * @param click the action on the add person button
      * @param newName the string from the text field to add person
      */
-    public void handleNewPerson(ActionEvent click, String newName){
-
+    public void handleNewPerson(String newName){
+        Person person = new Person(newName);
+        db.AddPerson(person);
+        // TODO we might have some problems with this because the person class does not have a username attached?
     }
 }
