@@ -39,24 +39,6 @@ public class Database {
 
         int x = 0;
 
-        //Number of events
-        //System.out.println( ((JSONArray) person.get(1)).size() );
-        // Event Name
-        //System.out.println( ( ((JSONArray)((JSONArray) person.get(1)).get(x)).get(1)) );
-        //Number of times the event has been played
-       // System.out.println( ( ((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(x)).get(0))).size() );
-        // Event Type
-        //System.out.println( ( ((JSONArray)((JSONArray) person.get(1)).get(x)).get(2)) );
-       // System.out.println( ((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(x)).get(0)).get(0) );
-       // int[] testarray = JSONArrayToJavaIntArray(
-            //    (JSONArray) ((JSONArray)((JSONArray)((JSONArray) person.get(1)).get(x)).get(0)).get(0)
-      //  );
-        //System.out.println(Arrays.toString(testarray));
-        //Group Array
-        //System.out.println( ((JSONArray) person.get(2)) );
-        //Group Array Size
-        //System.out.println(((JSONArray) person.get(2)).size());
-
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
@@ -92,6 +74,44 @@ public class Database {
 
 
         return p;
+    }
+
+    public Group GetGroup(String groupName) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(1);
+        JSONArray group = (JSONArray) personHT.get(groupName);
+        Group g = new Group((String) group.get(0));
+
+        //Person p = new Person((String) person.get(0));
+        int groupSize = ((JSONArray) group.get(1)).size();
+        //Adds group members to group object
+        for (int i = 0; i < groupSize; i++){
+            g.AddGroupMember((String) ((JSONArray) group.get(1)).get(0));
+        }
+        int x = 0;
+
+
+        int numOfEvents = ((JSONArray)((JSONArray)((JSONArray) group.get(2)))).size();
+        for (int i = 0; i < numOfEvents; i++){
+            int numOfTimeEventHasBeenPlayed = ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2))).get(i)).get(0)).size();
+            String name = (String) ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2)))).get(i)).get(1);
+            String type = (String) ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2)))).get(i)).get(2);
+            g.AddGroupEvent(new Event(name,type,true));
+            //System.out.println(numOfTimeEventHasBeenPlayed);
+            for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
+
+                //The current score array
+                int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j));
+
+                //Initalizes score object
+                g.getGroupEvents().get(i).inputScores(new Score(type,name,j));
+
+                //Inputs the array into the score object
+                g.getGroupEvents().get(i).getScores().get(j).inputScore(arr);
+            }
+
+        }
+        return g;
     }
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
@@ -205,6 +225,8 @@ public class Database {
         Jane.addGroup("gi");
         System.out.println(Jane.getGroups());
         */
+
+        Group group = db.GetGroup("group1");
 
     }
 }
