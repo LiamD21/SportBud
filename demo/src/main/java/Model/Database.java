@@ -148,8 +148,20 @@ public class Database {
     /*
     * Return a string array of all group usernames
      */
-    public String GetGroups(){
-        return null;
+    public String[] GetGroups() throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
+        System.out.println(groupHT);
+
+        int numOfGroups = groupHT.size();
+
+        String[] strArray = groupHT.keySet().toString().split(", ");
+        strArray[0] = strArray[0].substring(1);
+        strArray[numOfGroups-1] = strArray[numOfGroups-1].substring(0, strArray[numOfGroups-1].length()-1);
+
+        return strArray;
+
+
     }
 
     public void AddSoloScores(int[] scores, String eventName){
@@ -166,6 +178,9 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+
+        //GetGroup() Test
+        //System.out.println(Arrays.toString(db.GetGroups()));
 
         //GetPeople() Test
         /*System.out.println(Arrays.toString(db.GetPeople()));*/
