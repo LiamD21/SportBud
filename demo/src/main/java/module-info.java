@@ -4,4 +4,5 @@ module java {
 
     exports View;
     exports Model;
+    exports Controller;
 }
