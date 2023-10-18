@@ -36,22 +36,29 @@ public class SoloGames {
         // Create elements
         Button backButton = new Button("Back");
         Text titleText = new Text("Solo Events");
-        ChoiceBox<String> personChoice = new ChoiceBox<>();
         HBox newPerson = new HBox();
-        newPerson.setAlignment(Pos.CENTER);
+        HBox selectPerson = new HBox();
 
         // Modify Title text
         titleText.setFont(new Font(22));
 
-        // create these for new person and add them to the Hbox
-        TextField newName = new TextField();
-        Button addPersonButton = new Button("Add Person");
-        newPerson.getChildren().addAll(newName, addPersonButton);
-
-        // Add choices to choice box based on list of solo people
+        // create items for select person and add them to the HBox
+        Button selectButton = new Button("Select Person");
+        ChoiceBox<String> personChoice = new ChoiceBox<>();
         for (String person : people){
             personChoice.getItems().add(person);
         }
+        selectPerson.getChildren().addAll(personChoice, selectButton);
+        selectPerson.setSpacing(10);
+        selectPerson.setAlignment(Pos.CENTER);
+
+        // create these for new person and add them to the Hbox
+        TextField newName = new TextField("Full Name");
+        TextField userName = new TextField("Username");
+        Button addPersonButton = new Button("Add Person");
+        newPerson.getChildren().addAll(newName, userName, addPersonButton);
+        newPerson.setSpacing(10);
+        newPerson.setAlignment(Pos.CENTER);
 
         // Anchor Back Button
         AnchorPane anchorPane = new AnchorPane();
@@ -61,7 +68,7 @@ public class SoloGames {
         anchorPane.getChildren().addAll(backButton);
 
         // Add elements to root
-        root.getChildren().addAll(anchorPane, titleText, newPerson);
+        root.getChildren().addAll(anchorPane, titleText, selectPerson, newPerson);
 
         // Event listener for return to main menu
         backButton.setOnAction(event -> {
@@ -72,9 +79,10 @@ public class SoloGames {
         });
 
         // If button clicked, pass to the controller
+        // New person is only created if the user actually enters a name
         addPersonButton.setOnAction(event -> {
-            if (newName.getCharacters() != null){
-                handler.handleNewPerson(newName.getCharacters().toString());
+            if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
+                handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
             }
         });
     }
