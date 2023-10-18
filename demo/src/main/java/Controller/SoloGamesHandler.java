@@ -3,6 +3,10 @@ package Controller;
 import Model.Database;
 import Model.Person;
 import javafx.event.ActionEvent;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class SoloGamesHandler {
 
@@ -21,9 +25,16 @@ public class SoloGamesHandler {
     public void setDb() {
         try {
             this.db = new Database();
+        } catch (FileNotFoundException | ParseException e) {
+            throw new RuntimeException(e);
         }
-        catch (Exception e){
-            System.out.println("Error in creating Database");
+    }
+
+    public String[] getPersonList(){
+        try {
+            return db.GetPeople();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 
