@@ -100,19 +100,10 @@ public class Database {
             //System.out.println(numOfTimeEventHasBeenPlayed);
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
 
-                for (int k = 0; k < groupSize; k++){
-                   // System.out.println(k);
-                   // System.out.println( ((String) ((JSONArray) group.get(1)).get(k)) );
-                    //this.GetPerson()
-                }
 
-                //System.out.println(groupSize);
-                //System.out.println(groupSize/i+1);
-                //System.out.println(((JSONArray) group.get(1)).get(groupSize/i+1));
-                //The current score array
                 int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j));
 
-                //Initializes score object
+                //Initializes score object loop required to ensure correct person gets put into the score object
                 for (int k = 0; k < groupSize; k++) {
                     g.getGroupEvents().get(i).inputScores(new Score(type, ((String) ((JSONArray) group.get(1)).get(k)), j));
                 }
@@ -239,7 +230,7 @@ public class Database {
 
         //GetGroup() tests
         Group group1 = db.GetGroup("group1");
-
+        /*
         System.out.println(group1.getGroupName());
         System.out.println(db.GetPerson(group1.getPeople().get(0)).getName());
         System.out.println(db.GetPerson(group1.getPeople().get(1)).getName());
@@ -254,7 +245,36 @@ public class Database {
         System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(2).getScores()));
         System.out.println(group1.getGroupEvents().get(0).getScores().get(2).getPersonsName());
         System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(3).getScores()));
-        System.out.println(group1.getGroupEvents().get(0).getScores().get(3).getPersonsName());
+        System.out.println(group1.getGroupEvents().get(0).getScores().get(3).getPersonsName()+"\n");
+
+
+        System.out.println(group1.getGroupEvents().get(1).getEventName());
+        System.out.println(group1.getGroupEvents().get(1).getEventType());
+        System.out.println(group1.getGroupEvents().get(1).getIsGroup());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(0).getScores()));
+        System.out.println(group1.getGroupEvents().get(1).getScores().get(0).getPersonsName());
+        System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(1).getScores()));
+        System.out.println(group1.getGroupEvents().get(1).getScores().get(1).getPersonsName());
+
+         */
+
+        Group proz = db.GetGroup("PGA Proz");
+        //Test to make sure the people are assigned their respective scores in groups of 3
+        /*
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(0).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(0).getPersonsName());
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(1).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(1).getPersonsName());
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(2).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(2).getPersonsName());
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(3).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(3).getPersonsName());
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(4).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(4).getPersonsName());
+        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(5).getScores()));
+        System.out.println(proz.getGroupEvents().get(0).getScores().get(5).getPersonsName());
+
+         */
 
 
 
