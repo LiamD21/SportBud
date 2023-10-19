@@ -18,8 +18,10 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
     private JSONParser parser;
+
+    private FileWriter writer;
     JSONArray array;
 
     public Database() throws FileNotFoundException, ParseException {
@@ -37,6 +39,16 @@ public class Database {
         return intArray;
     }
 
+    /*
+     * Helper function to convert a Java Int to a JSON Array
+     */
+    private JSONArray IntArrayToJsonArray(int[] intArray) {
+        JSONArray jsonArray = new JSONArray();
+        for (int value : intArray) {
+            jsonArray.add(value);
+        }
+        return jsonArray;
+    }
 
     public Person GetPerson(String userName) throws ParseException, IOException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
@@ -122,7 +134,47 @@ public class Database {
         }
         return g;
     }
-    public void AddPerson(Person person){
+    public void AddPerson(String username, Person person) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+
+        JSONArray info = new JSONArray();
+        JSONArray eventArray = new JSONArray();
+        JSONArray scoreArray = new JSONArray();
+
+
+        info.add(person.getName());
+
+        //Initialize Array with number of event sub arrays
+        for (int i = 0; i < person.getPersonalEvents().size(); i++){
+            eventArray.add(new JSONArray());
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
+
+        for (int j = 0; j < person.getPersonalEvents().get(i).getScores().size(); j++){
+                int[] score = person.getPersonalEvents().get(i).getScores().get(j).getScores();
+            ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(IntArrayToJsonArray(score));
+            }
+            ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventName());
+            ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventType());
+            ((JSONArray) eventArray.get(i)).add(false);
+        }
+
+        info.add(eventArray);
+        info.add(scoreArray);
+
+
+        for (int i = 0; i < person.getGroups().size(); i++){
+            ((JSONArray) info.get(2)).add(person.getGroups().get(i));
+        }
+
+        personHT.put(username,info);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -178,6 +230,28 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+
+        Person Winston = new Person("Winston Smith");
+        Winston.addPersonalEvent(new Event("test","Front 9",false));
+        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",0));
+        Winston.getPersonalEvents().get(0).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1});
+        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",1));
+        Winston.getPersonalEvents().get(0).getScores().get(1).inputScore(new int[]{1, 1, 1, 1, 1, 69, 1, 1, 1});
+        Winston.addGroup("test group");
+        Winston.addGroup("PGA Proz");
+        Winston.addPersonalEvent(new Event("test 2","Front 9",false));
+        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),0));
+        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 69, 420, 1, 1});
+        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
+        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
+
+
+        //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
+        //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(1).getScores()));
+
+        //System.out.println(Winston.getPersonalEvents().get(0).getScores().get(1));
+
+        db.AddPerson("WinstonS",Winston);
 
         //GetGroup() Test
         //System.out.println(Arrays.toString(db.GetGroups()));
