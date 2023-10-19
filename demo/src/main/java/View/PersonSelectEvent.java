@@ -62,7 +62,6 @@ public class PersonSelectEvent {
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 10.0);
         AnchorPane.setLeftAnchor(backButton, 15.0);
-
         anchorPane.getChildren().addAll(backButton);
 
         // add elements to root
