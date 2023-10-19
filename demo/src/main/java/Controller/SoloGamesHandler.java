@@ -1,29 +1,34 @@
 package Controller;
 
-import Model.Database;
-import javafx.event.ActionEvent;
+import Model.Person;
+import org.json.simple.parser.ParseException;
 
-public class SoloGamesHandler {
+import java.io.IOException;
 
-    /*
-    Reference to the database
-     */
-    private Database db;
+public class SoloGamesHandler extends UIHandler{
+    public SoloGamesHandler() {
+        super.setDb();
+    }
 
     /**
-     * When the system is initialized, and we enter the solo games page, this is called to get the reference to the database
-     * @param db reference to the current database
+     * Used by the solo games class to get a string list of all usernames in the system
+     * @return String list of all usernames in the system
      */
-    public void setDb(Database db){
-        this.db = db;
+    public String[] getPersonList(){
+        try {
+            return db.GetPeople();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Takes a button click event and a string and will create a new person with the given name in the database
-     * @param click the action on the add person button
      * @param newName the string from the text field to add person
      */
-    public void handleNewPerson(ActionEvent click, String newName){
-
+    public void handleNewPerson(String newName, String userName){
+        Person person = new Person(newName);
+        //db.AddPerson(userName, person);
+        // TODO Liam will update this once the add person is done
     }
 }

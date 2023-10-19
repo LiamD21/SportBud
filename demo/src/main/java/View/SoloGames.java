@@ -2,6 +2,7 @@ package View;
 
 import Controller.SoloGamesHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -16,6 +17,7 @@ public class SoloGames {
 
     private final VBox root;
     private final SoloGamesHandler handler;
+    private final String[] people;
 
     /**
      * Constructor for the group games menu
@@ -27,38 +29,47 @@ public class SoloGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+
+        // Initialize the handler
         handler = new SoloGamesHandler();
 
-        // connect the database to the handler
-        // TODO
-
         // Create elements
+        AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
         Text titleText = new Text("Solo Events");
-        ChoiceBox<String> personChoice = new ChoiceBox<>();
         HBox newPerson = new HBox();
-        newPerson.setAlignment(Pos.CENTER);
+        HBox selectPerson = new HBox();
 
         // Modify Title text
         titleText.setFont(new Font(22));
 
-        // create these for new person and add them to the Hbox
-        TextField newName = new TextField();
-        Button addPersonButton = new Button("Add Person");
-        newPerson.getChildren().addAll(newName, addPersonButton);
+        // create items for select person and add them to the HBox
+        Button selectButton = new Button("Select Person");
+        ChoiceBox<String> personChoice = new ChoiceBox<>();
+        people = this.getPeople();
+        for (String person : people){
+            personChoice.getItems().add(person);
+        }
+        selectPerson.getChildren().addAll(personChoice, selectButton);
+        selectPerson.setSpacing(10);
+        selectPerson.setAlignment(Pos.CENTER);
 
-        // Add choices to choice box based on list of solo people
-        // TODO once we have get people method
+        // create these for new person and add them to the Hbox
+        TextField newName = new TextField("Full Name");
+        TextField userName = new TextField("Username");
+        Button addPersonButton = new Button("Add Person");
+        newPerson.getChildren().addAll(newName, userName, addPersonButton);
+        newPerson.setSpacing(10);
+        newPerson.setAlignment(Pos.CENTER);
 
         // Anchor Back Button
-        AnchorPane anchorPane = new AnchorPane();
         AnchorPane.setTopAnchor(backButton, 15.0);
         AnchorPane.setLeftAnchor(backButton, 25.0);
 
         anchorPane.getChildren().addAll(backButton);
 
-        // Add to root
-        root.getChildren().addAll(anchorPane, titleText, newPerson);
+        // Add elements to root
+        root.getChildren().addAll(anchorPane, titleText, selectPerson, newPerson);
 
         // Event listener for return to main menu
         backButton.setOnAction(event -> {
@@ -68,10 +79,20 @@ public class SoloGames {
             stage.setTitle("Menu");
         });
 
-        // If button clicked, pass to the controller
+        // If add person button clicked, pass to the controller
+        // New person is only created if the user actually enters a name
         addPersonButton.setOnAction(event -> {
-            if (newName.getCharacters() != null){
-                handler.handleNewPerson(event, newName.getCharacters().toString());
+            if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
+                handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
+            }
+        });
+
+        // If select button clicked, pass to the controller
+        // Person is only selected if the user actually selects an option
+        selectButton.setOnAction(event -> {
+            if (personChoice.getValue() != null){
+                PersonSelectEvent menu = new PersonSelectEvent(stage, personChoice.getValue());
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });
     }
@@ -82,5 +103,9 @@ public class SoloGames {
      */
     public VBox getRoot(){
         return root;
+    }
+
+    public String[] getPeople(){
+        return handler.getPersonList();
     }
 }
