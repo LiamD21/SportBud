@@ -42,4 +42,12 @@ public class CreateSoloEvent {
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }
+
+    /**
+     * Getter method for the root for swapping scenes in the same stage
+     * @return the VBox root of this scene
+     */
+    public VBox getRoot(){
+        return this.root;
+    }
 }

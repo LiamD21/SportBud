@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CreateSoloEventHandler;
 import Controller.PersonSelectEventHandler;
 import Model.Event;
 import Model.Person;
@@ -70,6 +71,12 @@ public class PersonSelectEvent {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloGames menu = new SoloGames(stage);
+            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+        // event listener for the create new solo event button
+        newEventButton.setOnAction(event -> {
+            CreateSoloEvent menu = new CreateSoloEvent(stage, username);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }
