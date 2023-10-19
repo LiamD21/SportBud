@@ -45,6 +45,9 @@ public class PersonSelectEvent {
         myEvents.setLeft(eventTitle);
         myEvents.setBottom(eventList);
 
+        // Add person's events to the list view
+
+
         // create buttons for stats and create event pages in the bottom HBox
         Button statsButton = new Button(String.format("%s's Stats", handler.getName()));
         Button newEventButton = new Button("New Event");
@@ -56,9 +59,6 @@ public class PersonSelectEvent {
         AnchorPane.setLeftAnchor(backButton, 15.0);
 
         anchorPane.getChildren().addAll(backButton);
-
-        // TODO Liam - Add to HBox a selector menu with information about all current events for this person
-        // TODO Liam - Add button to bring the user to a create new event page
 
         // add elements to root
         root.getChildren().addAll(anchorPane, nameTitle, myEvents, bottomButtons);
