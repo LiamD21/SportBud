@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
@@ -39,7 +40,8 @@ public class CreateGroup {
         //takes ObservableList<String> variable: aka ArrayList of names?
         ListView<String> members = new ListView<String>();
         members.setPadding(new Insets(30));
-        members.setPrefSize(300,200);
+        members.setMaxSize(300,300);
+        members.setPrefSize(150,150);
 
         //text inputs:
         TextField groupname = new TextField("Set group name here");
@@ -48,15 +50,14 @@ public class CreateGroup {
         groupname.setMinWidth(20);
         groupname.setPadding(new Insets(8,8,8,8));
 
-        TextField enterGroupMember = new TextField("group members name to add");
-        enterGroupMember.setPrefColumnCount(20);
-        enterGroupMember.setMaxWidth(300);
-        enterGroupMember.setMinWidth(20);
-        enterGroupMember.setPadding(new Insets(8,8,8,8));
+        ListView<String> availableMembers = new ListView<>();
+        availableMembers.getItems().addAll("A","a","a","a","a","a","a","a","a","a","a","a");
+        availableMembers.setPrefSize(200,200);
+        availableMembers.setMaxSize(300,300);
 
         //setting margins for the text boxes so they arent so close together
         root.setMargin(groupname, new Insets(5));
-        root.setMargin(enterGroupMember, new Insets(5));
+        root.setMargin(availableMembers, new Insets(5));
 
         // Anchoring buttons
         AnchorPane anchorPane = new AnchorPane();
@@ -68,7 +69,7 @@ public class CreateGroup {
         anchorPane.getChildren().addAll(backButton, createGroup);
 
 
-        root.getChildren().addAll(createGroupTitle, groupname, enterGroupMember,
+        root.getChildren().addAll(createGroupTitle, groupname, availableMembers,
                 addPerson, removePerson,members, anchorPane);
 
         // Event listener for return to main menu
