@@ -1,13 +1,15 @@
 package View;
 
+import Controller.CreateSoloEventHandler;
 import Controller.PersonSelectEventHandler;
+import Model.Event;
 import Model.Person;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,32 +28,55 @@ public class PersonSelectEvent {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
+        root.setPadding(new Insets(10));
 
         // create elements
         AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
         Text nameTitle = new Text(handler.getName());
-        HBox myEvents = new HBox();
-        Button newEvent = new Button("New Solo Event");
+        BorderPane myEvents = new BorderPane();
+        HBox bottomButtons = new HBox();
 
         // Modify Title text
         nameTitle.setFont(new Font(22));
 
-        // Anchor back button to the top corner of the screen
-        AnchorPane.setTopAnchor(backButton, 15.0);
-        AnchorPane.setLeftAnchor(backButton, 25.0);
+        // Create elements in the events BorderPane
+        ListView<String> eventList = new ListView<String>();
+        eventList.setPrefHeight(100);
+        Text eventTitle = new Text(String.format("%s's Events", handler.getName()));
+        myEvents.setLeft(eventTitle);
+        myEvents.setBottom(eventList);
 
+        // Add person's events to the list view
+        for (Event event: handler.getEvents()){
+            if (!event.getIsGroup()){
+                eventList.getItems().add(event.getEventName());
+            }
+        }
+
+        // create buttons for stats and create event pages in the bottom HBox
+        Button statsButton = new Button(String.format("%s's Stats", handler.getName()));
+        Button newEventButton = new Button("New Event");
+        bottomButtons.getChildren().addAll(statsButton, newEventButton);
+        bottomButtons.setSpacing(15);
+
+        // Anchor back button to the top corner of the screen
+        AnchorPane.setTopAnchor(backButton, 0.0);
+        AnchorPane.setLeftAnchor(backButton, 5.0);
         anchorPane.getChildren().addAll(backButton);
 
-        // TODO Liam - Add to HBox a selector menu with information about all current events for this person
-        // TODO Liam - Add button to bring the user to a create new event page
-
         // add elements to root
-        root.getChildren().addAll(anchorPane, nameTitle);
+        root.getChildren().addAll(anchorPane, nameTitle, myEvents, bottomButtons);
 
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloGames menu = new SoloGames(stage);
+            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+        // event listener for the create new solo event button
+        newEventButton.setOnAction(event -> {
+            CreateSoloEvent menu = new CreateSoloEvent(stage, username);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }

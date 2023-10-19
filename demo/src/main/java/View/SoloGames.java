@@ -63,8 +63,8 @@ public class SoloGames {
         newPerson.setAlignment(Pos.CENTER);
 
         // Anchor Back Button
-        AnchorPane.setTopAnchor(backButton, 15.0);
-        AnchorPane.setLeftAnchor(backButton, 25.0);
+        AnchorPane.setTopAnchor(backButton, 10.0);
+        AnchorPane.setLeftAnchor(backButton, 15.0);
 
         anchorPane.getChildren().addAll(backButton);
 
