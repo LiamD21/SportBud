@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
@@ -57,7 +57,7 @@ public class Database {
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
-        if (((JSONArray) person.get(1)).get(0) != null) {
+        if (((JSONArray) person.get(1)).size() > 0 ) {
             for (int i = 0; i < numOfEvents; i++) {
                 String name = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(1);
                 String type = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(2);
@@ -81,7 +81,7 @@ public class Database {
 
         //Adds Groups to Person
         //System.out.println( ((JSONArray) person.get(2)).get(0) );
-        if (((JSONArray) person.get(2)).get(0) != null) {
+        if (((JSONArray) person.get(2)).size() > 0) {
             for (int i = 0; i < numOfGroups; i++) {
                 p.addGroup((String) ((JSONArray) person.get(2)).get(i));
             }
@@ -226,7 +226,6 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
-
         /*
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
@@ -417,6 +416,5 @@ public class Database {
         System.out.println(proz.getGroupSize());
 
          */
-
     }
 }

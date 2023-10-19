@@ -28,7 +28,10 @@ public class SoloGamesHandler extends UIHandler{
      */
     public void handleNewPerson(String newName, String userName){
         Person person = new Person(newName);
-        //db.AddPerson(userName, person);
-        // TODO Liam will update this once the add person is done
+        try {
+            db.AddPerson(userName, person);
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
