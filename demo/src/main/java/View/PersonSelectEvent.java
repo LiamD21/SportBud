@@ -28,7 +28,7 @@ public class PersonSelectEvent {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
-        root.setPadding(new Insets(20));
+        root.setPadding(new Insets(10));
 
         // create elements
         AnchorPane anchorPane = new AnchorPane();
@@ -61,8 +61,8 @@ public class PersonSelectEvent {
         bottomButtons.setSpacing(15);
 
         // Anchor back button to the top corner of the screen
-        AnchorPane.setTopAnchor(backButton, 10.0);
-        AnchorPane.setLeftAnchor(backButton, 15.0);
+        AnchorPane.setTopAnchor(backButton, 0.0);
+        AnchorPane.setLeftAnchor(backButton, 5.0);
         anchorPane.getChildren().addAll(backButton);
 
         // add elements to root
