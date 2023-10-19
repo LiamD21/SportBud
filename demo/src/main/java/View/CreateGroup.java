@@ -1,5 +1,7 @@
 package View;
 
+import Controller.CreateGroupHandler;
+import Model.Group;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,15 +10,18 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class CreateGroup {
+    private final CreateGroupHandler handler;
     private final VBox root;
+    private final String[] people;
 
     public CreateGroup(Stage stage){
+
         stage.setTitle("Create a Group");
+        handler = new CreateGroupHandler();
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(10,10,10,10));
@@ -51,7 +56,11 @@ public class CreateGroup {
         groupname.setPadding(new Insets(8,8,8,8));
 
         ListView<String> availableMembers = new ListView<>();
-        availableMembers.getItems().addAll("A","a","a","a","a","a","a","a","a","a","a","a");
+        people = this.getPeople();
+        for (String person : people){
+            availableMembers.getItems().add(person);
+        }
+//        availableMembers.getItems().addAll(this.getPeople());
         availableMembers.setPrefSize(200,200);
         availableMembers.setMaxSize(300,300);
 
@@ -72,6 +81,7 @@ public class CreateGroup {
         root.getChildren().addAll(createGroupTitle, groupname, availableMembers,
                 addPerson, removePerson,members, anchorPane);
 
+
         // Event listener for return to main menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
@@ -79,12 +89,33 @@ public class CreateGroup {
             stage.setTitle("Group Events");
         });
 
-        //Event listener for the Create Button
+        //Event listener for the Create Button, send the list members to the handler
+        createGroup.setOnAction(event -> {
+            if (!members.getItems().isEmpty()) {
+                handler.handleCreatedGroup(members.getItems());
+            }
+        });
 
         //Event Listener for the add/ remove button (if we have a remove button)
+        // This is JUST adding person from the list of persons in the database, to their respective group panel
+        // which is shown in the bottom listview
+        addPerson.setOnAction(event ->{
+            if (members.getSelectionModel().getSelectedItem()!=null){
+
+            }
+
+        });
+
+        removePerson.setOnAction(event ->{
+
+        });
 
         //Need to somehow implement ability to remove a member from the group to create...
 
+
+    }
+    public String[] getPeople(){
+        return handler.getPersonList();
     }
     public VBox getRoot(){
         return root;
