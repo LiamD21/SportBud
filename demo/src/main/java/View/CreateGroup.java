@@ -3,7 +3,9 @@ package View;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
@@ -37,11 +39,7 @@ public class CreateGroup {
         //takes ObservableList<String> variable: aka ArrayList of names?
         ListView<String> members = new ListView<String>();
         members.setPadding(new Insets(30));
-        members.setMaxSize(300,300);
-        members.setPrefSize(150,150);
-
-        // Need a field in which you can choose a member to add to the group
-        // coordinates with a handler to access the database for people that are in the database
+        members.setPrefSize(300,200);
 
         //text inputs:
         TextField groupname = new TextField("Set group name here");
@@ -50,20 +48,15 @@ public class CreateGroup {
         groupname.setMinWidth(20);
         groupname.setPadding(new Insets(8,8,8,8));
 
-
-        // choose from the database list of people
-        ScrollPane scrollPane = new ScrollPane();
-
-        ListView<String> availableMembers = new ListView<>();
-        availableMembers.getItems().addAll("Test", "test1","test2", "test3", "ta", "a", "a", "a", "a", "a", "a",
-                "a");
-        availableMembers.setPrefSize(200,200);
-        availableMembers.setMaxSize(300,300);
-
+        TextField enterGroupMember = new TextField("group members name to add");
+        enterGroupMember.setPrefColumnCount(20);
+        enterGroupMember.setMaxWidth(300);
+        enterGroupMember.setMinWidth(20);
+        enterGroupMember.setPadding(new Insets(8,8,8,8));
 
         //setting margins for the text boxes so they arent so close together
         root.setMargin(groupname, new Insets(5));
-        root.setMargin(availableMembers, new Insets(5));
+        root.setMargin(enterGroupMember, new Insets(5));
 
         // Anchoring buttons
         AnchorPane anchorPane = new AnchorPane();
@@ -75,7 +68,7 @@ public class CreateGroup {
         anchorPane.getChildren().addAll(backButton, createGroup);
 
 
-        root.getChildren().addAll(createGroupTitle, groupname, availableMembers,
+        root.getChildren().addAll(createGroupTitle, groupname, enterGroupMember,
                 addPerson, removePerson,members, anchorPane);
 
         // Event listener for return to main menu
