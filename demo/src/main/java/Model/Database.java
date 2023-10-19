@@ -20,10 +20,6 @@ import org.json.simple.parser.*;
 public class Database {
     private String filePath = "databaseTEST.json";
     private JSONParser parser;
-
-    private FileWriter writer;
-    JSONArray array;
-
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
     }
@@ -231,6 +227,7 @@ public class Database {
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
 
+        /*
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
         Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",0));
@@ -245,13 +242,15 @@ public class Database {
         Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
         Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
 
+         */
+
 
         //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
         //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(1).getScores()));
 
         //System.out.println(Winston.getPersonalEvents().get(0).getScores().get(1));
 
-        db.AddPerson("WinstonS",Winston);
+        //db.AddPerson("WinstonS",Winston);
 
         //GetGroup() Test
         //System.out.println(Arrays.toString(db.GetGroups()));
@@ -342,9 +341,8 @@ public class Database {
         System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getType());
         System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
 
-
-
          */
+
 
         /* Group tests (Person Class)*/
         /*System.out.println(M.getGroups());*/
