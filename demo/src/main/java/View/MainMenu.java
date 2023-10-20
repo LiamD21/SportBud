@@ -26,9 +26,7 @@ public class MainMenu extends Application {
         // Create elements
         Text menuTitle = new Text(180,150,"Sport Bud");
         menuTitle.setFont(new Font(30));
-
         Button startButton = new Button("GO!");
-
         ChoiceBox<String> soloGroup = new ChoiceBox<>();
         soloGroup.getItems().addAll("Solo", "Group");
 
