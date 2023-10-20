@@ -3,7 +3,7 @@ package Model;
 * Represents the score from ONE TIME that the event has been played and for ONE PERSON
  */
 public class Score {
-    private String personsName;
+    private String eventName;
     /*
     * Represents the time that the event was played (eg 1st time, 69th time, etc)
      */
@@ -14,7 +14,7 @@ public class Score {
     public Score(String type, String name, int counter){
         this.type = type;
         this.eventCounter = counter;
-        this.personsName = name;
+        this.eventName = name;
 
         if (type.equals("Front 9") || type.equals("Back 9"))
             scores = new int[9];
@@ -30,8 +30,8 @@ public class Score {
         /* This needs to be tested */
         this.scores = inputScores.clone();
     }
-    public String getPersonsName(){
-        return this.personsName;
+    public String getEventName(){
+        return this.eventName;
     }
 
     public int getEventCounter(){

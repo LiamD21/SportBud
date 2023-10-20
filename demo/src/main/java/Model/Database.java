@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "databaseTEST.json";
+    private String filePath = "database.json";
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
@@ -57,7 +57,7 @@ public class Database {
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
-        if (((JSONArray) person.get(1)).size() > 0 ) {
+        if (!((JSONArray) person.get(1)).isEmpty()) {
             for (int i = 0; i < numOfEvents; i++) {
                 String name = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(1);
                 String type = (String) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(2);
@@ -81,7 +81,7 @@ public class Database {
 
         //Adds Groups to Person
         //System.out.println( ((JSONArray) person.get(2)).get(0) );
-        if (((JSONArray) person.get(2)).size() > 0) {
+        if (!((JSONArray) person.get(2)).isEmpty()) {
             for (int i = 0; i < numOfGroups; i++) {
                 p.addGroup((String) ((JSONArray) person.get(2)).get(i));
             }
@@ -106,22 +106,18 @@ public class Database {
         int x = 0;
 
 
-        int numOfEvents = ((JSONArray)((JSONArray)((JSONArray) group.get(2)))).size();
+        int numOfEvents = ((JSONArray) group.get(2)).size();
         for (int i = 0; i < numOfEvents; i++){
-            int numOfTimeEventHasBeenPlayed = ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2))).get(i)).get(0)).size();
-            String name = (String) ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2)))).get(i)).get(1);
-            String type = (String) ((JSONArray)((JSONArray)((JSONArray)((JSONArray) group.get(2)))).get(i)).get(2);
+            int numOfTimeEventHasBeenPlayed = ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).size();
+            String name = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(1);
+            String type = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(2);
             g.AddGroupEvent(new Event(name,type,true));
             //System.out.println(numOfTimeEventHasBeenPlayed);
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
 
 
                 int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j));
-
-                //Initializes score object loop required to ensure correct person gets put into the score object
-                for (int k = 0; k < groupSize; k++) {
-                    g.getGroupEvents().get(i).inputScores(new Score(type, ((String) ((JSONArray) group.get(1)).get(k)), j));
-                }
+                g.getGroupEvents().get(i).inputScores(new Score(type, name, j));
 
                 //Inputs the array into the score object
                 g.getGroupEvents().get(i).getScores().get(j).inputScore(arr);
@@ -227,6 +223,12 @@ public class Database {
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
         /*
+        AddPerson Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
+        If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
+        the backend team.
+         */
+
+        /*
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
         Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",0));
@@ -241,7 +243,7 @@ public class Database {
         Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
         Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
 
-         */
+
 
 
         //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
@@ -260,161 +262,391 @@ public class Database {
         Person Braeden = db.GetPerson("person1");
 
         /* Person Class Tests */
-        /*System.out.println(Braeden.getName());*/
+        if (!Braeden.getName().equals("Braeden Kroetsch")){
+            System.out.print("Braeden Test 1 returned");
+            System.out.println(Braeden.getName());
+        }
 
         /* Event Class tests*/
-        /*
-        System.out.println(Braeden.getPersonalEvents().get(0).getEventName());
-        System.out.println(Braeden.getPersonalEvents().get(0).getEventType());
-        System.out.println(Braeden.getPersonalEvents().get(0).getIsGroup() + "\n");
 
-        System.out.println(Braeden.getPersonalEvents().get(1).getEventName());
-        System.out.println(Braeden.getPersonalEvents().get(1).getEventType());
-        System.out.println(Braeden.getPersonalEvents().get(1).getIsGroup()+"\n");
+        if (!Braeden.getPersonalEvents().get(0).getEventName().equals("Golf1")){
+            System.out.print("Braeden Test 2 returned");
+            System.out.print(Braeden.getPersonalEvents().get(0).getEventName());
+            System.out.println("When it should've returned Golf1");
 
-         */
+        }
+
+        if (!Braeden.getPersonalEvents().get(0).getEventType().equals("Front 9")){
+            System.out.print("Braeden Test 3 returned");
+            System.out.print(Braeden.getPersonalEvents().get(0).getEventType());
+            System.out.println("When it should've returned Front 9");
+
+        }
+
+        if (Braeden.getPersonalEvents().get(0).getIsGroup())
+            System.out.println("Braeden Test 4 should be false");
+
+
+        if (!Braeden.getPersonalEvents().get(1).getEventName().equals("Golf2")){
+            System.out.print("Braeden Test 5 returned");
+            System.out.print(Braeden.getPersonalEvents().get(1).getEventName());
+            System.out.println("When it should've returned Golf2");
+
+        }
+
+        if (!Braeden.getPersonalEvents().get(1).getEventType().equals("Back 9")){
+            System.out.print("Braeden Test 6 returned");
+            System.out.print(Braeden.getPersonalEvents().get(1).getEventType());
+            System.out.println("When it should've returned Back 9");
+
+        }
+
+        if (Braeden.getPersonalEvents().get(1).getIsGroup())
+            System.out.println("Braeden Test 7 should be false");
 
         /* Golf1 tests (Score class) */
-        /*
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(0).getScores())+"\n");
 
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(1).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(1).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
+        if (Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
+            System.out.print("Error, Braeden Test 8 should be 0 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
+        }
 
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(2).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(2).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(2).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores())+"\n");
+        if (!Braeden.getPersonalEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error, Braeden Test 9 should be Golf1 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventName());
+        }
 
-         */
+        if (!Braeden.getPersonalEvents().get(0).getScores().get(0).getType().equals("Front 9")){
+            System.out.print("Error, Braeden Test 10 should be Front 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(0).getScores().get(0).getScores(),
+                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error, Braeden Test 10 should be [10, 10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(0).getScores())+"\n");
+        }
+
+        if (Braeden.getPersonalEvents().get(0).getScores().get(1).getEventCounter() != 1){
+            System.out.print("Error, Braeden Test 11 should be 1 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
+        }
+
+        if (!Braeden.getPersonalEvents().get(0).getScores().get(1).getType().equals("Front 9")){
+            System.out.print("Error, Braeden Test 13 should be Front 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(1).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(0).getScores().get(1).getScores(),
+                new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3})){
+            System.out.print("Error, Braeden Test 14 should be [3, 3, 3, 3, 3, 3, 3, 3, 3] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
+        }
+
+
+        if (Braeden.getPersonalEvents().get(0).getScores().get(2).getEventCounter() != 2){
+            System.out.print("Error, Braeden Test 15 should be 2 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(2).getEventCounter());
+        }
+
+        if (!Braeden.getPersonalEvents().get(0).getScores().get(2).getType().equals("Front 9")){
+            System.out.print("Error, Braeden Test 16 should be Front 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(2).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores(),
+                new int[]{3, 3, 3, 3, 69, 420, 3, 3, 3})){
+            System.out.print("Error, Braeden Test 17 should be [3, 3, 3, 3, 69, 420, 3, 3, 3] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores())+"\n");
+        }
+
 
         /* Golf2 tests (Score class) */
-        /*
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(0).getScores())+"\n");
+        if (Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter() != 0){
+            System.out.print("Error, Braeden Test 18 should be 0 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter());
+        }
 
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(1).getScores())+"\n");
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(0).getEventName().equals("Golf2")){
+            System.out.print("Error Braeden Test 19 should be Golf2 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventName());
 
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getEventCounter());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getPersonsName());
-        System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getType());
-        System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
+        }
 
-         */
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(0).getType().equals("Back 9")){
+            System.out.print("Error, Braeden Test 20 should be Back 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(1).getScores().get(0).getScores(),
+                new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1})){
+            System.out.print("Error, Braeden Test 21 should be [3, 3, 3, 3, 69, 420, 3, 3, 3] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(0).getScores())+"\n");
+        }
+
+        if (Braeden.getPersonalEvents().get(1).getScores().get(1).getEventCounter() != 1){
+            System.out.print("Error, Braeden Test 22 should be 1 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getEventCounter());
+        }
+
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(1).getEventName().equals("Golf2")){
+            System.out.print("Error Braeden Test 23 should be Golf2 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getEventName());
+
+        }
+
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(1).getType().equals("Back 9")){
+            System.out.print("Error, Braeden Test 24 should be Back 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(1).getScores().get(1).getScores(),
+                new int[]{32, 34, 36, 835, 31, 33, 35, 343, 33})){
+            System.out.print("Error, Braeden Test 25 should be [32, 34, 36, 835, 31, 33, 35, 343, 33] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(1).getScores())+"\n");
+        }
+
+        if (Braeden.getPersonalEvents().get(1).getScores().get(2).getEventCounter() != 2){
+            System.out.print("Error, Braeden Test 26 should be 1 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getEventCounter());
+        }
+
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(2).getEventName().equals("Golf2")){
+            System.out.print("Error Braeden Test 27 should be Golf2 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getEventName());
+
+        }
+
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(2).getType().equals("Back 9")){
+            System.out.print("Error, Braeden Test 28 should be Back 9 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getType());
+        }
+
+        if (!Arrays.equals(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores(),
+                new int[]{32, 34, 36, 835, 31, 33, 35, 343, 33})){
+            System.out.print("Error, Braeden Test 29 should be [32, 34, 36, 835, 31, 33, 35, 343, 33] but it is returning");
+            System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
+        }
+
 
         /* Group tests (Person Class)*/
-        /*System.out.println(Braeden.getGroups());*/
+        ArrayList<String> test1 = new ArrayList<>();
+        test1.add("group1");
+        test1.add("PGA Proz");
+        if (!Braeden.getGroups().equals(test1)){
+            System.out.println("Error, Braeden Test 30 should be [group1, PGA Proz] but it is returning"
+                    + Braeden.getGroups());
+        }
 
         Person M = db.GetPerson("person2");
-        /* Person Class Tests */
-        //System.out.println(M.getName());
 
+        /* Person Class Tests */
+
+        if (!M.getName().equals("Mohammed Golfguy")) {
+            System.out.println("Error, Mohammed Golfguy Test 1 should be Mohammed Golfguy but it is returning" + M.getName());
+        }
 
         /* Event Class tests*/
-        /*
-        System.out.println(M.getPersonalEvents().get(0).getEventName());
-        System.out.println(M.getPersonalEvents().get(0).getEventType());
-        System.out.println(M.getPersonalEvents().get(0).getIsGroup() + "\n");
 
-         */
+        if (!M.getPersonalEvents().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error, Mohammed Golfguy Test 2 should be Golf1 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getEventName());
+        }
+
+        if (!M.getPersonalEvents().get(0).getEventType().equals("18")){
+            System.out.print("Error, Mohammed Golfguy Test 2 should be 18 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getEventType());
+        }
+
+        if (M.getPersonalEvents().get(0).getIsGroup()){
+            System.out.println("Error, Mohammed Golfguy Test 3 should be false");
+        }
 
         /* Golf1 tests (Score class) */
-        /*
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getPersonsName());
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getType());
-        System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(0).getScores())+"\n");
+        if (M.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
+            System.out.print("Error, Mohammed Golfguy Test 4 should be 0 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
+        }
 
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getPersonsName());
-        System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getType());
-        System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
+        if (!M.getPersonalEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error, Mohammed Golfguy Test 5 should be 0 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventName());
+        }
 
-         */
+        if (!M.getPersonalEvents().get(0).getScores().get(0).getType().equals("18")){
+            System.out.print("Error, Mohammed Golfguy Test 6 should be 18 but it is returning");
+        }
 
+        if (!Arrays.equals(M.getPersonalEvents().get(0).getScores().get(0).getScores(),
+                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error, Mohammed Golfguy Test 7 should be [10, 10, 10, 10, 10, " +
+                    "10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(0).getScores())+"\n");
+        }
+
+        if (M.getPersonalEvents().get(0).getScores().get(1).getEventCounter() != 1){
+            System.out.print("Error, Mohammed Golfguy Test 8 should be 1 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
+        }
+
+        if (!M.getPersonalEvents().get(0).getScores().get(1).getEventName().equals("Golf1")){
+            System.out.print("Error, Mohammed Golfguy Test 9 should be 0 but it is returning");
+            System.out.println(M.getPersonalEvents().get(1).getScores().get(1).getEventName());
+        }
+
+        if (!M.getPersonalEvents().get(0).getScores().get(1).getType().equals("18")){
+            System.out.print("Error, Mohammed Golfguy Test 10 should be 18 but it is returning");
+        }
+
+
+        if (!Arrays.equals(M.getPersonalEvents().get(0).getScores().get(1).getScores(),
+                new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error, Mohammed Golfguy Test 11 should be [3, 3, 3, 3, 3, 3, 3, 3, 3, 10, " +
+                    "10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
+        }
 
         /* Group tests (Person Class)*/
-        /*System.out.println(M.getGroups());*/
+        ArrayList<String> test2 = new ArrayList<>();
+        test2.add("group1");
+        if (!M.getGroups().equals(test2)){
+            System.out.print("Error Mohammed Golfguy Test 12 should be [group1] but it is returning");
+            System.out.println(M.getGroups());
+        }
 
         //Someone with no personal events
         Person Hunter = db.GetPerson("person3");
         /* Group tests (Person Class)*/
-        /*System.out.println(Hunter.getGroups());*/
-        //System.out.println(Hunter.getPersonalEvents());
+        ArrayList<String> test3 = new ArrayList<>();
+        test3.add("Golf Team 2");
+        if (!Hunter.getGroups().equals(test3)){
+            System.out.print("Error, Hunter test 1 should be [Golf Team 2] but it is returning");
+            System.out.println(Hunter.getGroups());
+        }
+
+        if (!Hunter.getPersonalEvents().isEmpty()){
+            System.out.println("Error, Hunter Test 2 should be an empty arraylist but it is returning");
+            System.out.println(Hunter.getPersonalEvents());
+        }
 
         //Someone with no groups
         Person Jane = db.GetPerson("person4");
 
         //Score Class Tests
-        /*System.out.println(Jane.getPersonalEvents().get(0).getEventName());
-        System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(0).getScores()));
-        System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(1).getScores()));
-         */
+        if (!Jane.getPersonalEvents().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error, Jane Test 1 should be Golf1 but it is returning");
+            System.out.println(Jane.getPersonalEvents().get(0).getEventName());
+        }
 
-        //Group tests
-        /*
-        Jane.addGroup("gi");
-        System.out.println(Jane.getGroups());
-        */
+        if (!Arrays.equals(Jane.getPersonalEvents().get(0).getScores().get(0).getScores(),
+                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error, Jane Test 2 should be [10, 10, 10, 10, 10, " +
+                    "10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(0).getScores()));
+        }
+
+        if (!Arrays.equals(Jane.getPersonalEvents().get(0).getScores().get(1).getScores(),
+                new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error, Jane Test 3 should be [3, 3, 3, 3, 3, 3, 3, 3, 3, 10, " +
+                    "10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(Jane.getPersonalEvents().get(0).getScores().get(1).getScores()));
+        }
 
         //GetGroup() tests
         Group group1 = db.GetGroup("group1");
-        /*
-        System.out.println(group1.getGroupName());
-        System.out.println(db.GetPerson(group1.getPeople().get(0)).getName());
-        System.out.println(db.GetPerson(group1.getPeople().get(1)).getName());
-        System.out.println(group1.getGroupSize() + "\n");
-        System.out.println(group1.getGroupEvents().get(0).getEventName());
-        System.out.println(group1.getGroupEvents().get(0).getEventType());
-        System.out.println(group1.getGroupEvents().get(0).getIsGroup());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(0).getScores()));
-        System.out.println(group1.getGroupEvents().get(0).getScores().get(0).getPersonsName());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(1).getScores()));
-        System.out.println(group1.getGroupEvents().get(0).getScores().get(1).getPersonsName());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(2).getScores()));
-        System.out.println(group1.getGroupEvents().get(0).getScores().get(2).getPersonsName());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(3).getScores()));
-        System.out.println(group1.getGroupEvents().get(0).getScores().get(3).getPersonsName()+"\n");
+
+        if (!group1.getGroupName().equals("Golf Team 1")){
+            System.out.print("Error, group1 Test 1 should be returning Golf Team 1 but it is returning");
+            System.out.println(group1.getGroupName());
+        }
+
+        if (!db.GetPerson(group1.getPeople().get(0)).getName().equals("Braeden Kroetsch")){
+            System.out.print("Error, group1 Test 2 should be returning Braeden Kroetsch but it is returning");
+            System.out.println(db.GetPerson(group1.getPeople().get(0)).getName());
+        }
+
+        if (!db.GetPerson(group1.getPeople().get(1)).getName().equals("Mohammed Golfguy")){
+            System.out.print("Error, group1 Test 3 should be returning Mohammed Golfguy but it is returning");
+            System.out.println(db.GetPerson(group1.getPeople().get(1)).getName());
+        }
+
+        if (group1.getGroupSize() != 2){
+            System.out.print("Error, group1 Test 4 should be returning 2 but it is returning");
+            System.out.println(group1.getGroupSize());
+        }
+
+        if (!group1.getGroupEvents().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error, group1 Test 5 should be returning Golf1 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getEventName());
+        }
+
+        if (!group1.getGroupEvents().get(0).getEventType().equals("Front 9")){
+            System.out.print("Error, group1 Test 6 should be returning Front 9 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getEventType());
+        }
+
+        if (!group1.getGroupEvents().get(0).getIsGroup()){
+            System.out.println("Error group1 Test 7 should be True");
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(0).getScores().get(0).getScores(),
+                new int[] {10, 10, 10, 10, 10, 10, 10, 10, 10})){
+            System.out.print("Error group1 Test 8 should be [10, 10, 10, 10, 10, 10, 10, 10, 10] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(0).getScores()));
+        }
+
+        if (!group1.getGroupEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
+            System.out.print("Error group1 Test 9 should be Golf1");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(0).getEventName());
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(0).getScores().get(1).getScores(),
+                new int[] {3, 3, 3, 3, 3, 3, 3, 3, 3})){
+            System.out.print("Error group1 Test 10 should be [3, 3, 3, 3, 3, 3, 3, 3, 3] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(1).getScores()));
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(0).getScores().get(2).getScores(),
+                new int[] {69, 30, 30, 30, 69, 420, 30, 30, 30})){
+            System.out.print("Error group1 Test 11 should be [69, 30, 30, 30, 69, 420, 30, 30, 30] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(2).getScores()));
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(0).getScores().get(3).getScores(),
+                new int[] {4, 2, 5, 2, 2, 2, 1, 5, 3})){
+            System.out.print("Error group1 Test 12 should be [4, 2, 5, 2, 2, 2, 1, 5, 3] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(3).getScores()));
+        }
 
 
-        System.out.println(group1.getGroupEvents().get(1).getEventName());
-        System.out.println(group1.getGroupEvents().get(1).getEventType());
-        System.out.println(group1.getGroupEvents().get(1).getIsGroup());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(0).getScores()));
-        System.out.println(group1.getGroupEvents().get(1).getScores().get(0).getPersonsName());
-        System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(1).getScores()));
-        System.out.println(group1.getGroupEvents().get(1).getScores().get(1).getPersonsName());
+        if (!group1.getGroupEvents().get(1).getEventName().equals("Golf2")){
+            System.out.print("Error group1 test 13 should be Golf2 but it is returning");
+            System.out.println(group1.getGroupEvents().get(1).getEventName());
+        }
 
-         */
+        if (!group1.getGroupEvents().get(1).getEventType().equals("Back 9")){
+            System.out.print("Error group1 test 14 should be Back 9 but it is returning");
+            System.out.println(group1.getGroupEvents().get(1).getEventType());
+        }
+
+        if (!group1.getGroupEvents().get(1).getIsGroup()){
+            System.out.println("Error group1 test 15 should be true");
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(1).getScores().get(0).getScores(),
+                new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1})){
+            System.out.print("Error group1 Test 12 should be [1, 1, 1, 1, 1, 1, 1, 1, 1] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(0).getScores()));
+        }
+
+        if (!Arrays.equals(group1.getGroupEvents().get(1).getScores().get(1).getScores(),
+                new int[] {32, 34, 36, 835, 31, 33, 35, 343, 33})){
+            System.out.print("Error group1 Test 12 should be [32, 34, 36, 835, 31, 33, 35, 343, 33] but it is returning");
+            System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(1).getScores()));
+        }
 
         Group proz = db.GetGroup("PGA Proz");
-        //Test to make sure the people are assigned their respective scores in groups of 3
-        /*
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(0).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(0).getPersonsName());
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(1).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(1).getPersonsName());
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(2).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(2).getPersonsName());
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(3).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(3).getPersonsName());
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(4).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(4).getPersonsName());
-        System.out.println(Arrays.toString(proz.getGroupEvents().get(0).getScores().get(5).getScores()));
-        System.out.println(proz.getGroupEvents().get(0).getScores().get(5).getPersonsName());
-        System.out.println(proz.getGroupName());
-        System.out.println(proz.getGroupSize());
+        System.out.println("Unit Testing Complete");
 
-         */
     }
 }

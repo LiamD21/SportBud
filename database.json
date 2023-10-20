@@ -31,7 +31,7 @@
       ["group1"]],
 
     "person3" :  ["Hunter Fisher",
-      [null],
+      [],
 
 
       ["Golf Team 2"]],
@@ -45,7 +45,7 @@
       ],
 
 
-      [null] ]
+      [] ]
 
 
   },
