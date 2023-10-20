@@ -100,13 +100,22 @@ public class CreateGroup {
         // This is JUST adding person from the list of persons in the database, to their respective group panel
         // which is shown in the bottom listview
         addPerson.setOnAction(event ->{
-            if (members.getSelectionModel().getSelectedItem()!=null){
+            if (availableMembers.getSelectionModel().getSelectedItem()!=null){
+                //if the selected value of the persons list is not in the members list. Add it in to the members list
+                if (!members.getItems().contains(availableMembers.getSelectionModel().getSelectedItem())) {
+                    members.getItems().add(availableMembers.getSelectionModel().getSelectedItem());
+                }
+
 
             }
-
         });
 
+        // when the remove person buttong is clicked, it checks the selected value in the members list view, and
+        // removes the selected person from the group list
         removePerson.setOnAction(event ->{
+            if (members.getSelectionModel().getSelectedItem()!= null){
+                members.getItems().remove(members.getSelectionModel().getSelectedIndex());
+            }
 
         });
 
