@@ -92,7 +92,7 @@ public class CreateGroup {
         //Event listener for the Create Button, send the list members to the handler
         createGroup.setOnAction(event -> {
             if (!members.getItems().isEmpty()) {
-                handler.handleCreatedGroup(members.getItems());
+                handler.handleCreatedGroup(members.getItems(), groupname.getText());
             }
         });
 
@@ -105,22 +105,16 @@ public class CreateGroup {
                 if (!members.getItems().contains(availableMembers.getSelectionModel().getSelectedItem())) {
                     members.getItems().add(availableMembers.getSelectionModel().getSelectedItem());
                 }
-
-
             }
         });
 
-        // when the remove person buttong is clicked, it checks the selected value in the members list view, and
+        // when the remove person buttonis clicked, it checks the selected value in the members list view, and
         // removes the selected person from the group list
         removePerson.setOnAction(event ->{
             if (members.getSelectionModel().getSelectedItem()!= null){
                 members.getItems().remove(members.getSelectionModel().getSelectedIndex());
             }
-
         });
-
-        //Need to somehow implement ability to remove a member from the group to create...
-
 
     }
     public String[] getPeople(){
