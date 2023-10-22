@@ -255,11 +255,62 @@ public class Database {
 
     }
 
-    public void AddPersontoGroup(String personsName){
+    public void AddPersontoGroup(String personUsername, String groupUsername) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+
+        JSONObject groupHT = (JSONObject) array.get(1);
+
+        JSONArray group = ((JSONArray)((JSONArray)groupHT.get(groupUsername)).get(1));
+
+        for (Object o : group) {
+            if (personUsername.equals(o))
+                throw new RuntimeException("Error, person is already in the group");
+        }
+
+        if (group.size() == 4)
+            throw new RuntimeException("Error, groups cannot be bigger than 4");
+
+
+
+        group.add(personUsername);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void AddGroupEvent(){
+    public void AddGroupEvent(String groupUsername, String eventName, String eventType) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = ((JSONArray) groupHT.get(groupUsername));
+        JSONArray events = (JSONArray) group.get(2);
+
+        if (!eventType.equals("Front 9") && !eventType.equals("Back 9") && !eventType.equals("18"))
+            throw new RuntimeException("Error, Invalid Event Type");
+
+
+
+        JSONArray newEvent = new JSONArray();
+
+        //Initializing an empty score array
+        newEvent.add(new JSONArray());
+
+        newEvent.add(eventName);
+        newEvent.add(eventType);
+        newEvent.add(true);
+
+        events.add(newEvent);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -269,6 +320,10 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+
+        db.AddGroupEvent("group1","Golf3","F");
+
+        /*
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
 
@@ -291,8 +346,9 @@ public class Database {
         g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
 
 
-
         db.AddGroup("test",g);
+
+         */
         /*
         AddPerson Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
         If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
