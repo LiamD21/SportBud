@@ -234,7 +234,6 @@ public class Database {
     public String[] GetGroups() throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
-        System.out.println(groupHT);
 
         int numOfGroups = groupHT.size();
 
@@ -275,8 +274,51 @@ public class Database {
         }
     }
 
-    public void AddGroupScores(int[] scores, String eventName){
+    /*
+    * Group scores must be inputed in the SAME order that their names appear in the people ArrayList in the Group class
+    * Ex, if Braeden is index 0 people ArrayList in the Group Class
+    * then his scores MUST ALSO be at index 0 of the scores array
+    * */
+    public void AddGroupScores(String groupUsername,String eventName, int[][] scores) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = ((JSONArray) groupHT.get(groupUsername));
+        int groupSize = ((JSONArray)group.get(1)).size();
+
+        if (groupSize != scores.length){
+            throw new RuntimeException("Error, The size of the input array is not the same as the number of people in the group");
+        }
+
+        JSONArray eventArray = null;
+        int eventSize = ((JSONArray) group.get(2)).size();
+
+
+
+        for (int i = 0; i < eventSize; i++){
+            if (eventName.equals(((JSONArray)((JSONArray) group.get(2)).get(i)).get(1))){
+                eventArray = ((JSONArray)((JSONArray) group.get(2)).get(i));
+                break;
+            }
+        }
+
+        if (eventArray == null)
+            throw new RuntimeException("Error event not found");
+
+        JSONArray scoreArray = (JSONArray) eventArray.get(0);
+
+        for (int i = 0; i < scores.length; i++){
+            scoreArray.add(IntArrayToJsonArray(scores[i]));
+        }
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     public void AddPersontoGroup(String personUsername, String groupUsername) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
@@ -366,9 +408,11 @@ public class Database {
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
 
-        db.AddSoloScores("person1", "Golf1",new int[]{22,3,3,3,3,3,33,1,7});
-
-
+        /*
+        AddGroup Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
+        If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
+        the backend team.
+         */
         /*
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
