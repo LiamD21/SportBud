@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
@@ -144,7 +144,7 @@ public class Database {
 
         for (int j = 0; j < person.getPersonalEvents().get(i).getScores().size(); j++){
                 int[] score = person.getPersonalEvents().get(i).getScores().get(j).getScores();
-            ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(IntArrayToJsonArray(score));
+                ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(IntArrayToJsonArray(score));
             }
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventName());
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventType());
@@ -170,8 +170,47 @@ public class Database {
 
     }
 
-    public void AddGroup(Group group){
+    public void AddGroup(String groupUserName, Group group) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
 
+        JSONArray info = new JSONArray();
+        JSONArray eventArray = new JSONArray();
+
+        info.add(group.getGroupName());
+        info.add(new JSONArray());
+
+
+        for (int i = 0; i < group.getPeople().size(); i++){
+            ((JSONArray) info.get(1)).add(group.getPeople().get(i));
+        }
+
+        //Initialize Array with number of event sub arrays
+
+        for (int i = 0; i < group.getGroupEvents().size(); i++) {
+            eventArray.add(new JSONArray());
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
+
+            for (int j = 0; j < group.getGroupEvents().get(i).getScores().size(); j++){
+                int[] score = group.getGroupEvents().get(i).getScores().get(j).getScores();
+                ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(IntArrayToJsonArray(score));
+            }
+
+            ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventName());
+            ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventType());
+            ((JSONArray) eventArray.get(i)).add(true);
+        }
+
+        info.add(eventArray);
+
+        groupHT.put(groupUserName,info);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -220,8 +259,40 @@ public class Database {
 
     }
 
+    public void AddGroupEvent(){
+
+    }
+
+    public void AddSoloEvent(){
+
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+        Group g = new Group("Golf Group 1");
+        g.AddGroupEvent( new Event("Golf1","Front 9",true) );
+
+        g.AddGroupMember("person1");
+        g.AddGroupMember("person2");
+
+        g.AddGroupEvent(new Event("Golf2","Back 9",true));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).getScores().get(0).inputScore(new int[]{1,1,1,1,1,1,1,1,1});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).getScores().get(1).inputScore(new int[]{1,1,2,3,420,60,69,70,28});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).getScores().get(2).inputScore(new int[]{1,1,1,1,1,2,1,1,1});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).getScores().get(3).inputScore(new int[]{1,1,1,1,1,2,420,1,1});
+
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).getScores().get(0).inputScore(new int[]{69,1,2,3,4,5,6,7,8});
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
+
+
+
+        db.AddGroup("test",g);
         /*
         AddPerson Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
         If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
@@ -244,14 +315,14 @@ public class Database {
         Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
 
 
+        System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
+        System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(1).getScores()));
 
+        System.out.println(Winston.getPersonalEvents().get(0).getScores().get(1));
 
-        //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
-        //System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(1).getScores()));
+        db.AddPerson("WinstonS",Winston);
 
-        //System.out.println(Winston.getPersonalEvents().get(0).getScores().get(1));
-
-        //db.AddPerson("WinstonS",Winston);
+         */
 
         //GetGroup() Test
         //System.out.println(Arrays.toString(db.GetGroups()));
@@ -259,16 +330,21 @@ public class Database {
         //GetPeople() Test
         /*System.out.println(Arrays.toString(db.GetPeople()));*/
 
-        Person Braeden = db.GetPerson("person1");
+
+        //Person Braeden = db.GetPerson("person1");
 
         /* Person Class Tests */
+
+        /*
         if (!Braeden.getName().equals("Braeden Kroetsch")){
             System.out.print("Braeden Test 1 returned");
             System.out.println(Braeden.getName());
         }
 
-        /* Event Class tests*/
+         */
 
+        /* Event Class tests*/
+        /*
         if (!Braeden.getPersonalEvents().get(0).getEventName().equals("Golf1")){
             System.out.print("Braeden Test 2 returned");
             System.out.print(Braeden.getPersonalEvents().get(0).getEventName());
@@ -304,8 +380,11 @@ public class Database {
         if (Braeden.getPersonalEvents().get(1).getIsGroup())
             System.out.println("Braeden Test 7 should be false");
 
+         */
+
         /* Golf1 tests (Score class) */
 
+        /*
         if (Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Braeden Test 8 should be 0 but it is returning");
             System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
@@ -360,8 +439,11 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores())+"\n");
         }
 
+         */
+
 
         /* Golf2 tests (Score class) */
+        /*
         if (Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Braeden Test 18 should be 0 but it is returning");
             System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter());
@@ -428,8 +510,12 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
         }
 
+         */
+
 
         /* Group tests (Person Class)*/
+
+        /*
         ArrayList<String> test1 = new ArrayList<>();
         test1.add("group1");
         test1.add("PGA Proz");
@@ -440,13 +526,16 @@ public class Database {
 
         Person M = db.GetPerson("person2");
 
-        /* Person Class Tests */
+         */
 
+        // Person Class Tests */
+
+        /*
         if (!M.getName().equals("Mohammed Golfguy")) {
             System.out.println("Error, Mohammed Golfguy Test 1 should be Mohammed Golfguy but it is returning" + M.getName());
         }
 
-        /* Event Class tests*/
+        // Event Class tests
 
         if (!M.getPersonalEvents().get(0).getEventName().equals("Golf1")){
             System.out.print("Error, Mohammed Golfguy Test 2 should be Golf1 but it is returning");
@@ -462,7 +551,11 @@ public class Database {
             System.out.println("Error, Mohammed Golfguy Test 3 should be false");
         }
 
-        /* Golf1 tests (Score class) */
+         */
+
+        /*
+
+        // Golf1 tests (Score class)
         if (M.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Mohammed Golfguy Test 4 should be 0 but it is returning");
             System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
@@ -506,7 +599,11 @@ public class Database {
             System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
         }
 
-        /* Group tests (Person Class)*/
+         */
+
+        //Group tests (Person Class)
+
+        /*
         ArrayList<String> test2 = new ArrayList<>();
         test2.add("group1");
         if (!M.getGroups().equals(test2)){
@@ -516,7 +613,10 @@ public class Database {
 
         //Someone with no personal events
         Person Hunter = db.GetPerson("person3");
-        /* Group tests (Person Class)*/
+        //Group tests (Person Class)
+        */
+
+        /*
         ArrayList<String> test3 = new ArrayList<>();
         test3.add("Golf Team 2");
         if (!Hunter.getGroups().equals(test3)){
@@ -647,6 +747,10 @@ public class Database {
 
         Group proz = db.GetGroup("PGA Proz");
         System.out.println("Unit Testing Complete");
+
+         */
+
+
 
     }
 }

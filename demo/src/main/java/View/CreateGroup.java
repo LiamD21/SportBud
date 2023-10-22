@@ -12,6 +12,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public class CreateGroup {
     private final CreateGroupHandler handler;
@@ -92,7 +95,13 @@ public class CreateGroup {
         //Event listener for the Create Button, send the list members to the handler
         createGroup.setOnAction(event -> {
             if (!members.getItems().isEmpty()) {
-                handler.handleCreatedGroup(members.getItems(), groupname.getText());
+                try {
+                    handler.handleCreatedGroup(members.getItems(), groupname.getText());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
