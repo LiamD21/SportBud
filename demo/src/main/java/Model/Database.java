@@ -270,8 +270,6 @@ public class Database {
         if (group.size() == 4)
             throw new RuntimeException("Error, groups cannot be bigger than 4");
 
-
-
         group.add(personUsername);
 
         try (FileWriter file = new FileWriter(filePath)) {
@@ -291,8 +289,6 @@ public class Database {
 
         if (!eventType.equals("Front 9") && !eventType.equals("Back 9") && !eventType.equals("18"))
             throw new RuntimeException("Error, Invalid Event Type");
-
-
 
         JSONArray newEvent = new JSONArray();
 
@@ -314,14 +310,40 @@ public class Database {
 
     }
 
-    public void AddSoloEvent(){
+    public void AddSoloEvent(String Username, String eventName, String eventType) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
 
+        JSONArray person = ((JSONArray) personHT.get(Username));
+        JSONArray events = (JSONArray) person.get(1);
+
+        if (!eventType.equals("Front 9") && !eventType.equals("Back 9") && !eventType.equals("18"))
+            throw new RuntimeException("Error, Invalid Event Type");
+
+        JSONArray newEvent = new JSONArray();
+
+        //Initializing an empty score array
+        newEvent.add(new JSONArray());
+
+        newEvent.add(eventName);
+        newEvent.add(eventType);
+        newEvent.add(false);
+
+
+        events.add(newEvent);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
 
-        db.AddGroupEvent("group1","Golf3","F");
+        db.AddSoloEvent("person1","Golf3","Front 9");
 
         /*
         Group g = new Group("Golf Group 1");
