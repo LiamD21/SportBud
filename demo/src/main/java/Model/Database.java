@@ -247,12 +247,35 @@ public class Database {
 
     }
 
-    public void AddSoloScores(int[] scores, String eventName){
+    public void AddSoloScores(String Username, String eventName, int[] scores) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+        JSONArray person = (JSONArray) personHT.get(Username);
+        JSONArray eventArray = (JSONArray) person.get(1);
+        JSONArray event = null;
 
+        for (int i = 0; i < eventArray.size(); i++) {
+            if (eventName.equals(((JSONArray) eventArray.get(i)).get(1))) {
+                event = ((JSONArray) eventArray.get(i));
+                break;
+            }
+        }
+
+        if (event == null)
+            throw new RuntimeException("Error, there is no event by the name of " + eventName);
+
+
+        ((JSONArray) event.get(0)).add(IntArrayToJsonArray(scores));
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void AddGroupScores(int[] scores, String eventName){
-
     }
 
     public void AddPersontoGroup(String personUsername, String groupUsername) throws IOException, ParseException {
@@ -343,7 +366,8 @@ public class Database {
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
 
-        db.AddSoloEvent("person1","Golf3","Front 9");
+        db.AddSoloScores("person1", "Golf1",new int[]{22,3,3,3,3,3,33,1,7});
+
 
         /*
         Group g = new Group("Golf Group 1");
