@@ -100,19 +100,15 @@ public class CreateGroup {
                 try {
                     createdSuccess = handler.handleCreatedGroup(members.getItems(), groupname.getText());
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (ParseException e) {
+                } catch (IOException | ParseException e) {
                     throw new RuntimeException(e);
                 }
 
                 if (createdSuccess == 1) {
-//                    Label popupLabel = new Label("Successfully created " + groupname.getText());
-//                    popupLabel.setPrefSize(60, 60);
-//                    Popup popup = new Popup();
-////                    popup.setAutoHide(true);
-//                    popup.getContent().add(popupLabel);
-//                    popup.show(stage);
+                    Alert a = new Alert(Alert.AlertType.NONE,"Created Group Successfully!", new ButtonType("OK",
+                            ButtonBar.ButtonData.OK_DONE));
+                    a.setContentText("Created Group successfully!");
+                    a.show();
                 }
             }
             else {
