@@ -5,12 +5,13 @@ import Model.Group;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
@@ -95,13 +96,30 @@ public class CreateGroup {
         //Event listener for the Create Button, send the list members to the handler
         createGroup.setOnAction(event -> {
             if (!members.getItems().isEmpty()) {
+                int createdSuccess;
                 try {
-                    handler.handleCreatedGroup(members.getItems(), groupname.getText());
+                    createdSuccess = handler.handleCreatedGroup(members.getItems(), groupname.getText());
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
+
+                if (createdSuccess == 1) {
+//                    Label popupLabel = new Label("Successfully created " + groupname.getText());
+//                    popupLabel.setPrefSize(60, 60);
+//                    Popup popup = new Popup();
+////                    popup.setAutoHide(true);
+//                    popup.getContent().add(popupLabel);
+//                    popup.show(stage);
+                }
+            }
+            else {
+
+                Alert a  = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Need to input a name for your group");
+                a.show();
             }
         });
 
