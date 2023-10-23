@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GroupGamesHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +13,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GroupGames {
+    private final GroupGamesHandler handler;
 
    private final VBox root;
+   private final String[] groups;
 
     /**
      * Constructor for the group games menu
@@ -22,13 +25,14 @@ public class GroupGames {
     public GroupGames(Stage stage) {
         // create the root
         stage.setTitle("Group Events");
+        handler = new GroupGamesHandler();
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
 
         // Create elements
         Button backButton = new Button("Back");
-        Text titleText = new Text("Group Events");
+        Text titleText = new Text("Groups: Choose a group");
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
         Button newGroupButton = new Button("Create a New Group");
 
@@ -37,6 +41,12 @@ public class GroupGames {
 
         // add all groups as choices in the choice box
         // TODO once we have get groups method
+        groups = this.getGroups();
+        for(String group: groups){
+            groupChoice.getItems().add(group);
+        }
+
+
 
         // Anchor Buttons
         AnchorPane anchorPane = new AnchorPane();
@@ -62,6 +72,11 @@ public class GroupGames {
             CreateGroup creategroup = new CreateGroup(stage);
             stage.setScene(new Scene(creategroup.getRoot(),600,600));
         });
+
+        //event listener to listen for group chosen.
+        groupChoice.setOnAction(event ->{
+            //TODO Implement the group event viewer when chosen selection
+        });
     }
 
     /**
@@ -70,5 +85,9 @@ public class GroupGames {
      */
     public VBox getRoot(){
         return root;
+    }
+
+    public String[] getGroups() {
+        return handler.getGroupList();
     }
 }
