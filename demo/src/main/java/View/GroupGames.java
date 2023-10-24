@@ -36,6 +36,7 @@ public class GroupGames {
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
         Button newGroupButton = new Button("Create a New Group");
 
+
         // Modify Title text
         titleText.setFont(new Font(22));
 
@@ -45,7 +46,6 @@ public class GroupGames {
         for(String group: groups){
             groupChoice.getItems().add(group);
         }
-
 
 
         // Anchor Buttons
@@ -73,9 +73,14 @@ public class GroupGames {
             stage.setScene(new Scene(creategroup.getRoot(),600,600));
         });
 
+
+
         //event listener to listen for group chosen.
         groupChoice.setOnAction(event ->{
             //TODO Implement the group event viewer when chosen selection
+            GroupSelectEvent groupSelectEvent = new GroupSelectEvent(stage,
+                    groupChoice.getSelectionModel().getSelectedItem());
+            stage.setScene(new Scene(groupSelectEvent.getRoot(), 500,500));
         });
     }
 

@@ -86,7 +86,7 @@ public class CreateGroup {
                 addPerson, removePerson,members, anchorPane);
 
 
-        // Event listener for return to main menu
+        // Event listener for return to GroupGames menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
             stage.setScene(new Scene(groupgames.getRoot(), 500, 500));
