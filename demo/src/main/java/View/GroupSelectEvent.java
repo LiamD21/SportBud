@@ -25,7 +25,7 @@ public class GroupSelectEvent {
         groupName = groupNameArg;
         handler = new GroupSelectEventHandler(groupName);
 
-//        stage.setTitle(String.format("Group %s's Information", handler.getName()));
+        stage.setTitle(String.format("Group %s's Information", groupName));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
@@ -35,6 +35,9 @@ public class GroupSelectEvent {
         // panes in which the nodes will be laid out
         AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
+        backButton.setPrefSize(60,25);
+
+
         Text nameTitle = new Text(String.format("%s's HomePage", groupName));
         nameTitle.setFont(new Font(22));
         VBox theGroupsEvents = new VBox();
@@ -63,7 +66,16 @@ public class GroupSelectEvent {
         Text eventTitle = new Text(String.format("%s's Events", groupName));
         eventTitle.setFont(new Font(16));
 
-//        Button selectEvent = new Button();
+        Button selectEvent = new Button("Select Event");
+        selectEvent.setPadding(new Insets(5));
+        selectEvent.setPrefSize(55, 80);
+        selectEvent.setWrapText(true);
+
+
+        //HBOX to hold the select Event parts
+        HBox selectEventParts = new HBox();
+        selectEventParts.setSpacing(5);
+        selectEventParts.getChildren().addAll(eventList, selectEvent);
 
 
 
@@ -72,9 +84,7 @@ public class GroupSelectEvent {
 //        theGroupsEvents.setBottom(roster);
 //        theGroupsEvents.setLeft(eventTitle);
 //        theGroupsEvents.setBottom(eventList);
-        theGroupsEvents.getChildren().addAll(rosterTitle,roster, eventTitle, eventList);
-
-
+        theGroupsEvents.getChildren().addAll(rosterTitle,roster, eventTitle, selectEventParts);
 
         //Add groups events to the list view
         for (Event event : handler.getEvents()){
@@ -85,7 +95,11 @@ public class GroupSelectEvent {
 
         // create buttons for stats and create event pages in the bottom HBox
         Button statsButton = new Button(String.format("%s's Stats", groupName));
+        statsButton.setPrefSize(125,25);
+
         Button newEventButton = new Button("New Event");
+        newEventButton.setPrefSize(125,25);
+
         bottomButtons.getChildren().addAll(statsButton, newEventButton);
         bottomButtons.setSpacing(15);
 
@@ -106,10 +120,23 @@ public class GroupSelectEvent {
             stage.setTitle("Group Events");
         });
 
+        //Event listener for selecting events
+        selectEvent.setOnAction(event -> {
+            //TODO add in proper page class creation here
+            eventList.getSelectionModel().getSelectedItem();
+        });
 
+        //event listener for new Event
+        newEventButton.setOnAction(event ->{
+            //TODO
+            //New event page stage set scene
+        });
 
-
-
+        //event listener for stats Page
+        statsButton.setOnAction(event ->{
+            //TODO
+            //stats page stage set scene
+        });
     }
 
     public VBox getRoot(){

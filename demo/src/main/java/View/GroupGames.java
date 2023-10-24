@@ -74,7 +74,6 @@ public class GroupGames {
         });
 
 
-
         //event listener to listen for group chosen.
         groupChoice.setOnAction(event ->{
             //TODO Implement the group event viewer when chosen selection
