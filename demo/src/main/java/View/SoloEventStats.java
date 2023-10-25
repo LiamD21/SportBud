@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -38,6 +39,7 @@ public class SoloEventStats {
         AnchorPane anchorPane = new AnchorPane();
         Text nameTitle = new Text(handler.getEventName());
         Text eventType = new Text();
+        BorderPane leaderboardPane = new BorderPane();
         ListView<Integer> personalBests = new ListView<>();
 
         // add sorted score leaderboard to listview
@@ -47,6 +49,11 @@ public class SoloEventStats {
         }
         personalBests.setPrefHeight(100);
         personalBests.setPrefWidth(300);
+
+        // add elements to the leaderboard borderPane
+        Text leaderboardTitle = new Text("Leaderboard");
+        leaderboardPane.setLeft(leaderboardTitle);
+        leaderboardPane.setBottom(personalBests);
 
         // Modify Title text
         nameTitle.setFont(new Font(22));
@@ -70,7 +77,7 @@ public class SoloEventStats {
         anchorPane.getChildren().addAll(backButton);
 
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, personalBests);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane);
 
         // event listener for the back button
         backButton.setOnAction(event -> {
