@@ -80,7 +80,10 @@ public class PersonSelectEvent {
 
         // event listener for the view selected event button
         statsButton.setOnAction(event -> {
-
+            if (eventList.getSelectionModel().getSelectedItem() != null) {
+                SoloEventStats menu = new SoloEventStats(stage, eventList.getSelectionModel().getSelectedItem(), username);
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
         });
     }
 
