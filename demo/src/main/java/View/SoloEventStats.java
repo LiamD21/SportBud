@@ -21,4 +21,12 @@ public class SoloEventStats {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
     }
+
+    /**
+     * Getter method for the root for swapping scenes in the same stage
+     * @return the VBox root of this scene
+     */
+    public VBox getRoot() {
+        return root;
+    }
 }
