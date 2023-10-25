@@ -54,24 +54,37 @@ public class SoloEventStatsHandler extends UIHandler{
 
     /**
      * Gets a sorted array list of scores from lowest to highest
+     * @param hole an integer to see what hole to sort by. 0 means total.
      * @return the sorted array list of scores in this event
      */
-    public ArrayList<Integer> getScores(){
-        return sortScores(event.getScores());
+    public ArrayList<Integer> getScores(int hole){
+        return sortScores(event.getScores(), hole);
     }
 
     /**
      * sorts a given golf score array
+     * @param scores the unsorted array list of scores
+     * @param hole an integer to see what hole to sort by. 0 means total.
      * @return the sorted golf score array list
      */
-    private ArrayList<Integer> sortScores(ArrayList<Score> scores){
+    private ArrayList<Integer> sortScores(ArrayList<Score> scores, int hole){
         ArrayList<Integer> totalsPlaceholder = new ArrayList<>(scores.size());
         for (int i = 0; i < scores.size(); i++){
             Score item = scores.get(i);
             int[] holes = item.getScores();
-            int total = 0;
-            for (int hole : holes) {
-                total += hole;
+            int total;
+
+            // find total score if we are looking for that
+            if (hole == 0) {
+                total = 0;
+                for (int sc : holes) {
+                    total += sc;
+                }
+            }
+
+            // else, find single hole score
+            else {
+                total = holes[hole - 1];
             }
 
             // if this is the first item, just put it in the new array
@@ -88,5 +101,14 @@ public class SoloEventStatsHandler extends UIHandler{
             }
         }
         return totalsPlaceholder;
+    }
+
+    public int convertScoreView(String item){
+        if (Objects.equals(item, "Total") || item == null){
+            return 0;
+        }
+        else {
+            return Integer.parseInt(item);
+        }
     }
 }
