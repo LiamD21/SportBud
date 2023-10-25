@@ -49,6 +49,8 @@ public class SoloEventStats {
         HBox sorterBox = new HBox();
         Button sort = new Button("Sort");
 
+        // TODO Liam add number of times played to leaderboard - Change int displayed to string to be able to display more info
+
         // add sorted score leaderboard to listview
         ArrayList<Integer> leaderboard = handler.getScores(scoreView);
         for (Integer integer : leaderboard) {

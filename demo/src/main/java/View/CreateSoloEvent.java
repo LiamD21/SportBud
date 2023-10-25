@@ -1,8 +1,6 @@
 package View;
 
 import Controller.CreateSoloEventHandler;
-import Controller.PersonSelectEventHandler;
-import Model.Person;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,6 +30,8 @@ public class CreateSoloEvent {
         AnchorPane.setTopAnchor(backButton, 10.0);
         AnchorPane.setLeftAnchor(backButton, 15.0);
         anchorPane.getChildren().addAll(backButton);
+
+        // TODO Liam add create event functionality
 
         // add elements to the root
         root.getChildren().addAll(anchorPane);

@@ -1,14 +1,10 @@
 package Controller;
 
 import Model.Group;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class CreateGroupHandler extends UIHandler{
 

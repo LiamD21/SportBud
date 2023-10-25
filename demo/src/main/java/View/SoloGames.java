@@ -87,6 +87,9 @@ public class SoloGames {
             }
         });
 
+        // TODO Liam add confirmation text to creating person
+        // TODO Liam make sure that once person is created, they are added to the dropdown
+
         // If select button clicked, pass to the controller
         // Person is only selected if the user actually selects an option
         selectButton.setOnAction(event -> {
