@@ -1,7 +1,6 @@
 package View;
 
 import Controller.PersonSelectEventHandler;
-import Model.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,10 +45,8 @@ public class PersonSelectEvent {
         myEvents.setBottom(eventList);
 
         // Add person's events to the list view
-        for (Event event: handler.getEvents()){
-            if (!event.getIsGroup()){
-                eventList.getItems().add(event.getEventName());
-            }
+        for (String event: handler.getSoloEvents()){
+            eventList.getItems().add(event);
         }
 
         // create buttons for stats and create event pages in the bottom HBox

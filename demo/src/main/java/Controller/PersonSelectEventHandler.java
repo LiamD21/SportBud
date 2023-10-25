@@ -27,8 +27,18 @@ public class PersonSelectEventHandler extends UIHandler{
     }
 
     /**
-     * Gets the arraylist of the person's personal events
-     * @return array list of the persons personal events
+     * Gets the arraylist of the person's personal events names
+     * @return array list of the persons personal events names
      */
-    public ArrayList<Event> getEvents() { return person.getPersonalEvents(); }
+    public ArrayList<String> getSoloEvents() {
+        ArrayList<Event> events = person.getPersonalEvents();
+        ArrayList<String> eventNames = new ArrayList<>(events.size());
+        for (Event event : events) {
+            if (!event.getIsGroup()) {
+                eventNames.add(event.getEventName());
+            }
+        }
+        eventNames.trimToSize();
+        return eventNames;
+    }
 }
