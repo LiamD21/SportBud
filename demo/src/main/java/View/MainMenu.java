@@ -5,11 +5,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class MainMenu extends Application {
@@ -24,8 +28,15 @@ public class MainMenu extends Application {
         menuScene = new Scene(menuRoot, 500,500);
 
         // Create elements
-        Text menuTitle = new Text(180,150,"Sport Bud");
-        menuTitle.setFont(new Font(30));
+//        Text menuTitle = new Text(180,150,"Sport Bud");
+//        menuTitle.setFont(new Font(30));
+        ImageView imageView =  new ImageView();
+        imageView.setImage(new Image(System.getProperty("user.dir") + "/demo/visuals/blacklogo.png"));
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        imageView.setCache(true);
+        imageView.setFitWidth(400);
+        imageView.setVisible(true);
         Button startButton = new Button("GO!");
         ChoiceBox<String> soloGroup = new ChoiceBox<>();
         soloGroup.getItems().addAll("Solo", "Group");
@@ -48,7 +59,7 @@ public class MainMenu extends Application {
         });
 
         // Add to root
-        menuRoot.getChildren().addAll(menuTitle, soloGroup, startButton);
+        menuRoot.getChildren().addAll(imageView, soloGroup, startButton);
 
         // Setup of the stage and then show it
         stage.setTitle("Menu");
