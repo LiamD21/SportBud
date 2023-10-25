@@ -1,9 +1,6 @@
 package View;
 
-import Controller.CreateSoloEventHandler;
 import Controller.PersonSelectEventHandler;
-import Model.Event;
-import Model.Person;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -48,14 +45,12 @@ public class PersonSelectEvent {
         myEvents.setBottom(eventList);
 
         // Add person's events to the list view
-        for (Event event: handler.getEvents()){
-            if (!event.getIsGroup()){
-                eventList.getItems().add(event.getEventName());
-            }
+        for (String event: handler.getSoloEvents()){
+            eventList.getItems().add(event);
         }
 
         // create buttons for stats and create event pages in the bottom HBox
-        Button statsButton = new Button(String.format("%s's Stats", handler.getName()));
+        Button statsButton = new Button("View Selected Event Stats");
         Button newEventButton = new Button("New Event");
         bottomButtons.getChildren().addAll(statsButton, newEventButton);
         bottomButtons.setSpacing(15);
@@ -78,6 +73,14 @@ public class PersonSelectEvent {
         newEventButton.setOnAction(event -> {
             CreateSoloEvent menu = new CreateSoloEvent(stage, username);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+        // event listener for the view selected event button
+        statsButton.setOnAction(event -> {
+            if (eventList.getSelectionModel().getSelectedItem() != null) {
+                SoloEventStats menu = new SoloEventStats(stage, eventList.getSelectionModel().getSelectedItem(), username);
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
         });
     }
 

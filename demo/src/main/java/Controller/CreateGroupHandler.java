@@ -1,14 +1,10 @@
 package Controller;
 
 import Model.Group;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class CreateGroupHandler extends UIHandler{
 
@@ -24,16 +20,22 @@ public class CreateGroupHandler extends UIHandler{
         }
     }
 
-    public void handleCreatedGroup(ObservableList<String> createdGroup, String groupname) throws IOException, ParseException {
+    public int handleCreatedGroup(ObservableList<String> createdGroup, String groupname) throws IOException, ParseException {
         //TODO Connect the handler to the model here to create a new group
         Group newGroup = new Group(groupname);
-//        try {
-            db.AddGroup(groupname, newGroup);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            //for each person in the group add the person to the new created group object
+            for (String each :createdGroup) {
+                newGroup.AddGroupMember(each);
+            }
 
+            //write that group into the database
+            db.AddGroup(groupname, newGroup);
+            return 1;
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+
+        }
 
     }
-
 }

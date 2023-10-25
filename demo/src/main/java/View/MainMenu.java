@@ -30,6 +30,8 @@ public class MainMenu extends Application {
         ChoiceBox<String> soloGroup = new ChoiceBox<>();
         soloGroup.getItems().addAll("Solo", "Group");
 
+        // TODO Liam redo UI to just 2 buttons instead of
+
         // Add spacing
         menuRoot.setSpacing(30);
 
