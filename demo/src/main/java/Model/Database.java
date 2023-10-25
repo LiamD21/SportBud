@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "databaseTEST.json";
+    private String filePath = "database.json";
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
