@@ -239,7 +239,12 @@ public class Database {
 
         String[] strArray = groupHT.keySet().toString().split(", ");
         strArray[0] = strArray[0].substring(1);
-        strArray[numOfGroups-1] = strArray[numOfGroups-1].substring(0, strArray[numOfGroups-1].length()-1);
+
+        if (numOfGroups >= 1)
+            strArray[numOfGroups-1] = strArray[numOfGroups-1].substring(0, strArray[numOfGroups-1].length()-1);
+        else {
+            strArray[0] = strArray[0].substring(0, strArray[0].length()-1);
+        }
 
         return strArray;
 
@@ -413,12 +418,15 @@ public class Database {
         If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
         the backend team.
          */
-        /*
+
+        System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
+
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
 
         g.AddGroupMember("person1");
         g.AddGroupMember("person2");
+
 
         g.AddGroupEvent(new Event("Golf2","Back 9",true));
         g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
@@ -438,7 +446,21 @@ public class Database {
 
         db.AddGroup("test",g);
 
-         */
+        System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
+
+        System.out.println("Current Members in Group" + db.GetGroup("test").getPeople());
+
+        db.AddPersontoGroup("person434","test");
+        System.out.println("Current Members in Group" + db.GetGroup("test").getPeople());
+
+        System.out.println("Current Events in this group" + db.GetGroup("test").getGroupEvents().toString());
+        db.AddGroupEvent("test", "event","Front 9");
+
+        System.out.println("Current Events in this group" + db.GetGroup("test").getGroupEvents().toString());
+
+        System.out.println("person1's score" +
+                Arrays.toString(db.GetGroup("test").getGroupEvents().get(0).getScores().get(0).getScores()));
+
         /*
         AddPerson Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
         If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
