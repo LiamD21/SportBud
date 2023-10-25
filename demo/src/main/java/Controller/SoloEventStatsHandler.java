@@ -41,4 +41,16 @@ public class SoloEventStatsHandler extends UIHandler{
     public String getEventName(){
         return event.getEventName();
     }
+
+    /**
+     * Gets the number of times this event has been played
+     * @return the integer number of plays that this event has
+     */
+    public int getTimesPlayed(){
+        return event.getScores().size();
+    }
+
+    public String getEventType(){
+        return event.getEventType();
+    }
 }
