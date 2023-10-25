@@ -37,7 +37,9 @@ public class CreateGroup {
 
         //Buttons:
         Button backButton = new Button("Back to Groups");
+        backButton.setPrefWidth(100);
         Button createGroup = new Button("Create!");
+        createGroup.setPrefWidth(100);
         Button addPerson = new Button("Add Person");
         Button removePerson = new Button("Remove Person");
 
