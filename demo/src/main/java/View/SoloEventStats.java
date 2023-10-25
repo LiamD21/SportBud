@@ -11,12 +11,12 @@ public class SoloEventStats {
     private final String eventID;
     private final SoloEventStatsHandler handler;
 
-    public SoloEventStats(Stage stage, String eventID){
+    public SoloEventStats(Stage stage, String eventID, String personID){
         this.eventID = eventID;
-        handler = new SoloEventStatsHandler(eventID);
+        handler = new SoloEventStatsHandler(eventID, personID);
 
         // create the root
-        stage.setTitle(String.format("%s's Stats", handler.getName()));
+        stage.setTitle(String.format("%s Stats", handler.getEventName()));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
