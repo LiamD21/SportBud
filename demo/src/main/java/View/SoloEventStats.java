@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,6 +39,9 @@ public class SoloEventStats {
         HBox simpleStats = new HBox();
         Text eventType = new Text();
         Text timesPlayed = new Text(String.format("This was played %d times!", handler.getTimesPlayed()));
+        ListView<Integer> personalBests = new ListView<>();
+
+        // add to listview
 
         // Modify Title text
         nameTitle.setFont(new Font(22));
