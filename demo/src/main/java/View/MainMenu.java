@@ -56,8 +56,6 @@ public class MainMenu extends Application {
         // add buttons into the box
         buttons.getChildren().addAll(soloButton,groupButton);
 
-        // TODO Liam redo UI to just 2 buttons instead of
-
         // Add spacing
         menuRoot.setSpacing(30);
 
