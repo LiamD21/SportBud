@@ -1,15 +1,12 @@
 package View;
 
 import Controller.GroupSelectEventHandler;
-import Model.Event;
-import Model.Person;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -78,18 +75,12 @@ public class GroupSelectEvent {
         selectEventParts.getChildren().addAll(eventList, selectEvent);
 
 
-
-        //fill the borderpane theGroupsEvents
-//        theGroupsEvents.setLeft(rosterTitle);
-//        theGroupsEvents.setBottom(roster);
-//        theGroupsEvents.setLeft(eventTitle);
-//        theGroupsEvents.setBottom(eventList);
         theGroupsEvents.getChildren().addAll(rosterTitle,roster, eventTitle, selectEventParts);
 
         //Add groups events to the list view
-        for (Event event : handler.getEvents()){
-            if (event.getIsGroup()){
-                eventList.getItems().add(event.getEventName());
+        for (String event : handler.getEvents()){
+            if (!event.isEmpty()){
+                eventList.getItems().add(event);
             }
         }
 

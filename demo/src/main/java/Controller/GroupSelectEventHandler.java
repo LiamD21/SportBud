@@ -22,8 +22,13 @@ public class GroupSelectEventHandler extends UIHandler{
         return group.getGroupName();
     }
 
-    public ArrayList<Event> getEvents(){
-        return group.getGroupEvents();
+    public ArrayList<String> getEvents(){
+        ArrayList<String> eventnames = new ArrayList<>();
+
+        for (Event event : group.getGroupEvents()){
+            eventnames.add(event.getEventName());
+        }
+        return eventnames;
     }
 
     public ArrayList<String> getGroupMembers(){
