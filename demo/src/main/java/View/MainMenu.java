@@ -38,8 +38,8 @@ public class MainMenu extends Application {
         imageView.setFitWidth(400);
         imageView.setVisible(true);
 
-        Text chooseyourmenu = new Text("Choose Your Menu!");
-        chooseyourmenu.setFont(new Font(16));
+        Text chooseYourMenu = new Text("Choose Your Menu!");
+        chooseYourMenu.setFont(new Font(16));
 
         //holds the buttons
         HBox buttons = new HBox();
@@ -69,7 +69,7 @@ public class MainMenu extends Application {
         });
 
         // Add to root
-        menuRoot.getChildren().addAll(imageView, chooseyourmenu, buttons);
+        menuRoot.getChildren().addAll(imageView, chooseYourMenu, buttons);
 
         // Setup of the stage and then show it
         stage.setTitle("Menu");
