@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,7 +52,6 @@ public class SoloEventStats {
 
         // TODO Liam add number of times played to leaderboard - Change int displayed to string to be able to display more info
         // TODO Liam add functionality to add scores
-        // TODO Liam make back 9 be labeled with 10-18 instead of 1-9
 
         // add sorted score leaderboard to listview
         ArrayList<Integer> leaderboard = handler.getScores(scoreView);
@@ -88,15 +88,20 @@ public class SoloEventStats {
         sorterBox.setAlignment(Pos.CENTER);
 
         // Add choices to the sorting choice box
-        int choices = 1;
+        int start = 1;
+        int choices = 0;
         if (Objects.equals(type, "Front 9") || Objects.equals(type, "Back 9")){
-            choices = 10;
+            choices = 9;
+            if (Objects.equals(type, "Back 9")){
+                start = 10;
+                choices = 18;
+            }
         }
         else if (Objects.equals(type, "18")){
-            choices = 19;
+            choices = 18;
         }
         leaderboardSorter.getItems().add("Total");
-        for (int i = 1; i < choices; i++){
+        for (int i = start; i <= choices; i++){
             leaderboardSorter.getItems().add(String.valueOf(i));
         }
 
@@ -117,7 +122,13 @@ public class SoloEventStats {
         // event listener for the sort button
         sort.setOnAction(event -> {
             scoreView = handler.convertScoreView(leaderboardSorter.getValue());
-            ArrayList<Integer> lb = handler.getScores(scoreView);
+            ArrayList<Integer> lb;
+            if (!Objects.equals(type, "Back 9") || scoreView == 0) {
+                lb = handler.getScores(scoreView);
+            }
+            else {
+                lb = handler.getScores(scoreView - 9);
+            }
             for (int i = 0; i < lb.size(); i++) {
                 personalBests.get().getItems().remove(i);
                 personalBests.get().getItems().add(i, lb.get(i));
