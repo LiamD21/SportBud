@@ -27,7 +27,7 @@ public class SoloEventStatsHandler extends UIHandler{
      * @param eventID the String event name to find object of
      * @return the object that relates to the string passed in
      */
-    public Event getEvent(String eventID){
+    private Event getEvent(String eventID){
         for (Event event : person.getPersonalEvents()){
             if (Objects.equals(event.getEventName(), eventID)){
                 return event;

@@ -30,10 +30,8 @@ public class MainMenu extends Application {
         menuScene = new Scene(menuRoot, 500,500);
 
         // Create elements
-//        Text menuTitle = new Text(180,150,"Sport Bud");
-//        menuTitle.setFont(new Font(30));
         ImageView imageView =  new ImageView();
-        imageView.setImage(new Image(System.getProperty("user.dir") + "/demo/visuals/blacklogo.png"));
+        imageView.setImage(new Image("blacklogo.png"));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
         imageView.setCache(true);
@@ -42,7 +40,6 @@ public class MainMenu extends Application {
 
         Text chooseyourmenu = new Text("Choose Your Menu!");
         chooseyourmenu.setFont(new Font(16));
-
 
         //holds the buttons
         HBox buttons = new HBox();
@@ -58,8 +55,6 @@ public class MainMenu extends Application {
 
         // Add spacing
         menuRoot.setSpacing(30);
-
-
 
         // Event Listening for going to group games screen or solo games screen
         soloButton.setOnAction(event -> {

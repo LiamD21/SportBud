@@ -50,6 +50,8 @@ public class SoloEventStats {
         Button sort = new Button("Sort");
 
         // TODO Liam add number of times played to leaderboard - Change int displayed to string to be able to display more info
+        // TODO Liam add functionality to add scores
+        // TODO Liam make back 9 be labeled with 10-18 instead of 1-9
 
         // add sorted score leaderboard to listview
         ArrayList<Integer> leaderboard = handler.getScores(scoreView);
