@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;

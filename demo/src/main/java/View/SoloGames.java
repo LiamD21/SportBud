@@ -17,7 +17,8 @@ public class SoloGames {
 
     private final VBox root;
     private final SoloGamesHandler handler;
-    private final String[] people;
+    private String[] people;
+    private ChoiceBox<String> personChooser;
 
     /**
      * Constructor for the group games menu
@@ -45,12 +46,8 @@ public class SoloGames {
 
         // create items for select person and add them to the HBox
         Button selectButton = new Button("Select Person");
-        ChoiceBox<String> personChoice = new ChoiceBox<>();
-        people = this.getPeople();
-        for (String person : people){
-            personChoice.getItems().add(person);
-        }
-        selectPerson.getChildren().addAll(personChoice, selectButton);
+        setPersonChoice(createPersonDisplay());
+        selectPerson.getChildren().addAll(personChooser, selectButton);
         selectPerson.setSpacing(10);
         selectPerson.setAlignment(Pos.CENTER);
 
@@ -84,17 +81,19 @@ public class SoloGames {
         addPersonButton.setOnAction(event -> {
             if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
                 handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
+                selectPerson.getChildren().removeAll(personChooser, selectButton);
+                setPersonChoice(createPersonDisplay());
+                selectPerson.getChildren().addAll(personChooser, selectButton);
             }
         });
 
         // TODO Liam add confirmation text to creating person
-        // TODO Liam make sure that once person is created, they are added to the dropdown
 
         // If select button clicked, pass to the controller
         // Person is only selected if the user actually selects an option
         selectButton.setOnAction(event -> {
-            if (personChoice.getValue() != null){
-                PersonSelectEvent menu = new PersonSelectEvent(stage, personChoice.getValue());
+            if (personChooser.getValue() != null){
+                PersonSelectEvent menu = new PersonSelectEvent(stage, personChooser.getValue());
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });
@@ -110,5 +109,18 @@ public class SoloGames {
 
     public String[] getPeople(){
         return handler.getPersonList();
+    }
+
+    private ChoiceBox<String> createPersonDisplay(){
+        people = this.getPeople();
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        for (String person : people){
+            choiceBox.getItems().add(person);
+        }
+        return choiceBox;
+    }
+
+    private void setPersonChoice(ChoiceBox<String> choiceBox){
+        personChooser = choiceBox;
     }
 }
