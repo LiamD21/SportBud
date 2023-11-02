@@ -26,7 +26,7 @@ public class GeneralAddScore {
     private final String lastPage;
 
     public GeneralAddScore(Stage stage, String lastPage, String person, String eventName){
-        handler = new GeneralAddScoreHandler();
+        handler = new GeneralAddScoreHandler(eventName, person);
         eventID = eventName;
         personID = person;
         this.lastPage = lastPage;
