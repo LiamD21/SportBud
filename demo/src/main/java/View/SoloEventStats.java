@@ -136,7 +136,7 @@ public class SoloEventStats {
 
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
-            GeneralAddScore menu = new GeneralAddScore(stage);
+            GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, eventID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }
