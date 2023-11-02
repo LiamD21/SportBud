@@ -43,7 +43,7 @@ public class SoloEventStats {
         Text nameTitle = new Text(handler.getEventName());
         Text eventType = new Text();
         BorderPane leaderboardPane = new BorderPane();
-        AtomicReference<ListView<Integer>> personalBests = new AtomicReference<>(new ListView<>());
+        ListView<Integer> personalBests = new ListView<>();
         ChoiceBox<String> leaderboardSorter = new ChoiceBox<>();
         Text sorterText = new Text("Leaderboard sorted by:");
         HBox sorterBox = new HBox();
@@ -55,15 +55,15 @@ public class SoloEventStats {
         // add sorted score leaderboard to listview
         ArrayList<Integer> leaderboard = handler.getScores(scoreView);
         for (Integer integer : leaderboard) {
-            personalBests.get().getItems().add(integer);
+            personalBests.getItems().add(integer);
         }
-        personalBests.get().setPrefHeight(100);
-        personalBests.get().setPrefWidth(300);
+        personalBests.setPrefHeight(100);
+        personalBests.setPrefWidth(300);
 
         // add elements to the leaderboard borderPane
         Text leaderboardTitle = new Text("Leaderboard");
         leaderboardPane.setLeft(leaderboardTitle);
-        leaderboardPane.setBottom(personalBests.get());
+        leaderboardPane.setBottom(personalBests);
 
         // Modify Title text
         nameTitle.setFont(new Font(22));
@@ -128,9 +128,9 @@ public class SoloEventStats {
             else {
                 lb = handler.getScores(scoreView - 9);
             }
+            personalBests.getItems().remove(0, lb.size());
             for (int i = 0; i < lb.size(); i++) {
-                personalBests.get().getItems().remove(i);
-                personalBests.get().getItems().add(i, lb.get(i));
+                personalBests.getItems().add(i, lb.get(i));
             }
         });
     }
