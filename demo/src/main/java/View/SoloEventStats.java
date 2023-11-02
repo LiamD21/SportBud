@@ -45,8 +45,9 @@ public class SoloEventStats {
         ListView<Integer> personalBests = new ListView<>();
         ChoiceBox<String> leaderboardSorter = new ChoiceBox<>();
         Text sorterText = new Text("Leaderboard sorted by:");
-        HBox sorterBox = new HBox();
+        HBox bottomButtonsBox = new HBox();
         Button sort = new Button("Sort");
+        Button addScoreButton = new Button("Add Score");
 
         // TODO Liam add number of times played to leaderboard - Change int displayed to string to be able to display more info
         // TODO Liam add functionality to add scores
@@ -81,9 +82,9 @@ public class SoloEventStats {
         }
 
         // add sorting choice elements to their HBox
-        sorterBox.getChildren().addAll(sorterText, leaderboardSorter);
-        sorterBox.setSpacing(10);
-        sorterBox.setAlignment(Pos.CENTER);
+        bottomButtonsBox.getChildren().addAll(sorterText, leaderboardSorter, sort, addScoreButton);
+        bottomButtonsBox.setSpacing(10);
+        bottomButtonsBox.setAlignment(Pos.CENTER);
 
         // Add choices to the sorting choice box
         int start = 1;
@@ -109,7 +110,7 @@ public class SoloEventStats {
         anchorPane.getChildren().addAll(backButton);
 
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane, sorterBox, sort);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane, bottomButtonsBox);
 
         // event listener for the back button
         backButton.setOnAction(event -> {
@@ -131,6 +132,12 @@ public class SoloEventStats {
             for (int i = 0; i < lb.size(); i++) {
                 personalBests.getItems().add(i, lb.get(i));
             }
+        });
+
+        // event listener for the add score button
+        addScoreButton.setOnAction(event -> {
+            GeneralAddScore menu = new GeneralAddScore(stage);
+            stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }
 

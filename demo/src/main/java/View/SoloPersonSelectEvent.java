@@ -50,7 +50,7 @@ public class SoloPersonSelectEvent {
         }
 
         // create buttons for stats and create event pages in the bottom HBox
-        Button statsButton = new Button("View Selected Event Stats");
+        Button statsButton = new Button("View Selected Event Leaderboard");
         Button newEventButton = new Button("New Event");
         bottomButtons.getChildren().addAll(statsButton, newEventButton);
         bottomButtons.setSpacing(15);
