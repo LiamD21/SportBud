@@ -38,7 +38,7 @@ public class CreateSoloEvent {
 
         // event handling for the back button
         backButton.setOnAction(event -> {
-            PersonSelectEvent menu = new PersonSelectEvent(stage, username);
+            SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }

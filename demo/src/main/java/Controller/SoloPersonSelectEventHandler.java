@@ -7,9 +7,9 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PersonSelectEventHandler extends UIHandler{
+public class SoloPersonSelectEventHandler extends UIHandler{
     Person person;
-    public PersonSelectEventHandler(String username) {
+    public SoloPersonSelectEventHandler(String username) {
         super.setDb();
         try {
             person = db.GetPerson(username);

@@ -93,7 +93,7 @@ public class SoloGames {
         // Person is only selected if the user actually selects an option
         selectButton.setOnAction(event -> {
             if (personChooser.getValue() != null){
-                PersonSelectEvent menu = new PersonSelectEvent(stage, personChooser.getValue());
+                SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personChooser.getValue());
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });

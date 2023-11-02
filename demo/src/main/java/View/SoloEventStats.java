@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SoloEventStats {
 
@@ -114,7 +113,7 @@ public class SoloEventStats {
 
         // event listener for the back button
         backButton.setOnAction(event -> {
-            PersonSelectEvent menu = new PersonSelectEvent(stage, personID);
+            SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 

@@ -1,6 +1,6 @@
 package View;
 
-import Controller.PersonSelectEventHandler;
+import Controller.SoloPersonSelectEventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,14 +11,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class PersonSelectEvent {
+public class SoloPersonSelectEvent {
     private final VBox root;
     private final String username;
-    private final PersonSelectEventHandler handler;
+    private final SoloPersonSelectEventHandler handler;
 
-    public PersonSelectEvent(Stage stage, String username){
+    public SoloPersonSelectEvent(Stage stage, String username){
         this.username = username;
-        handler = new PersonSelectEventHandler(username);
+        handler = new SoloPersonSelectEventHandler(username);
 
         // create the root
         stage.setTitle(String.format("%s's Information", handler.getName()));
