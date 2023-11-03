@@ -6,6 +6,7 @@ import Model.Score;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class GeneralAddScoreHandler extends UIHandler{
 
@@ -25,10 +26,15 @@ public class GeneralAddScoreHandler extends UIHandler{
     }
 
     private Event getEvent(String eventID){
-        return this.event;
+        for (Event event : person.getPersonalEvents()){
+            if (Objects.equals(event.getEventName(), eventID)){
+                return event;
+            }
+        }
+        return null;
     }
 
-    private String getEventType(){
+    public String getEventType(){
         return event.getEventType();
     }
 
