@@ -6,9 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -49,12 +48,12 @@ public class GeneralAddScore {
         // create score entering elements
         Label label;
         if (Objects.equals(handler.getEventType(), "Front 9") || Objects.equals(handler.getEventType(), "Back 9") || Objects.equals(handler.getEventType(), "18")){
-            label = new Label("Enter your scores, each hole on a new line");
+            label = new Label("Enter your scores, \neach hole separated by a comma");
         }
         else{
             label = new Label("Enter your new score");
         }
-        TextArea scoreIn = new TextArea();
+        TextField scoreIn = new TextField("Enter Scores Here");
         Button submit = new Button("Submit");
         scoreEntryBox.getChildren().addAll(label, scoreIn, submit);
 
@@ -71,6 +70,24 @@ public class GeneralAddScore {
             if (Objects.equals(lastPage, "SoloEventStats")) {
                 SoloEventStats menu = new SoloEventStats(stage, eventID, personID);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
+        });
+
+        // TODO Liam - Add input filtering based on if it has the correct number of inputs for the event type
+        // event listener for the add scores button
+        submit.setOnAction(event -> {
+            if (!scoreIn.getCharacters().toString().equals("Enter Scores Here")){
+                if (Objects.equals(handler.getEventType(), "Front 9") || Objects.equals(handler.getEventType(), "Back 9") || Objects.equals(handler.getEventType(), "18")) {
+                    String[] scores = scoreIn.getCharacters().toString().split(",");
+                    int[] intScores = new int[scores.length];
+                    for (int i = 0; i < scores.length; i++){
+                        if (scores[i].charAt(0) == ' '){
+                            scores[i] = scores[i].substring(1);
+                        }
+                        intScores[i] = Integer.parseInt(scores[i]);
+                    }
+                    handler.setScore(intScores);
+                }
             }
         });
     }

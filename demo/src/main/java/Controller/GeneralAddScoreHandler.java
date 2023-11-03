@@ -13,9 +13,10 @@ public class GeneralAddScoreHandler extends UIHandler{
     private final Person person;
     private final Event event;
 
-    private Score score;
+    private final String username;
 
     public GeneralAddScoreHandler(String eventID, String personID){
+        username = personID;
         super.setDb();
         try {
             person = db.GetPerson(personID);
@@ -39,8 +40,12 @@ public class GeneralAddScoreHandler extends UIHandler{
     }
 
     public void setScore(int[] scores){
-        this.score = new Score(this.getEventType(), this.event.getEventName(), this.event.getScores().size() + 1);
-        this.score.inputScore(scores);
-        this.event.inputScores(score);
+        if (!event.getIsGroup()) {
+            try {
+                db.AddSoloScores(this.username, this.event.getEventName(), scores);
+            } catch (IOException | ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
