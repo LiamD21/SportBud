@@ -106,7 +106,6 @@ public class Database {
         }
 
         //Adds Groups to Person
-        //System.out.println( ((JSONArray) person.get(2)).get(0) );
         if (!((JSONArray) person.get(2)).isEmpty()) {
             for (int i = 0; i < numOfGroups; i++) {
                 p.addGroup((String) ((JSONArray) person.get(2)).get(i));
@@ -138,7 +137,6 @@ public class Database {
             String name = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(1);
             String type = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(2);
             g.AddGroupEvent(new Event(name,type,true));
-            //System.out.println(numOfTimeEventHasBeenPlayed);
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
 
 
@@ -437,109 +435,34 @@ public class Database {
     }
 
     public static void main(String[] args) throws IOException, ParseException {
-        Database database = new Database();
-
-
-        /*
-        AddGroup Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
-        If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
-        the backend team.
-         */
-
-       /* System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
-
-        Group g = new Group("Golf Group 1");
-        g.AddGroupEvent( new Event("Golf1","Front 9",true) );
-
-        g.AddGroupMember("person1");
-        g.AddGroupMember("person2");
-
-
-        g.AddGroupEvent(new Event("Golf2","Back 9",true));
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
-        g.getGroupEvents().get(0).getScores().get(0).inputScore(new int[]{1,1,1,1,1,1,1,1,1});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
-        g.getGroupEvents().get(0).getScores().get(1).inputScore(new int[]{1,1,2,3,420,60,69,70,28});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
-        g.getGroupEvents().get(0).getScores().get(2).inputScore(new int[]{1,1,1,1,1,2,1,1,1});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
-        g.getGroupEvents().get(0).getScores().get(3).inputScore(new int[]{1,1,1,1,1,2,420,1,1});
-
-        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
-        g.getGroupEvents().get(1).getScores().get(0).inputScore(new int[]{69,1,2,3,4,5,6,7,8});
-        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
-        g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
-
-
-        db.AddGroup("test",g);
-
-        System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
-
-        System.out.println("Current Members in Group" + db.GetGroup("test").getPeople());
-
-        db.AddPersontoGroup("person434","test");
-        System.out.println("Current Members in Group" + db.GetGroup("test").getPeople());
-
-        System.out.println("Current Events in this group" + db.GetGroup("test").getGroupEvents().toString());
-        db.AddGroupEvent("test", "event","Front 9");
-
-        System.out.println("Current Events in this group" + db.GetGroup("test").getGroupEvents().toString());
-
-        System.out.println("person1's score" +
-                Arrays.toString(db.GetGroup("test").getGroupEvents().get(0).getScores().get(0).getScores()));
-
-        /*
-        AddPerson Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
-        If you run this on Database.json it will rewrite everything on one line making the file much harder to read for
-        the backend team.
-         */
-
-        /*
-        Person Winston = new Person("Winston Smith");
-        Winston.addPersonalEvent(new Event("test","Front 9",false));
-        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",0));
-        Winston.getPersonalEvents().get(0).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1});
-        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",1));
-        Winston.getPersonalEvents().get(0).getScores().get(1).inputScore(new int[]{1, 1, 1, 1, 1, 69, 1, 1, 1});
-        Winston.addGroup("test group");
-        Winston.addGroup("PGA Proz");
-        Winston.addPersonalEvent(new Event("test 2","Front 9",false));
-        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),0));
-        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 69, 420, 1, 1});
-        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
-        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
-
-
-        System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(0).getScores()));
-        System.out.println(Arrays.toString(Winston.getPersonalEvents().get(0).getScores().get(1).getScores()));
-
-        System.out.println(Winston.getPersonalEvents().get(0).getScores().get(1));
-
-        db.AddPerson("WinstonS",Winston);
-
-         */
+        Database db = new Database();
 
         //GetGroup() Test
-        //System.out.println(Arrays.toString(db.GetGroups()));
+        if (!Arrays.equals(db.GetGroups(),new String[]{"group1", "PGA Proz"})){
+            System.out.print("Error GetGroups() Test Failed should have returned [group1, PGA Proz] ");
+            System.out.println("but it is returning"+Arrays.toString(db.GetGroups()));
+
+        }
 
         //GetPeople() Test
-        /*System.out.println(Arrays.toString(db.GetPeople()));*/
+        if (!Arrays.equals(db.GetPeople(),new String[]{"person4", "person3", "person2", "person1"})) {
+            System.out.print("Error GetPeople() Test Failed should have returned [person4, person3, person2, person1] ");
+            System.out.println(Arrays.toString(db.GetPeople()));
+        }
 
 
-        //Person Braeden = db.GetPerson("person1");
+        Person Braeden = db.GetPerson("person1");
 
-        /* Person Class Tests */
+        //Person Class Tests
 
-        /*
+
         if (!Braeden.getName().equals("Braeden Kroetsch")){
             System.out.print("Braeden Test 1 returned");
             System.out.println(Braeden.getName());
         }
 
-         */
 
-        /* Event Class tests*/
-        /*
+        // Event Class tests
         if (!Braeden.getPersonalEvents().get(0).getEventName().equals("Golf1")){
             System.out.print("Braeden Test 2 returned");
             System.out.print(Braeden.getPersonalEvents().get(0).getEventName());
@@ -575,11 +498,9 @@ public class Database {
         if (Braeden.getPersonalEvents().get(1).getIsGroup())
             System.out.println("Braeden Test 7 should be false");
 
-         */
+        // Golf1 tests (Score class)
 
-        /* Golf1 tests (Score class) */
 
-        /*
         if (Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Braeden Test 8 should be 0 but it is returning");
             System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
@@ -634,11 +555,8 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores())+"\n");
         }
 
-         */
+        // Golf2 tests (Score class) */
 
-
-        /* Golf2 tests (Score class) */
-        /*
         if (Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Braeden Test 18 should be 0 but it is returning");
             System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter());
@@ -705,12 +623,7 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
         }
 
-         */
-
-
-        /* Group tests (Person Class)*/
-
-        /*
+        // Group tests (Person Class)*/
         ArrayList<String> test1 = new ArrayList<>();
         test1.add("group1");
         test1.add("PGA Proz");
@@ -721,11 +634,8 @@ public class Database {
 
         Person M = db.GetPerson("person2");
 
-         */
-
         // Person Class Tests */
 
-        /*
         if (!M.getName().equals("Mohammed Golfguy")) {
             System.out.println("Error, Mohammed Golfguy Test 1 should be Mohammed Golfguy but it is returning" + M.getName());
         }
@@ -745,10 +655,6 @@ public class Database {
         if (M.getPersonalEvents().get(0).getIsGroup()){
             System.out.println("Error, Mohammed Golfguy Test 3 should be false");
         }
-
-         */
-
-        /*
 
         // Golf1 tests (Score class)
         if (M.getPersonalEvents().get(0).getScores().get(0).getEventCounter() != 0){
@@ -794,11 +700,8 @@ public class Database {
             System.out.println(Arrays.toString(M.getPersonalEvents().get(0).getScores().get(1).getScores())+"\n");
         }
 
-         */
-
         //Group tests (Person Class)
 
-        /*
         ArrayList<String> test2 = new ArrayList<>();
         test2.add("group1");
         if (!M.getGroups().equals(test2)){
@@ -809,9 +712,8 @@ public class Database {
         //Someone with no personal events
         Person Hunter = db.GetPerson("person3");
         //Group tests (Person Class)
-        */
 
-        /*
+
         ArrayList<String> test3 = new ArrayList<>();
         test3.add("Golf Team 2");
         if (!Hunter.getGroups().equals(test3)){
@@ -941,9 +843,95 @@ public class Database {
         }
 
         Group proz = db.GetGroup("PGA Proz");
-        System.out.println("Unit Testing Complete");
+
+
+
+
+        // TESTS THAT MODIFY THE DATABASE
+
+        /*
+        //AddGroup Tests
+        Group g = new Group("Golf Group 1");
+        g.AddGroupEvent( new Event("Golf1","Front 9",true) );
+
+        g.AddGroupMember("person1");
+        g.AddGroupMember("person2");
+
+
+        g.AddGroupEvent(new Event("Golf2","Back 9",true));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).getScores().get(0).inputScore(new int[]{1,1,1,1,1,1,1,1,1});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).getScores().get(1).inputScore(new int[]{1,1,2,3,420,60,69,70,28});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).getScores().get(2).inputScore(new int[]{1,1,1,1,1,2,1,1,1});
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).getScores().get(3).inputScore(new int[]{1,1,1,1,1,2,420,1,1});
+
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).getScores().get(0).inputScore(new int[]{69,1,2,3,4,5,6,7,8});
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
+
+
+        db.AddGroup("test",g);
+
+        if (!Arrays.equals(db.GetGroups(),new String[]{"test","group1", "PGA Proz"})){
+            System.out.print("Error AddGroup() Test 1 Failed should have returned [test, group1, PGA Proz] ");
+            System.out.println("but it is returning"+Arrays.toString(db.GetGroups()));
+
+        }
+
+        ArrayList<String> test = new ArrayList<>();
+        test.add("person1");
+        test.add("person2");
+
+        if (!db.GetGroup("test").getPeople().equals(test)){
+            System.out.print("Error AddGroup() Test 2 Failed should have returned [person1, person 2] ");
+            System.out.println("but it is returning"+db.GetGroup("test").getPeople().toString());
+        }
+
+
+        db.AddPersontoGroup("person434","test");
+
+        test.add("person434");
+
+        if (!db.GetGroup("test").getPeople().equals(test)){
+            System.out.print("Error PersonToGroup() Test Failed should have returned [person1, person 2, person434] ");
+            System.out.println("but it is returning"+db.GetGroup("test").getPeople().toString());
+        }
+
+        Person Winston = new Person("Winston Smith");
+        Winston.addPersonalEvent(new Event("test","Front 9",false));
+        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",0));
+        Winston.getPersonalEvents().get(0).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1});
+        Winston.getPersonalEvents().get(0).inputScores(new Score("Front 9","Winston Smith",1));
+        Winston.getPersonalEvents().get(0).getScores().get(1).inputScore(new int[]{1, 1, 1, 1, 1, 69, 1, 1, 1});
+        Winston.addGroup("test group");
+        Winston.addGroup("PGA Proz");
+        Winston.addPersonalEvent(new Event("test 2","Front 9",false));
+        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),0));
+        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{1, 1, 1, 1, 1, 69, 420, 1, 1});
+        Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
+        Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
+
+        db.AddPerson("WinstonS",Winston);
+
+
+        if (!Arrays.equals(db.GetPerson("WinstonS").
+                getPersonalEvents().get(0).getScores().get(0).getScores(),new int[]{1,1,1,1,1,1,1,1,1})){
+            System.out.print("Error AddPerson() Test failed, scores should be [1, 1, 1, 1, 1, 1, 1, 1, 1]" +
+                    "but it is returning");
+            System.out.println(Arrays.toString(db.GetPerson("WinstonS")
+                    .getPersonalEvents().get(0).getScores().get(0).getScores()));
+
+        }
 
          */
+
+
+
+        System.out.println("Unit Testing Complete");
 
 
 
