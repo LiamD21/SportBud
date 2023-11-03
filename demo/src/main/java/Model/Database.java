@@ -18,10 +18,36 @@ import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
+    private JSONArray jsonArray;
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
         parser = new JSONParser();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                initializeData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void initializeData() {
+
+        JSONArray existingData = new JSONArray();
+
+        if (existingData.isEmpty()) {
+            existingData.add(new JSONObject());
+            existingData.add(new JSONObject());
+        }
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            existingData.writeJSONString(fileWriter);
+            fileWriter.write(System.lineSeparator());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -411,7 +437,8 @@ public class Database {
     }
 
     public static void main(String[] args) throws IOException, ParseException {
-        Database db = new Database();
+        Database database = new Database();
+
 
         /*
         AddGroup Tests DO NOT RUN THIS ON database.json, use either databaseTEST.json or make a new .json file
@@ -419,7 +446,7 @@ public class Database {
         the backend team.
          */
 
-        System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
+       /* System.out.println("Current Groups in Database" + Arrays.toString(db.GetGroups()));
 
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
