@@ -4,6 +4,7 @@ import Controller.SoloEventStatsHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
@@ -116,10 +117,13 @@ public class SoloEventStats {
         });
 
         // event listener for the sort button
+        // popup if the button was pressed but no specific hole was selected
         sort.setOnAction(event -> {
             scoreView = handler.convertScoreView(leaderboardSorter.getValue());
             ArrayList<String> lb;
-            if (!Objects.equals(type, "Back 9") || scoreView == 0) {
+
+            // sort and add scores
+            if (!Objects.equals(type, "Back 9") || scoreView == 0 || scoreView == -1) {
                 lb = handler.getScores(scoreView);
             }
             else {
@@ -128,6 +132,13 @@ public class SoloEventStats {
             personalBests.getItems().remove(0, lb.size());
             for (int i = 0; i < lb.size(); i++) {
                 personalBests.getItems().add(i, lb.get(i));
+            }
+
+            // error message if nothing was selected to sort by
+            if (scoreView == -1){
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Select something to sort by before clicking sort");
+                invalidAlert.show();
             }
         });
 
