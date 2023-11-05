@@ -3,6 +3,7 @@ package View;
 import Controller.SoloGamesHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -77,17 +78,25 @@ public class SoloGames {
         });
 
         // If add person button clicked, pass to the controller
-        // New person is only created if the user actually enters a name
+        // New person is only created if the user actually enters a name, else there is just an error popup
         addPersonButton.setOnAction(event -> {
             if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
                 handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
+
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setContentText(String.format("New Person %s Created successfully with username %s", newName.getCharacters().toString(), userName.getCharacters().toString()));
+                confirmAlert.show();
+
                 selectPerson.getChildren().removeAll(personChooser, selectButton);
                 setPersonChoice(createPersonDisplay());
                 selectPerson.getChildren().addAll(personChooser, selectButton);
             }
+            else {
+                Alert failAlert = new Alert(Alert.AlertType.ERROR);
+                failAlert.setContentText("Error: A Name and Username must be entered to create a new person");
+                failAlert.show();
+            }
         });
-
-        // TODO Liam add confirmation text to creating person
 
         // If select button clicked, pass to the controller
         // Person is only selected if the user actually selects an option
