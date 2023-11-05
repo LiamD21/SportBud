@@ -116,10 +116,18 @@ public class SoloGames {
         return root;
     }
 
+    /**
+     * gets the list of people from the handler
+     * @return a string list of people's usernames
+     */
     public String[] getPeople(){
         return handler.getPersonList();
     }
 
+    /**
+     * goes through all the people's usernames and adds them to a choice box
+     * @return a choice box containing all the people's usernames
+     */
     private ChoiceBox<String> createPersonDisplay(){
         people = this.getPeople();
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
@@ -129,6 +137,10 @@ public class SoloGames {
         return choiceBox;
     }
 
+    /**
+     * Takes in a choice box and sets it to the main page choice box
+     * @param choiceBox a choice box object
+     */
     private void setPersonChoice(ChoiceBox<String> choiceBox){
         personChooser = choiceBox;
     }

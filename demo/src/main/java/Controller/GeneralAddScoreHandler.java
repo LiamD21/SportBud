@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Event;
 import Model.Person;
-import Model.Score;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -26,6 +25,11 @@ public class GeneralAddScoreHandler extends UIHandler{
         event = getEvent(eventID);
     }
 
+    /**
+     * Finds the event corresponding to a given string
+     * @param eventID the string event id corresponding to the event we wish to check for
+     * @return null if the string does not correspond to an existing event, else returns the event
+     */
     private Event getEvent(String eventID){
         for (Event event : person.getPersonalEvents()){
             if (Objects.equals(event.getEventName(), eventID)){
@@ -35,10 +39,18 @@ public class GeneralAddScoreHandler extends UIHandler{
         return null;
     }
 
+    /**
+     * gets the string value of the current event's type
+     * @return the string event type
+     */
     public String getEventType(){
         return event.getEventType();
     }
 
+    /**
+     * adds a new score to this event
+     * @param scores an integer array containing all the scores for this event
+     */
     public void setScore(int[] scores){
         if (!event.getIsGroup()) {
             try {

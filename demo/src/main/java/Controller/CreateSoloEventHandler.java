@@ -17,6 +17,11 @@ public class CreateSoloEventHandler extends UIHandler{
         this.username = username;
     }
 
+    /**
+     * Creates a solo event for the current person from the given parameters
+     * @param eventName the string name for the new event
+     * @param eventType the string event type - must match a known event type
+     */
     public void createEvent(String eventName, String eventType){
         try {
             db.AddSoloEvent(username, eventName, eventType);
