@@ -57,7 +57,7 @@ public class SoloEventStatsHandler extends UIHandler{
      * @param hole an integer to see what hole to sort by. 0 means total.
      * @return the sorted array list of scores in this event
      */
-    public ArrayList<Integer> getScores(int hole){
+    public ArrayList<String> getScores(int hole){
         return sortScores(event.getScores(), hole);
     }
 
@@ -67,8 +67,9 @@ public class SoloEventStatsHandler extends UIHandler{
      * @param hole an integer to see what hole to sort by. 0 means total.
      * @return the sorted golf score array list
      */
-    private ArrayList<Integer> sortScores(ArrayList<Score> scores, int hole){
+    private ArrayList<String> sortScores(ArrayList<Score> scores, int hole){
         ArrayList<Integer> totalsPlaceholder = new ArrayList<>(scores.size());
+        ArrayList<Integer> timesPlayedMirrorArr = new ArrayList<>(scores.size());
         for (int i = 0; i < scores.size(); i++){
             Score item = scores.get(i);
             int[] holes = item.getScores();
@@ -90,17 +91,36 @@ public class SoloEventStatsHandler extends UIHandler{
             // if this is the first item, just put it in the new array
             if (i == 0){
                 totalsPlaceholder.add(total);
+                timesPlayedMirrorArr.add(item.getEventCounter()+1);
             }
-
-            // else, move up the array until you find the correct index to insert it at
-            for (int j = 0; j < totalsPlaceholder.size(); j++){
-                if (total <= totalsPlaceholder.get(j)){
-                    totalsPlaceholder.add(j, total);
-                    break;
+            else {
+                boolean placed = false;
+                // else, move up the array until you find the correct index to insert it at
+                for (int j = 0; j < totalsPlaceholder.size(); j++) {
+                    if (total <= totalsPlaceholder.get(j)) {
+                        totalsPlaceholder.add(j, total);
+                        timesPlayedMirrorArr.add(j, item.getEventCounter()+1);
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed){
+                    totalsPlaceholder.add(totalsPlaceholder.size(), total);
+                    timesPlayedMirrorArr.add(timesPlayedMirrorArr.size(), item.getEventCounter()+1);
                 }
             }
         }
-        return totalsPlaceholder;
+        for (int inte:totalsPlaceholder){
+            System.out.println(inte);
+        }
+
+        // create arraylist of scores combined with attempt number
+        ArrayList<String> strScores = new ArrayList<>(totalsPlaceholder.size());
+        for (int i = 0; i < totalsPlaceholder.size(); i++){
+            strScores.add(totalsPlaceholder.get(i).toString() + "      Attempt: " + timesPlayedMirrorArr.get(i).toString());
+        }
+
+        return strScores;
     }
 
     public int convertScoreView(String item){

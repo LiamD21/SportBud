@@ -42,20 +42,17 @@ public class SoloEventStats {
         Text nameTitle = new Text(handler.getEventName());
         Text eventType = new Text();
         BorderPane leaderboardPane = new BorderPane();
-        ListView<Integer> personalBests = new ListView<>();
+        ListView<String> personalBests = new ListView<>();
         ChoiceBox<String> leaderboardSorter = new ChoiceBox<>();
         Text sorterText = new Text("Leaderboard sorted by:");
         HBox bottomButtonsBox = new HBox();
         Button sort = new Button("Sort");
         Button addScoreButton = new Button("Add Score");
 
-        // TODO Liam add number of times played to leaderboard - Change int displayed to string to be able to display more info
-        // TODO Liam add functionality to add scores
-
         // add sorted score leaderboard to listview
-        ArrayList<Integer> leaderboard = handler.getScores(scoreView);
-        for (Integer integer : leaderboard) {
-            personalBests.getItems().add(integer);
+        ArrayList<String> leaderboard = handler.getScores(scoreView);
+        for (String score : leaderboard) {
+            personalBests.getItems().add(score);
         }
         personalBests.setPrefHeight(100);
         personalBests.setPrefWidth(300);
@@ -121,7 +118,7 @@ public class SoloEventStats {
         // event listener for the sort button
         sort.setOnAction(event -> {
             scoreView = handler.convertScoreView(leaderboardSorter.getValue());
-            ArrayList<Integer> lb;
+            ArrayList<String> lb;
             if (!Objects.equals(type, "Back 9") || scoreView == 0) {
                 lb = handler.getScores(scoreView);
             }
