@@ -3,7 +3,7 @@ package View;
 import Controller.CreateSoloEventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,21 +25,51 @@ public class CreateSoloEvent {
         // create elements
         AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
+        TextField eventName = new TextField("Enter Your Event's Name");
+        Label choiceLabel = new Label("Select your event's type");
+        ChoiceBox<String> eventTypes= new ChoiceBox<>();
+        Button confirm = new Button("Create Event");
+        VBox vbox = new VBox(choiceLabel, eventTypes, eventName, confirm);
+
+        // add event types to the choice box
+        eventTypes.getItems().addAll("18", "Front 9", "Back 9");
+
+        // set up the vbox with the elements
+        vbox.setAlignment(Pos.CENTER);
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 10.0);
         AnchorPane.setLeftAnchor(backButton, 15.0);
         anchorPane.getChildren().addAll(backButton);
 
-        // TODO Liam add create event functionality
-
         // add elements to the root
-        root.getChildren().addAll(anchorPane);
+        root.getChildren().addAll(anchorPane, vbox);
 
         // event handling for the back button
         backButton.setOnAction(event -> {
             SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+        // event handling for the create event button
+        // text field must have a name and a type must be selected
+        confirm.setOnAction(event -> {
+            if (!eventName.getCharacters().toString().equals("Enter Your Event's Name") && eventTypes.getValue() != null){
+                handler.createEvent(eventName.getCharacters().toString(), eventTypes.getValue());
+
+                // returns to the previous menu after creating the new event successfully
+                SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setContentText(String.format("%s event named %s created!", eventTypes.getValue(), eventName.getCharacters().toString()));
+                confirmAlert.show();
+            }
+            else {
+                Alert failAlert = new Alert(Alert.AlertType.ERROR);
+                failAlert.setContentText("Error: An event name must be entered and an event type must be selected");
+                failAlert.show();
+            }
         });
     }
 
