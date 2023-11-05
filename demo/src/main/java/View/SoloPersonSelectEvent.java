@@ -4,6 +4,7 @@ import Controller.SoloPersonSelectEventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -76,10 +77,16 @@ public class SoloPersonSelectEvent {
         });
 
         // event listener for the view selected event button
+        // if nothing is selected, give error popup
         statsButton.setOnAction(event -> {
             if (eventList.getSelectionModel().getSelectedItem() != null) {
-                SoloEventStats menu = new SoloEventStats(stage, eventList.getSelectionModel().getSelectedItem(), username);
+                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventList.getSelectionModel().getSelectedItem(), username);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
+            else {
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Select an Event Above to see the leaderboard");
+                invalidAlert.show();
             }
         });
     }

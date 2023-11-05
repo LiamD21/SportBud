@@ -1,6 +1,6 @@
 package View;
 
-import Controller.SoloEventStatsHandler;
+import Controller.SoloEventLbHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,16 +19,16 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class SoloEventStats {
+public class SoloEventLeaderboard {
 
     private final VBox root;
     private final String eventID;
-    private final SoloEventStatsHandler handler;
+    private final SoloEventLbHandler handler;
     private int scoreView = 0;
 
-    public SoloEventStats(Stage stage, String eventID, String personID){
+    public SoloEventLeaderboard(Stage stage, String eventID, String personID){
         this.eventID = eventID;
-        handler = new SoloEventStatsHandler(eventID, personID);
+        handler = new SoloEventLbHandler(eventID, personID);
 
         // create the root
         stage.setTitle(String.format("%s Stats", handler.getEventName()));

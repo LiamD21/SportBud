@@ -68,7 +68,7 @@ public class GeneralAddScore {
         // event listener for the back button
         backButton.setOnAction(event -> {
             if (Objects.equals(lastPage, "SoloEventStats")) {
-                SoloEventStats menu = new SoloEventStats(stage, eventID, personID);
+                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });

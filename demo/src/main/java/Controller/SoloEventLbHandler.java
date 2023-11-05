@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class SoloEventStatsHandler extends UIHandler{
+public class SoloEventLbHandler extends UIHandler{
     Event event;
     Person person;
-    public SoloEventStatsHandler(String eventID, String personID){
+    public SoloEventLbHandler(String eventID, String personID){
         super.setDb();
         try {
             person = db.GetPerson(personID);
