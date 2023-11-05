@@ -99,11 +99,16 @@ public class SoloGames {
         });
 
         // If select button clicked, pass to the controller
-        // Person is only selected if the user actually selects an option
+        // Person is only selected if the user actually selects an option, else, show error popup
         selectButton.setOnAction(event -> {
             if (personChooser.getValue() != null){
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personChooser.getValue());
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
+            else {
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Select a username before confirming your selection");
+                invalidAlert.show();
             }
         });
     }

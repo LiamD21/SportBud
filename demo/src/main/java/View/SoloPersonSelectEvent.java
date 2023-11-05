@@ -85,7 +85,7 @@ public class SoloPersonSelectEvent {
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
-                invalidAlert.setContentText("Error: Select an Event Above to see the leaderboard");
+                invalidAlert.setContentText("Error: Select an Event above to see the leaderboard");
                 invalidAlert.show();
             }
         });
