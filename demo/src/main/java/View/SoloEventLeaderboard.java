@@ -1,7 +1,6 @@
 package View;
 
 import Controller.SoloEventLbHandler;
-import Controller.SoloStatsHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

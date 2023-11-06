@@ -46,11 +46,19 @@ public class SoloStatsHandler extends UIHandler{
     }
 
     /**
+     * Gets this event's type
+     * @return the String representing the events type
+     */
+    public String getEventType(){
+        return event.getEventType();
+    }
+
+    /**
      * gets the average score of an event at the given hole or total
      * @param hole the integer which specifies a total score, 0, or a specific hole
      * @return a double representing the average score for this event
      */
-    public double getAverage(int hole){
+    public int getAverage(int hole){
         ArrayList<Integer> scores = getScores(hole);
         double average = 0;
 
@@ -58,7 +66,7 @@ public class SoloStatsHandler extends UIHandler{
             average += score;
         }
 
-        return Math.round(100.0*(average/scores.size()))/100.0;
+        return (int) Math.round(average/ scores.size());
     }
 
     /**
@@ -69,6 +77,10 @@ public class SoloStatsHandler extends UIHandler{
     private ArrayList<Integer> getScores(int hole){
         ArrayList<Score> scores = event.getScores();
         ArrayList<Integer> scoreTotals = new ArrayList<>(scores.size());
+
+        if (hole == -1){
+            hole = 0;
+        }
 
         // go through all scores and add them up depending on what the hole is, total or specific
         for (int i = 0; i < scores.size(); i++) {
@@ -90,5 +102,22 @@ public class SoloStatsHandler extends UIHandler{
             scoreTotals.add(i, tot);
         }
         return scoreTotals;
+    }
+
+    /**
+     * converts the string score view to an integer to represent what to sort by
+     * @param item the string value of what to sort by
+     * @return the integer to use for sorting, 0 for overall/total, -1 for no selection
+     */
+    public int convertScoreView(String item){
+        if (Objects.equals(item, "Total")){
+            return 0;
+        }
+        else if (item == null){
+            return -1;
+        }
+        else {
+            return Integer.parseInt(item);
+        }
     }
 }
