@@ -1,6 +1,7 @@
 package View;
 
 import Controller.SoloEventLbHandler;
+import Controller.SoloStatsHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,16 +23,14 @@ import java.util.Objects;
 public class SoloEventLeaderboard {
 
     private final VBox root;
-    private final String eventID;
     private final SoloEventLbHandler handler;
     private int scoreView = 0;
 
     public SoloEventLeaderboard(Stage stage, String eventID, String personID){
-        this.eventID = eventID;
         handler = new SoloEventLbHandler(eventID, personID);
 
         // create the root
-        stage.setTitle(String.format("%s Stats", handler.getEventName()));
+        stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
@@ -49,6 +48,7 @@ public class SoloEventLeaderboard {
         HBox bottomButtonsBox = new HBox();
         Button sort = new Button("Sort");
         Button addScoreButton = new Button("Add Score");
+        Button toStatsPage = new Button("View More Stats");
 
         // add sorted score leaderboard to listview
         ArrayList<String> leaderboard = handler.getScores(scoreView);
@@ -108,7 +108,7 @@ public class SoloEventLeaderboard {
         anchorPane.getChildren().addAll(backButton);
 
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane, bottomButtonsBox);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane, bottomButtonsBox, toStatsPage);
 
         // event listener for the back button
         backButton.setOnAction(event -> {
@@ -145,6 +145,12 @@ public class SoloEventLeaderboard {
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
             GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, eventID);
+            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+        // event listener for the stats page button
+        toStatsPage.setOnAction(event -> {
+            SoloStats menu = new SoloStats(stage, eventID, personID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
     }

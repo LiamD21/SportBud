@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class SoloEventLbHandler extends UIHandler{
-    Event event;
-    Person person;
+    private Event event;
+    private Person person;
     public SoloEventLbHandler(String eventID, String personID){
         super.setDb();
         try {
