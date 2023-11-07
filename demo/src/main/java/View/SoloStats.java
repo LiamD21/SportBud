@@ -4,10 +4,12 @@ import Controller.SoloStatsHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +24,7 @@ public class SoloStats {
     private final VBox root;
     private final SoloStatsHandler handler;
     private int averageScoreView = 0;
+    private int chartScoreView = 0;
     private Text avgInfo;
 
     public SoloStats(Stage stage, String eventID, String personID){
@@ -76,8 +79,25 @@ public class SoloStats {
         AnchorPane.setLeftAnchor(backButton, 5.0);
         anchorPane.getChildren().addAll(backButton);
 
+        // Create a chart
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Attempt");
+        yAxis.setLabel("Score");
+        final LineChart<Number, Number> progressChart = new LineChart<>(xAxis, yAxis);
+        progressChart.setTitle("Scores Over Time");
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Scores");
+        ArrayList<Integer> data = handler.getChartData(chartScoreView);
+
+        // adding elements to the chart
+        for (int i = 0; i < data.size(); i++){
+            series.getData().add(new XYChart.Data<>(i, data.get(i)));
+        }
+        progressChart.getData().add(series);
+
         // add elements to the root
-        root.getChildren().addAll(anchorPane, averageStat);
+        root.getChildren().addAll(anchorPane, averageStat, progressChart);
 
         // event listener for the back button
         backButton.setOnAction(event -> {

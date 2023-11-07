@@ -120,4 +120,13 @@ public class SoloStatsHandler extends UIHandler{
             return Integer.parseInt(item);
         }
     }
+
+    /**
+     * Gets the data needed to populate a chart
+     * @param hole the integer which specifies a total score, 0, or a specific hole
+     * @return an arraylist of integers which represent scores to populate the chart with
+     */
+    public ArrayList<Integer> getChartData(int hole){
+        return getScores(hole);
+    }
 }
