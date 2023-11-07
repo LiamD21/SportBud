@@ -381,9 +381,6 @@ public class Database {
         JSONArray group = ((JSONArray) groupHT.get(groupUsername));
         JSONArray events = (JSONArray) group.get(2);
 
-        if (!eventType.equals("Front 9") && !eventType.equals("Back 9") && !eventType.equals("18"))
-            throw new RuntimeException("Error, Invalid Event Type");
-
         JSONArray newEvent = new JSONArray();
 
         //Initializing an empty score array
@@ -411,8 +408,6 @@ public class Database {
         JSONArray person = ((JSONArray) personHT.get(Username));
         JSONArray events = (JSONArray) person.get(1);
 
-        if (!eventType.equals("Front 9") && !eventType.equals("Back 9") && !eventType.equals("18"))
-            throw new RuntimeException("Error, Invalid Event Type");
 
         JSONArray newEvent = new JSONArray();
 
@@ -475,6 +470,10 @@ public class Database {
             System.out.print(Braeden.getPersonalEvents().get(0).getEventType());
             System.out.println("When it should've returned Front 9");
 
+        }
+
+        if (!Braeden.getPersonalEvents().get(0).isGolf()){
+            System.out.println("Error Braeden Test 3.5 should be a golf event");
         }
 
         if (Braeden.getPersonalEvents().get(0).getIsGroup())
@@ -848,8 +847,8 @@ public class Database {
 
 
         // TESTS THAT MODIFY THE DATABASE
-
         /*
+
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
@@ -873,8 +872,31 @@ public class Database {
         g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
         g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
 
+        g.AddGroupEvent(new Event("Push Ups","Push Ups",true));
+        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","PU1",0));
+        g.getGroupEvents().get(2).getScores().get(0).inputScore(new int[]{20});
+        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","PU1",0));
+        g.getGroupEvents().get(2).getScores().get(1).inputScore(new int[]{69});
+
+
+
 
         db.AddGroup("test",g);
+
+        if (db.GetGroup("test").getGroupEvents().get(2).isGolf())
+            System.out.println("Error, group push up event should not be golf");
+
+        if (!Arrays.equals(db.GetGroup("test").getGroupEvents().get(2).getScores().get(0).getScores(),
+                new int[]{20})){
+            System.out.print("Error score should be [20] but it is returning");
+            System.out.println(Arrays.toString(db.GetGroup("test").getGroupEvents().get(2).getScores().get(0).getScores()));
+        }
+
+        if (!Arrays.equals(db.GetGroup("test").getGroupEvents().get(2).getScores().get(1).getScores(),
+                new int[]{69})){
+            System.out.print("Error score should be [69] but it is returning");
+            System.out.println(Arrays.toString(db.GetGroup("test").getGroupEvents().get(2).getScores().get(1).getScores()));
+        }
 
         if (!Arrays.equals(db.GetGroups(),new String[]{"test","group1", "PGA Proz"})){
             System.out.print("Error AddGroup() Test 1 Failed should have returned [test, group1, PGA Proz] ");
@@ -915,6 +937,14 @@ public class Database {
         Winston.getPersonalEvents().get(1).inputScores(new Score("Front 9",Winston.getName(),1));
         Winston.getPersonalEvents().get(1).getScores().get(0).inputScore(new int[]{3, 5, 1, 1, 1, 69, 420, 1, 1});
 
+
+        //Testing adding non golf events
+        Winston.addPersonalEvent(new Event("Push Ups","Push Ups",false));
+        Winston.getPersonalEvents().get(2).inputScores(new Score("Push Ups","Winston Smith",0));
+        Winston.getPersonalEvents().get(2).getScores().get(0).inputScore(new int[]{1});
+        Winston.getPersonalEvents().get(2).inputScores(new Score("Push Ups","Winston Smith",1));
+        Winston.getPersonalEvents().get(2).getScores().get(1).inputScore(new int[]{6});
+
         db.AddPerson("WinstonS",Winston);
 
 
@@ -927,11 +957,26 @@ public class Database {
 
         }
 
-         */
 
+        if (db.GetPerson("WinstonS").getPersonalEvents().get(2).isGolf()){
+            System.out.println("Error Winston's push up event should not be a golf event");
+        }
 
+        if (!Arrays.equals(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(0).getScores(),
+                new int[]{1})){
+            System.out.print("Error, Winstons score on push ups should be [1] but it is returning");
+            System.out.println(Arrays.toString(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(0).getScores()));
+        }
+
+        if (!Arrays.equals(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(1).getScores(),
+                new int[]{6})){
+            System.out.print("Error, Winstons score on push ups should be [6] but it is returning");
+            System.out.println(Arrays.toString(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(1).getScores()));
+        }
 
         System.out.println("Unit Testing Complete");
+
+         */
 
 
 
