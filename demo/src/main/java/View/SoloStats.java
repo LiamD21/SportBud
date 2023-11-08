@@ -25,7 +25,7 @@ public class SoloStats {
     private final SoloStatsHandler handler;
     private int averageScoreView = 0;
     private int chartScoreView = 0;
-    private Text avgInfo;
+    private final Text avgInfo;
 
     public SoloStats(Stage stage, String eventID, String personID){
         handler = new SoloStatsHandler(eventID, personID);

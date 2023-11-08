@@ -74,7 +74,6 @@ public class GeneralAddScore {
             }
         });
 
-        // TODO Liam - Add input filtering based on if it has the correct number of inputs for the event type
         // event listener for the add scores button
         submit.setOnAction(event -> {
             if (!scoreIn.getCharacters().toString().equals("Enter Scores Here")){
