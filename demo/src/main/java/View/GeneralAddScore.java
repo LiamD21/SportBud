@@ -47,7 +47,7 @@ public class GeneralAddScore {
 
         // create score entering elements
         Label label;
-        if (Objects.equals(handler.getEventType(), "Front 9") || Objects.equals(handler.getEventType(), "Back 9") || Objects.equals(handler.getEventType(), "18")){
+        if (handler.isGolfEvent()){
             label = new Label("Enter your scores, \neach hole separated by a comma");
         }
         else{
@@ -77,7 +77,7 @@ public class GeneralAddScore {
         // event listener for the add scores button
         submit.setOnAction(event -> {
             if (!scoreIn.getCharacters().toString().equals("Enter Scores Here")){
-                if (Objects.equals(handler.getEventType(), "Front 9") || Objects.equals(handler.getEventType(), "Back 9") || Objects.equals(handler.getEventType(), "18")) {
+                if (handler.isGolfEvent()) {
                     String[] scores = scoreIn.getCharacters().toString().split(",");
                     int[] intScores = new int[scores.length];
                     for (int i = 0; i < scores.length; i++){
@@ -87,6 +87,11 @@ public class GeneralAddScore {
                         intScores[i] = Integer.parseInt(scores[i]);
                     }
                     handler.setScore(intScores);
+                }
+                else {
+                    int score = Integer.parseInt(scoreIn.getCharacters().toString());
+                    int[] scores = {score};
+                    handler.setScore(scores);
                 }
             }
         });

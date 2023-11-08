@@ -77,28 +77,32 @@ public class SoloEventLeaderboard {
         else if (Objects.equals(type, "Front 9")){
             eventType.setText("This is a golf event on the front 9");
         }
+        else {
+            eventType.setText(String.format("This is a %s event", type));
+        }
 
         // add sorting choice elements to their HBox
         bottomButtonsBox.getChildren().addAll(sorterText, leaderboardSorter, sort, addScoreButton);
         bottomButtonsBox.setSpacing(10);
         bottomButtonsBox.setAlignment(Pos.CENTER);
 
-        // Add choices to the sorting choice box
-        int start = 1;
-        int choices = 0;
-        if (Objects.equals(type, "Front 9") || Objects.equals(type, "Back 9")){
-            choices = 9;
-            if (Objects.equals(type, "Back 9")){
-                start = 10;
+        // Add choices to the sorting choice box if this event is a golf event
+        if (handler.isGolfEvent()) {
+            int start = 1;
+            int choices = 0;
+            if (Objects.equals(type, "Front 9") || Objects.equals(type, "Back 9")) {
+                choices = 9;
+                if (Objects.equals(type, "Back 9")) {
+                    start = 10;
+                    choices = 18;
+                }
+            } else if (Objects.equals(type, "18")) {
                 choices = 18;
             }
-        }
-        else if (Objects.equals(type, "18")){
-            choices = 18;
-        }
-        leaderboardSorter.getItems().add("Total");
-        for (int i = start; i <= choices; i++){
-            leaderboardSorter.getItems().add(String.valueOf(i));
+            leaderboardSorter.getItems().add("Total");
+            for (int i = start; i <= choices; i++) {
+                leaderboardSorter.getItems().add(String.valueOf(i));
+            }
         }
 
         // Anchor back button to the top corner of the screen
@@ -107,7 +111,16 @@ public class SoloEventLeaderboard {
         anchorPane.getChildren().addAll(backButton);
 
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane, bottomButtonsBox, toStatsPage);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane);
+
+        // only add sorting buttons if this event is a golf event and there are options to sort between
+        if (handler.isGolfEvent()) {
+            root.getChildren().addAll(bottomButtonsBox, toStatsPage);
+        }
+
+        else {
+            root.getChildren().addAll(addScoreButton, toStatsPage);
+        }
 
         // event listener for the back button
         backButton.setOnAction(event -> {
