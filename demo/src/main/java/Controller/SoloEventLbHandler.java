@@ -139,4 +139,12 @@ public class SoloEventLbHandler extends UIHandler{
             return Integer.parseInt(item);
         }
     }
+
+    /**
+     * Checks if the current event is a golf event
+     * @return a boolean true if it is a golf event
+     */
+    public boolean isGolfEvent(){
+        return event.isGolf();
+    }
 }

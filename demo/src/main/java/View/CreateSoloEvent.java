@@ -32,7 +32,8 @@ public class CreateSoloEvent {
         VBox vbox = new VBox(choiceLabel, eventTypes, eventName, confirm);
 
         // add event types to the choice box
-        eventTypes.getItems().addAll("18", "Front 9", "Back 9");
+        // Other event type just means not a golf event
+        eventTypes.getItems().addAll("18", "Front 9", "Back 9", "Other");
 
         // set up the vbox with the elements
         vbox.setAlignment(Pos.CENTER);

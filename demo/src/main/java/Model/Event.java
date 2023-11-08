@@ -15,6 +15,10 @@ public class Event {
         this.isGroup = group;
     }
 
+    public boolean isGolf(){
+        return this.eventType.equals("Front 9") || this.eventType.equals("Back 9") || this.eventType.equals("18");
+    }
+
     public String getEventName(){
         return this.eventName;
     }

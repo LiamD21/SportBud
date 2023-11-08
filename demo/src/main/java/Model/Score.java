@@ -19,10 +19,11 @@ public class Score {
         if (type.equals("Front 9") || type.equals("Back 9"))
             scores = new int[9];
         else if (type.equals("18"))
-            scores = new  int[18];
+            scores = new int[18];
         else
-            throw new RuntimeException("Invalid Type");
+            scores = new int[1];
     }
+
 
     public void inputScore(int[] inputScores){
         if (inputScores.length != this.scores.length)

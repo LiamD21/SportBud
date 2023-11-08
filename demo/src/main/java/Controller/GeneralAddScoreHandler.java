@@ -40,11 +40,11 @@ public class GeneralAddScoreHandler extends UIHandler{
     }
 
     /**
-     * gets the string value of the current event's type
-     * @return the string event type
+     * Checks if the current event is a golf event
+     * @return a boolean true if it is a golf event
      */
-    public String getEventType(){
-        return event.getEventType();
+    public boolean isGolfEvent(){
+        return event.isGolf();
     }
 
     /**
