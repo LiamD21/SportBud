@@ -64,14 +64,21 @@ public class SoloStats {
         ChoiceBox<String> averageChoice = new ChoiceBox<>();
         avgInfo = new Text(String.format("Your Average Score is: %d", avg));
         Button checkAvgButton = new Button("Check Average");
-        averageStat.getChildren().addAll(avgInfo, averageChoice, checkAvgButton);
+        averageStat.getChildren().add(avgInfo);
         averageStat.setSpacing(20);
         averageStat.setAlignment(Pos.CENTER);
 
-        // adding choices to the average sorting choice box
-        averageChoice.getItems().add("Total");
-        for (int i = start; i <= choices; i++){
-            averageChoice.getItems().add(String.valueOf(i));
+        // if this event is a golf event, add display choices
+        if (handler.isGolfEvent()){
+            averageStat.getChildren().addAll(averageChoice, checkAvgButton);
+        }
+
+        // adding choices to the average sorting choice box only if this is a golf event
+        if (handler.isGolfEvent()) {
+            averageChoice.getItems().add("Total");
+            for (int i = start; i <= choices; i++) {
+                averageChoice.getItems().add(String.valueOf(i));
+            }
         }
 
         // Anchor back button to the top corner of the screen
@@ -84,6 +91,7 @@ public class SoloStats {
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Attempt");
         yAxis.setLabel("Score");
+        xAxis.setMinorTickVisible(false);
         final LineChart<Number, Number> progressChart = new LineChart<>(xAxis, yAxis);
         progressChart.setTitle("Scores Over Time");
         XYChart.Series series = new XYChart.Series();

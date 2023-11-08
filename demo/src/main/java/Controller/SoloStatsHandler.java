@@ -122,6 +122,14 @@ public class SoloStatsHandler extends UIHandler{
     }
 
     /**
+     * Checks if the current event is a golf event
+     * @return a boolean true if it is a golf event
+     */
+    public boolean isGolfEvent(){
+        return event.isGolf();
+    }
+
+    /**
      * Gets the data needed to populate a chart
      * @param hole the integer which specifies a total score, 0, or a specific hole
      * @return an arraylist of integers which represent scores to populate the chart with
