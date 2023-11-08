@@ -41,7 +41,6 @@ public class GroupGames {
         titleText.setFont(new Font(22));
 
         // add all groups as choices in the choice box
-        // TODO once we have get groups method
         groups = this.getGroups();
         for(String group: groups){
             groupChoice.getItems().add(group);
