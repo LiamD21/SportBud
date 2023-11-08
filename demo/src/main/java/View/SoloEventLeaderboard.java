@@ -28,6 +28,9 @@ public class SoloEventLeaderboard {
     public SoloEventLeaderboard(Stage stage, String eventID, String personID){
         handler = new SoloEventLbHandler(eventID, personID);
 
+        // TODO add selector to decide if this event is sorted by fastest or slowest
+        // TODO time and score event types
+
         // create the root
         stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
         root = new VBox();
@@ -130,26 +133,35 @@ public class SoloEventLeaderboard {
 
         // event listener for the sort button
         // popup if the button was pressed but no specific hole was selected
+        // popup if the button was pressed but there are no scores to sort
         sort.setOnAction(event -> {
-            scoreView = handler.convertScoreView(leaderboardSorter.getValue());
-            ArrayList<String> lb;
+            if (handler.hasScores()) {
+                scoreView = handler.convertScoreView(leaderboardSorter.getValue());
+                ArrayList<String> lb;
 
-            // sort and add scores
-            if (!Objects.equals(type, "Back 9") || scoreView == 0 || scoreView == -1) {
-                lb = handler.getScores(scoreView);
+                // sort and add scores
+                if (!Objects.equals(type, "Back 9") || scoreView == 0 || scoreView == -1) {
+                    lb = handler.getScores(scoreView);
+                } else {
+                    lb = handler.getScores(scoreView - 9);
+                }
+                personalBests.getItems().remove(0, lb.size());
+                for (int i = 0; i < lb.size(); i++) {
+                    personalBests.getItems().add(i, lb.get(i));
+                }
+
+                // error message if nothing was selected to sort by
+                if (scoreView == -1) {
+                    Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                    invalidAlert.setContentText("Error: Select something to sort by before clicking sort");
+                    invalidAlert.show();
+                }
             }
+
+            // error message if the event does not have any scores yet
             else {
-                lb = handler.getScores(scoreView - 9);
-            }
-            personalBests.getItems().remove(0, lb.size());
-            for (int i = 0; i < lb.size(); i++) {
-                personalBests.getItems().add(i, lb.get(i));
-            }
-
-            // error message if nothing was selected to sort by
-            if (scoreView == -1){
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
-                invalidAlert.setContentText("Error: Select something to sort by before clicking sort");
+                invalidAlert.setContentText("Error: There are no scores to sort");
                 invalidAlert.show();
             }
         });

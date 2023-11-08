@@ -4,6 +4,7 @@ import Controller.GeneralAddScoreHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -79,19 +80,59 @@ public class GeneralAddScore {
             if (!scoreIn.getCharacters().toString().equals("Enter Scores Here")){
                 if (handler.isGolfEvent()) {
                     String[] scores = scoreIn.getCharacters().toString().split(",");
-                    int[] intScores = new int[scores.length];
-                    for (int i = 0; i < scores.length; i++){
-                        if (scores[i].charAt(0) == ' '){
-                            scores[i] = scores[i].substring(1);
+
+                    // check for valid score input
+                    if (((Objects.equals(handler.getEventType(), "Front 9") || Objects.equals(handler.getEventType(), "Back 9")) && scores.length == 9) ||
+                            (Objects.equals(handler.getEventType(), "18") && scores.length == 18)) {
+                        int[] intScores = new int[scores.length];
+
+                        // check for valid score input of individual hole scores
+                        try {
+                            for (int i = 0; i < scores.length; i++) {
+                                if (scores[i].charAt(0) == ' ') {
+                                    scores[i] = scores[i].substring(1);
+                                }
+                                intScores[i] = Integer.parseInt(scores[i]);
+                            }
+                            handler.setScore(intScores);
+
+                            // go back to the leaderboard after entering a new score
+                            if (Objects.equals(lastPage, "SoloEventStats")) {
+                                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                            }
+                        } catch (NumberFormatException | NullPointerException e){
+                            Alert inputAlert = new Alert(Alert.AlertType.ERROR);
+                            inputAlert.setContentText("Error: Input for each hole's score must be an integer");
+                            inputAlert.show();
                         }
-                        intScores[i] = Integer.parseInt(scores[i]);
                     }
-                    handler.setScore(intScores);
+
+                    // if invalid input, display error popup
+                    else {
+                        Alert inputAlert = new Alert(Alert.AlertType.ERROR);
+                        inputAlert.setContentText("Error: Input for a Golf event must be either 9 or 18 hole scores separated by commas");
+                        inputAlert.show();
+                    }
                 }
                 else {
-                    int score = Integer.parseInt(scoreIn.getCharacters().toString());
-                    int[] scores = {score};
-                    handler.setScore(scores);
+
+                    // check for valid score input
+                    try {
+                        int score = Integer.parseInt(scoreIn.getCharacters().toString());
+                        int[] scores = {score};
+                        handler.setScore(scores);
+
+                        // go back to the leaderboard after entering a new score
+                        if (Objects.equals(lastPage, "SoloEventStats")) {
+                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+                            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                        }
+                    } catch (NumberFormatException | NullPointerException e){
+                        Alert inputAlert = new Alert(Alert.AlertType.ERROR);
+                        inputAlert.setContentText("Error: Input for an event must be entered as a single integer");
+                        inputAlert.show();
+                    }
                 }
             }
         });

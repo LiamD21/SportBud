@@ -147,4 +147,12 @@ public class SoloEventLbHandler extends UIHandler{
     public boolean isGolfEvent(){
         return event.isGolf();
     }
+
+    /**
+     * Checks if the current event contains any scores
+     * @return true if the current event contains scores
+     */
+    public boolean hasScores(){
+        return getScores(0).size() != 0;
+    }
 }

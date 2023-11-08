@@ -31,6 +31,9 @@ public class SoloStats {
         handler = new SoloStatsHandler(eventID, personID);
         String type = handler.getEventType();
 
+        // TODO add improvement stats
+        // TODO add high and low scores
+
         // create the root
         stage.setTitle(String.format("%s Stats", handler.getEventName()));
         root = new VBox();
