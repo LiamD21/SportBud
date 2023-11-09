@@ -121,6 +121,9 @@ public class GroupSelectEvent {
         newEventButton.setOnAction(event ->{
             //TODO
             //New event page stage set scene
+
+            CreateGroupEvent cge = new CreateGroupEvent(stage, groupName);
+            stage.setScene(new Scene(cge.getRoot(), 500, 500));
         });
 
         //event listener for stats Page
