@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class GeneralAddScore {
-    // TODO - IMPORTANT!!! If you are working on group stuff and this menu is missing options for event creation, let Liam know,
-    // TODO - I will pass in any parameters needed to setup this page in a way that all relevant information is displayed and available
 
     private final VBox root;
 
@@ -31,7 +29,7 @@ public class GeneralAddScore {
     private final String lastPage;
 
     public GeneralAddScore(Stage stage, String lastPage, String ID, String eventName){
-        handler = new GeneralAddScoreHandler(eventName, ID);
+        handler = new GeneralAddScoreHandler(eventName, ID, lastPage);
         eventID = eventName;
         genericID = ID;
         this.lastPage = lastPage;

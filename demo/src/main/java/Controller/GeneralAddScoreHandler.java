@@ -16,16 +16,16 @@ public class GeneralAddScoreHandler extends UIHandler{
 
     private final String username;
 
-    public GeneralAddScoreHandler(String eventID, String ID){
+    public GeneralAddScoreHandler(String eventID, String ID, String lastPage){
         username = ID;
         super.setDb();
         try {
-            // if its a person ID get that person from the DB via the string
+            // if it's a person ID get that person from the DB via the string
             if(db.GetPerson(ID) != null){
                 person = db.GetPerson(ID);
                 group = null;
             }
-            // if its a group ID get that group from the DB via the string
+            // if it's a group ID get that group from the DB via the string
             else if(db.GetGroup(ID) != null){
                 group =  db.GetGroup(ID);
                 person = null;
@@ -35,8 +35,8 @@ public class GeneralAddScoreHandler extends UIHandler{
                 person = null;
                 group = null;
             }
-
-        } catch (ParseException | IOException e) {
+        }
+        catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
         event = getEvent(eventID);
@@ -98,8 +98,8 @@ public class GeneralAddScoreHandler extends UIHandler{
         }
 
         //else, if it is a group event, we need to add the int[] scores to the appropriate person
-        else {
-
-        }
+//        else {
+//
+//        }
     }
 }

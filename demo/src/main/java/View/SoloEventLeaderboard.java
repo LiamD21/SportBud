@@ -24,7 +24,7 @@ public class SoloEventLeaderboard {
     private final VBox root;
     private final SoloEventLbHandler handler;
     private int scoreView = 0;
-    private boolean sortByHighest;
+    private final boolean sortByHighest;
 
     public SoloEventLeaderboard(Stage stage, String eventID, String personID){
         handler = new SoloEventLbHandler(eventID, personID);
