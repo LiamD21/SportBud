@@ -23,28 +23,30 @@ public class SoloStats {
 
     private final VBox root;
     private final SoloStatsHandler handler;
-    private int averageScoreView = 0;
-    private int chartScoreView = 0;
+    private int statScoreView = 0;
     private final Text avgInfo;
+    private final Text minInfo;
+    private final Text maxInfo;
+    private final LineChart<Number, Number> progressChart;
+    private XYChart.Series series;
 
     public SoloStats(Stage stage, String eventID, String personID){
         handler = new SoloStatsHandler(eventID, personID);
         String type = handler.getEventType();
 
         // TODO add improvement stats
-        // TODO add high and low scores
 
         // create the root
         stage.setTitle(String.format("%s Stats", handler.getEventName()));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
-        root.setSpacing(20);
-        root.setPadding(new Insets(10));
+        root.setPadding(new Insets(5));
 
         // create elements
         Button backButton = new Button("back");
         AnchorPane anchorPane = new AnchorPane();
-        HBox averageStat = new HBox();
+        VBox numberStats = new VBox();
+        HBox statFilter = new HBox();
 
         // create a list of choices to sort by
         int start = 1;
@@ -60,29 +62,35 @@ public class SoloStats {
             choices = 18;
         }
 
-        // find average
-        int avg = handler.getAverage(averageScoreView);
+        // creating the stat filter choices and selection button
+        ChoiceBox<String> specificChoice = new ChoiceBox<>();
+        Button filterButton = new Button("Refresh All Stats");
 
-        // adding elements to the average display box
-        ChoiceBox<String> averageChoice = new ChoiceBox<>();
-        avgInfo = new Text(String.format("Your Average Score is: %d", avg));
-        Button checkAvgButton = new Button("Check Average");
-        averageStat.getChildren().add(avgInfo);
-        averageStat.setSpacing(20);
-        averageStat.setAlignment(Pos.CENTER);
-
-        // if this event is a golf event, add display choices
+        // if this event is a golf event, add display choices to the stat filter container
         if (handler.isGolfEvent()){
-            averageStat.getChildren().addAll(averageChoice, checkAvgButton);
+            statFilter.getChildren().addAll(specificChoice, filterButton);
+            statFilter.setSpacing(20);
+            statFilter.setAlignment(Pos.CENTER);
         }
 
         // adding choices to the average sorting choice box only if this is a golf event
         if (handler.isGolfEvent()) {
-            averageChoice.getItems().add("Total");
+            specificChoice.getItems().add("Total");
             for (int i = start; i <= choices; i++) {
-                averageChoice.getItems().add(String.valueOf(i));
+                specificChoice.getItems().add(String.valueOf(i));
             }
         }
+
+        // TODO change labels depending on if we sort by lowest or highest
+        // find stats and add them to the display box
+        int avg = handler.getAverage(statScoreView);
+        int[] maxMin = handler.getHighLowScores(statScoreView);
+        avgInfo = new Text(String.format("Your Average Score is: %d", avg));
+        minInfo = new Text(String.format("Your Lowest Score is: %d", maxMin[1]));
+        maxInfo = new Text(String.format("Your Highest Score is: %d", maxMin[0]));
+        numberStats.getChildren().addAll(avgInfo, maxInfo, minInfo);
+        numberStats.setSpacing(20);
+        numberStats.setAlignment(Pos.CENTER);
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 0.0);
@@ -95,11 +103,11 @@ public class SoloStats {
         xAxis.setLabel("Attempt");
         yAxis.setLabel("Score");
         xAxis.setMinorTickVisible(false);
-        final LineChart<Number, Number> progressChart = new LineChart<>(xAxis, yAxis);
+        progressChart = new LineChart<>(xAxis, yAxis);
         progressChart.setTitle("Scores Over Time");
-        XYChart.Series series = new XYChart.Series();
+        series = new XYChart.Series();
         series.setName("Scores");
-        ArrayList<Integer> data = handler.getChartData(chartScoreView);
+        ArrayList<Integer> data = handler.getChartData(statScoreView);
 
         // adding elements to the chart
         for (int i = 0; i < data.size(); i++){
@@ -108,7 +116,7 @@ public class SoloStats {
         progressChart.getData().add(series);
 
         // add elements to the root
-        root.getChildren().addAll(anchorPane, averageStat, progressChart);
+        root.getChildren().addAll(anchorPane, numberStats, progressChart, statFilter);
 
         // event listener for the back button
         backButton.setOnAction(event -> {
@@ -117,22 +125,39 @@ public class SoloStats {
         });
 
         // event listener for the average choice box button
-        checkAvgButton.setOnAction(event -> {
-            averageScoreView = handler.convertScoreView(averageChoice.getValue());
+        filterButton.setOnAction(event -> {
+            statScoreView = handler.convertScoreView(specificChoice.getValue());
             int newAverage;
+            int[] newHighLow;
+            ArrayList<Integer> newData;
 
-            // find the new average
-            if (!Objects.equals(type, "Back 9") || averageScoreView == 0 || averageScoreView == -1) {
-                newAverage = handler.getAverage(averageScoreView);
+            // find the new average, high, low, and overall data
+            if (!Objects.equals(type, "Back 9") || statScoreView == 0 || statScoreView == -1) {
+                newAverage = handler.getAverage(statScoreView);
+                newHighLow = handler.getHighLowScores(statScoreView);
+                newData = handler.getChartData(statScoreView);
             }
             else {
-                newAverage = handler.getAverage(averageScoreView - 9);
+                newAverage = handler.getAverage(statScoreView - 9);
+                newHighLow = handler.getHighLowScores(statScoreView - 9);
+                newData = handler.getChartData(statScoreView - 9);
             }
-            // set new average
+            // set new average, high, low, and overall data
             avgInfo.setText(String.format("Your Average Score is: %d", newAverage));
+            maxInfo.setText(String.format("Your Highest Score is: %d", newHighLow[0]));
+            minInfo.setText(String.format("Your Lowest Score is: %d", newHighLow[1]));
+
+            // changing the data series on the chart
+            progressChart.getData().remove(series);
+            series = new XYChart.Series();
+            for (int i = 0; i < newData.size(); i++){
+                series.getData().add(new XYChart.Data<>(i, newData.get(i)));
+            }
+            series.setName("Scores");
+            progressChart.getData().add(series);
 
             // error message if nothing was selected to sort by
-            if (averageScoreView == -1){
+            if (statScoreView == -1){
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
                 invalidAlert.setContentText("Error: Select something to get average by before trying to get a new average");
                 invalidAlert.show();
