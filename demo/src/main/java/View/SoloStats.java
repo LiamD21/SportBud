@@ -79,7 +79,6 @@ public class SoloStats {
             }
         }
 
-        // TODO change labels depending on if we sort by lowest or highest
         // find stats and add them to the display box
         int avg = handler.getAverage(statScoreView);
         int[] maxMin = handler.getHighLowScores(statScoreView);

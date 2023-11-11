@@ -24,12 +24,10 @@ public class SoloEventLeaderboard {
     private final VBox root;
     private final SoloEventLbHandler handler;
     private int scoreView = 0;
+    private boolean sortByHighest = true;
 
     public SoloEventLeaderboard(Stage stage, String eventID, String personID){
         handler = new SoloEventLbHandler(eventID, personID);
-
-        // TODO add selector to decide if this event is sorted by fastest or slowest
-        // TODO time and score event types
 
         // create the root
         stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
@@ -52,10 +50,48 @@ public class SoloEventLeaderboard {
         Button addScoreButton = new Button("Add Score");
         Button toStatsPage = new Button("View More Stats");
 
+        // Set event type text and the sorting parameters
+        String type = handler.getEventType();
+        if (Objects.equals(type, "18")){
+            eventType.setText("This is an 18 hole golf event");
+            sortByHighest = false;
+        }
+        else if (Objects.equals(type, "Back 9")){
+            eventType.setText("This is a golf event on the back 9");
+            sortByHighest = false;
+        }
+        else if (Objects.equals(type, "Front 9")){
+            eventType.setText("This is a golf event on the front 9");
+            sortByHighest = false;
+        }
+        else if (Objects.equals(type, "Points-Highest")){
+            eventType.setText("This is a high score event");
+            sortByHighest = true;
+        }
+        else if (Objects.equals(type, "Points-Lowest")){
+            eventType.setText("This is a low score event");
+            sortByHighest = false;
+        }
+        else if (Objects.equals(type, "Time-Highest")){
+            eventType.setText("This is a high time event");
+            sortByHighest = true;
+        }
+        else if (Objects.equals(type, "Time-Lowest")){
+            eventType.setText("This is a low time event");
+            sortByHighest = false;
+        }
+
         // add sorted score leaderboard to listview
         ArrayList<String> leaderboard = handler.getScores(scoreView);
-        for (String score : leaderboard) {
-            personalBests.getItems().add(score);
+        if (!sortByHighest) {
+            for (String score : leaderboard) {
+                personalBests.getItems().add(score);
+            }
+        }
+        else {
+            for (int i = leaderboard.size() - 1; i >= 0; i--) {
+                personalBests.getItems().add(leaderboard.get(i));
+            }
         }
         personalBests.setPrefHeight(100);
         personalBests.setPrefWidth(300);
@@ -68,21 +104,6 @@ public class SoloEventLeaderboard {
         // Modify Title text
         nameTitle.setFont(new Font(22));
         eventType.setFont(new Font(15));
-
-        // Set event type text
-        String type = handler.getEventType();
-        if (Objects.equals(type, "18")){
-            eventType.setText("This is an 18 hole golf event");
-        }
-        else if (Objects.equals(type, "Back 9")){
-            eventType.setText("This is a golf event on the back 9");
-        }
-        else if (Objects.equals(type, "Front 9")){
-            eventType.setText("This is a golf event on the front 9");
-        }
-        else {
-            eventType.setText(String.format("This is a %s event", type));
-        }
 
         // add sorting choice elements to their HBox
         bottomButtonsBox.getChildren().addAll(sorterText, leaderboardSorter, sort, addScoreButton);
@@ -139,15 +160,24 @@ public class SoloEventLeaderboard {
                 scoreView = handler.convertScoreView(leaderboardSorter.getValue());
                 ArrayList<String> lb;
 
-                // sort and add scores
+                // get sorted scores
                 if (!Objects.equals(type, "Back 9") || scoreView == 0 || scoreView == -1) {
                     lb = handler.getScores(scoreView);
                 } else {
                     lb = handler.getScores(scoreView - 9);
                 }
                 personalBests.getItems().remove(0, lb.size());
-                for (int i = 0; i < lb.size(); i++) {
-                    personalBests.getItems().add(i, lb.get(i));
+
+                // add scores in the proper order, highest or lowest on top
+                if (!sortByHighest) {
+                    for (int i = 0; i < lb.size(); i++) {
+                        personalBests.getItems().add(i, lb.get(i));
+                    }
+                }
+                else {
+                    for (int i = lb.size() - 1; i >= 0; i--) {
+                        personalBests.getItems().add(i, lb.get(i));
+                    }
                 }
 
                 // error message if nothing was selected to sort by
