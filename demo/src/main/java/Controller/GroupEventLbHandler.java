@@ -63,16 +63,10 @@ public class GroupEventLbHandler extends UIHandler{
      * @return the sorted array list of scores in this event
      */
     public ArrayList<String> getScores(int hole) throws ParseException, IOException {
-        if (event.isGolf()){
-            if (hole  ==-1){
-                hole =0;
-            }
-            return sortScores(event.getScores(),hole);
+        if (hole  ==-1){
+            hole =0;
         }
-        else{
-            //for now return null, this can be used to for other event types maybe
-            return null;
-        }
+        return sortScores(event.getScores(),hole);
     }
 
 
@@ -91,12 +85,9 @@ public class GroupEventLbHandler extends UIHandler{
             // and check if each event's string is equal to the event string of the score...
             for (String stringPerson : group.getPeople()){
                 for(Event personsEvent : db.GetPerson(stringPerson).getPersonalEvents()){
-                    if (Objects.equals(personsEvent.getEventName(), item.getEventName())){
+                    if (Objects.equals(personsEvent.getEventName(), item.getEventName())) {
                         personForScore = stringPerson;
-                    }
-                    //I don't know, set to something?
-                    else{
-                        personForScore = "NO PERSON FOUND";
+                        break;
                     }
                 }
             }
@@ -143,28 +134,23 @@ public class GroupEventLbHandler extends UIHandler{
             }
         }
 
-
-        //maybe check through for persons that have played more than once, aka, it should take their
-        // best which is at the front of the array.
-        String trackDuplicatePersons; //holds each value of the list
-        for (int index = 0; index < peoplesScoresMirrorArr.size(); index++){
-            trackDuplicatePersons = peoplesScoresMirrorArr.get(index);
-            //now loop through again, and test each string name, ignoring the item that the first loop started on
-            // which should also been the item its currently looking for duplicates.
-            for (int index2 = index+1; index2 < peoplesScoresMirrorArr.size(); index2++){
-                if (trackDuplicatePersons.equals(peoplesScoresMirrorArr.get(index2))){
-                    totalsPlaceholder.remove(index2);
-                    peoplesScoresMirrorArr.remove(index2);
-
-                }
+        // check and remove scores from people who have more than one
+        // keep their highest score
+        ArrayList<Integer> bests = new ArrayList<>(group.getGroupSize());
+        ArrayList<String> seen = new ArrayList<>(group.getGroupSize());
+        for (int i = 0; i < totalsPlaceholder.size(); i++){
+            System.out.println(peoplesScoresMirrorArr.get(i));
+            if (!seen.contains(peoplesScoresMirrorArr.get(i))){
+                seen.add(peoplesScoresMirrorArr.get(i));
+                bests.add(totalsPlaceholder.get(i));
             }
         }
 
         // create arraylist of scores combined with attempt number
-        ArrayList<String> strScores = new ArrayList<>(totalsPlaceholder.size());
-        for (int i = 0; i < totalsPlaceholder.size(); i++){
-            strScores.add(totalsPlaceholder.get(i).toString() + "      Scored by: "
-                    + peoplesScoresMirrorArr.get(i));
+        ArrayList<String> strScores = new ArrayList<>(bests.size());
+        for (int i = 0; i < bests.size(); i++){
+            strScores.add(bests.get(i).toString() + "      Scored by: "
+                    + seen.get(i));
         }
 
         return strScores;
