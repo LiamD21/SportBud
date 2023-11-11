@@ -4,6 +4,7 @@ import Controller.GroupSelectEventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -68,7 +69,7 @@ public class GroupSelectEvent {
 
         Button selectEvent = new Button("View Selected Event");
         selectEvent.setPadding(new Insets(5));
-        selectEvent.setPrefSize(55, 80);
+        selectEvent.setPrefSize(60, 80);
         selectEvent.setWrapText(true);
 
 
@@ -117,14 +118,21 @@ public class GroupSelectEvent {
 
         //Event listener for selecting events
         selectEvent.setOnAction(event -> {
-            GroupEventLeaderboard eventPage = null;
-            try {
-                eventPage = new GroupEventLeaderboard(stage,
-                        eventList.getSelectionModel().getSelectedItem(),groupName);
-            } catch (ParseException | IOException e) {
-                throw new RuntimeException(e);
+            if (eventList.getSelectionModel().getSelectedItem() != null) {
+                GroupEventLeaderboard eventPage = null;
+                try {
+                    eventPage = new GroupEventLeaderboard(stage,
+                            eventList.getSelectionModel().getSelectedItem(), groupName);
+                } catch (ParseException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+                stage.setScene(new Scene(eventPage.getRoot(), 500, 500));
             }
-            stage.setScene(new Scene(eventPage.getRoot(), 500, 500));
+            else {
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Select an Event above to see the leaderboard");
+                invalidAlert.show();
+            }
         });
 
         //event listener for new Event
