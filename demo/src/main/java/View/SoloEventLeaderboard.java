@@ -24,10 +24,11 @@ public class SoloEventLeaderboard {
     private final VBox root;
     private final SoloEventLbHandler handler;
     private int scoreView = 0;
-    private boolean sortByHighest = true;
+    private boolean sortByHighest;
 
     public SoloEventLeaderboard(Stage stage, String eventID, String personID){
         handler = new SoloEventLbHandler(eventID, personID);
+        sortByHighest = handler.getSortByHighest();
 
         // create the root
         stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
@@ -54,31 +55,24 @@ public class SoloEventLeaderboard {
         String type = handler.getEventType();
         if (Objects.equals(type, "18")){
             eventType.setText("This is an 18 hole golf event");
-            sortByHighest = false;
         }
         else if (Objects.equals(type, "Back 9")){
             eventType.setText("This is a golf event on the back 9");
-            sortByHighest = false;
         }
         else if (Objects.equals(type, "Front 9")){
             eventType.setText("This is a golf event on the front 9");
-            sortByHighest = false;
         }
         else if (Objects.equals(type, "Points-Highest")){
             eventType.setText("This is a high score event");
-            sortByHighest = true;
         }
         else if (Objects.equals(type, "Points-Lowest")){
             eventType.setText("This is a low score event");
-            sortByHighest = false;
         }
         else if (Objects.equals(type, "Time-Highest")){
             eventType.setText("This is a high time event");
-            sortByHighest = true;
         }
         else if (Objects.equals(type, "Time-Lowest")){
             eventType.setText("This is a low time event");
-            sortByHighest = false;
         }
 
         // add sorted score leaderboard to listview

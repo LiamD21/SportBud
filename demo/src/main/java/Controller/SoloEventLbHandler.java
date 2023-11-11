@@ -155,4 +155,33 @@ public class SoloEventLbHandler extends UIHandler{
     public boolean hasScores(){
         return getScores(0).size() != 0;
     }
+
+    /**
+     * Checks if the event sorts its scores by highest first, or lowest first
+     * @return true if highest score is best
+     */
+    public boolean getSortByHighest(){
+        if (Objects.equals(getEventType(), "18")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Back 9")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Front 9")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Points-Highest")){
+            return true;
+        }
+        else if (Objects.equals(getEventType(), "Points-Lowest")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Time-Highest")){
+            return true;
+        }
+        else if (Objects.equals(getEventType(), "Time-Lowest")){
+            return false;
+        }
+        return true;
+    }
 }
