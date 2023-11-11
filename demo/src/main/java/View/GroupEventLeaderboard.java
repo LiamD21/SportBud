@@ -171,17 +171,13 @@ public class GroupEventLeaderboard {
                     if (!Objects.equals(type, "Back 9") || scoreView == 0 || scoreView == -1) {
                         try {
                             EventLeaderBoard = handler.getScores(scoreView);
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
+                        } catch (ParseException | IOException e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         try {
                             EventLeaderBoard = handler.getScores(scoreView - 9);
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
+                        } catch (ParseException | IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -198,9 +194,7 @@ public class GroupEventLeaderboard {
                         invalidAlert.show();
                     }
                 }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (ParseException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
