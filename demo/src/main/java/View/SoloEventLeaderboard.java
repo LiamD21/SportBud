@@ -87,7 +87,7 @@ public class SoloEventLeaderboard {
                 personalBests.getItems().add(leaderboard.get(i));
             }
         }
-        personalBests.setPrefHeight(100);
+        personalBests.setPrefHeight(150);
         personalBests.setPrefWidth(300);
 
         // add elements to the leaderboard borderPane

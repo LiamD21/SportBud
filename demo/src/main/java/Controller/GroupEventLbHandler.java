@@ -80,21 +80,21 @@ public class GroupEventLbHandler extends UIHandler{
         //array to hold the scores /totals
         ArrayList<Integer> totalsPlaceholder = new ArrayList<>(scores.size());
         // a mirrored index array, that has the name of the person whom did the score
-        // each indices corresponds to the indices in totalsPlaceholder...
+        // each index corresponds to the indices in totalsPlaceholder...
         ArrayList<String> peoplesScoresMirrorArr = new ArrayList<>(scores.size());
 
         for (int i = 0; i < scores.size(); i++){
             Score item = scores.get(i);
             int[] holes = item.getScores();
             String personForScore = null;
-            //need to loop through and get the groups people, loop through each persons events
-            // and check if each events string is equal to the event string of the score...
-            for (String stringperson : group.getPeople()){
-                for(Event personsevent : db.GetPerson(stringperson).getPersonalEvents()){
-                    if (Objects.equals(personsevent.getEventName(), item.getEventName())){
-                        personForScore = stringperson;
+            //need to loop through and get the groups people, loop through each person's events
+            // and check if each event's string is equal to the event string of the score...
+            for (String stringPerson : group.getPeople()){
+                for(Event personsEvent : db.GetPerson(stringPerson).getPersonalEvents()){
+                    if (Objects.equals(personsEvent.getEventName(), item.getEventName())){
+                        personForScore = stringPerson;
                     }
-                    //I dont know, set to something?
+                    //I don't know, set to something?
                     else{
                         personForScore = "NO PERSON FOUND";
                     }
@@ -194,5 +194,34 @@ public class GroupEventLbHandler extends UIHandler{
      */
     public boolean hasScores() throws ParseException, IOException {
         return getScores(0).size() != 0;
+    }
+
+    /**
+     * Checks if the event sorts its scores by highest first, or lowest first
+     * @return true if highest score is best
+     */
+    public boolean getSortByHighest(){
+        if (Objects.equals(getEventType(), "18")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Back 9")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Front 9")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Points-Highest")){
+            return true;
+        }
+        else if (Objects.equals(getEventType(), "Points-Lowest")){
+            return false;
+        }
+        else if (Objects.equals(getEventType(), "Time-Highest")){
+            return true;
+        }
+        else if (Objects.equals(getEventType(), "Time-Lowest")){
+            return false;
+        }
+        return true;
     }
 }

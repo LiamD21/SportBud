@@ -25,9 +25,11 @@ public class GroupEventLeaderboard {
     private final VBox root;
     private final GroupEventLbHandler handler;
     private int scoreView = 0;
+    private boolean sortByHighest;
 
     public GroupEventLeaderboard(Stage stage, String eventID, String groupname) throws ParseException, IOException {
         handler = new GroupEventLbHandler(eventID, groupname);
+        sortByHighest = handler.getSortByHighest();
 
         //VBox root creation
         stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
@@ -67,15 +69,46 @@ public class GroupEventLeaderboard {
         Button addScoreButton = new Button("Add Score");
         Button toStatsPage = new Button("View More Stats");
 
-        //add in the sorted leaderboard to the listview?
+        // Set event type text and the sorting parameters
+        String type = handler.getEventType();
+        if (Objects.equals(type, "18")){
+            eventType.setText("This is an 18 hole golf event");
+        }
+        else if (Objects.equals(type, "Back 9")){
+            eventType.setText("This is a golf event on the back 9");
+        }
+        else if (Objects.equals(type, "Front 9")){
+            eventType.setText("This is a golf event on the front 9");
+        }
+        else if (Objects.equals(type, "Points-Highest")){
+            eventType.setText("This is a high score event");
+        }
+        else if (Objects.equals(type, "Points-Lowest")){
+            eventType.setText("This is a low score event");
+        }
+        else if (Objects.equals(type, "Time-Highest")){
+            eventType.setText("This is a high time event");
+        }
+        else if (Objects.equals(type, "Time-Lowest")){
+            eventType.setText("This is a low time event");
+        }
+
+        //add in the sorted leaderboard to the listview
+        // sort the leaderboard depending on if higher is better or not
         ArrayList<String> listOfScores = handler.getScores(scoreView);
-        for (String score : listOfScores){
-            eachMembersScores.getItems().add(score);
+        if (!sortByHighest) {
+            for (String score : listOfScores) {
+                eachMembersScores.getItems().add(score);
+            }
+        }
+        else {
+            for (int i = listOfScores.size() - 1; i >= 0; i--) {
+                eachMembersScores.getItems().add(listOfScores.get(i));
+            }
         }
 
         eachMembersScores.setPrefHeight(150);
         eachMembersScores.setPrefWidth(300);
-
 
 
         //add the elements to the borderPane, specified to their location
@@ -87,22 +120,6 @@ public class GroupEventLeaderboard {
         // Modify Title text
         nameTitle.setFont(new Font(22));
         eventType.setFont(new Font(15));
-
-
-        // set the event type text, to specify which sort of event it is
-        String type = handler.getEventType();
-        if (Objects.equals(type, "18")){
-            eventType.setText("This is an 18 hole golf event");
-        }
-        else if (Objects.equals(type, "Back 9")){
-            eventType.setText("This is a golf event on the back 9");
-        }
-        else if (Objects.equals(type, "Front 9")){
-            eventType.setText("This is a golf event on the front 9");
-        }
-        else {
-            eventType.setText(String.format("This is a %s event", type));
-        }
 
         // add sorting choice elements to their HBox
         bottomButtonsBox.getChildren().addAll(sorterText, leaderboardSorter, sort, addScoreButton);
@@ -182,8 +199,17 @@ public class GroupEventLeaderboard {
                         }
                     }
                     eachMembersScores.getItems().remove(0, EventLeaderBoard.size());
-                    for (int i = 0; i < EventLeaderBoard.size(); i++) {
-                        eachMembersScores.getItems().add(i, EventLeaderBoard.get(i));
+
+                    // add all scores again, order depending on if we want higher on top or not
+                    if (!sortByHighest) {
+                        for (int i = 0; i < EventLeaderBoard.size(); i++) {
+                            eachMembersScores.getItems().add(i, EventLeaderBoard.get(i));
+                        }
+                    }
+                    else {
+                        for (int i = EventLeaderBoard.size() - 1; i >= 0; i--) {
+                            eachMembersScores.getItems().add(i, EventLeaderBoard.get(i));
+                        }
                     }
 
 
