@@ -40,7 +40,7 @@ public class SoloStats {
         stage.setTitle(String.format("%s Stats", handler.getEventName()));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
-        root.setPadding(new Insets(5));
+        root.setPadding(new Insets(15));
 
         // create elements
         Button backButton = new Button("back");
@@ -69,7 +69,7 @@ public class SoloStats {
         // if this event is a golf event, add display choices to the stat filter container
         if (handler.isGolfEvent()){
             statFilter.getChildren().addAll(specificChoice, filterButton);
-            statFilter.setSpacing(20);
+            statFilter.setSpacing(22);
             statFilter.setAlignment(Pos.CENTER);
         }
 
@@ -89,7 +89,7 @@ public class SoloStats {
         minInfo = new Text(String.format("Your Lowest Score is: %d", maxMin[1]));
         maxInfo = new Text(String.format("Your Highest Score is: %d", maxMin[0]));
         numberStats.getChildren().addAll(avgInfo, maxInfo, minInfo);
-        numberStats.setSpacing(20);
+        numberStats.setSpacing(8);
         numberStats.setAlignment(Pos.CENTER);
 
         // Anchor back button to the top corner of the screen
