@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public class GroupSelectEvent {
     private final VBox root;
@@ -63,7 +66,7 @@ public class GroupSelectEvent {
         Text eventTitle = new Text(String.format("%s's Events", groupName));
         eventTitle.setFont(new Font(16));
 
-        Button selectEvent = new Button("Select Event");
+        Button selectEvent = new Button("View Selected Event");
         selectEvent.setPadding(new Insets(5));
         selectEvent.setPrefSize(55, 80);
         selectEvent.setWrapText(true);
@@ -86,7 +89,8 @@ public class GroupSelectEvent {
 
         // create buttons for stats and create event pages in the bottom HBox
         Button statsButton = new Button(String.format("%s's Stats", groupName));
-        statsButton.setPrefSize(125,25);
+        statsButton.setPrefHeight(25);
+        statsButton.setPrefWidth(statsButton.getText().length()*7);
 
         Button newEventButton = new Button("New Event");
         newEventButton.setPrefSize(125,25);
@@ -113,8 +117,14 @@ public class GroupSelectEvent {
 
         //Event listener for selecting events
         selectEvent.setOnAction(event -> {
-            //TODO add in proper page class creation here
-            eventList.getSelectionModel().getSelectedItem();
+            GroupEventLeaderboard eventPage = null;
+            try {
+                eventPage = new GroupEventLeaderboard(stage,
+                        eventList.getSelectionModel().getSelectedItem(),groupName);
+            } catch (ParseException | IOException e) {
+                throw new RuntimeException(e);
+            }
+            stage.setScene(new Scene(eventPage.getRoot(), 500, 500));
         });
 
         //event listener for new Event
@@ -127,9 +137,13 @@ public class GroupSelectEvent {
         });
 
         //event listener for stats Page
+
         statsButton.setOnAction(event ->{
-            //TODO
+            //TODO  *This may not be needed*
             //stats page stage set scene
+//            GroupStatsLeaderboard groupStats = new GroupStatsLeaderboard(stage, groupName);
+//            stage.setScene((new Scene(groupStats.getRoot(), 500, 500)));
+
         });
     }
 

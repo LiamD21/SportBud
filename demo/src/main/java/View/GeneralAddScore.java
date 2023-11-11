@@ -11,7 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class GeneralAddScore {
@@ -22,16 +24,16 @@ public class GeneralAddScore {
 
     private final String eventID;
 
-    private final String personID;
+    private final String genericID;
 
     private final GeneralAddScoreHandler handler;
 
     private final String lastPage;
 
-    public GeneralAddScore(Stage stage, String lastPage, String person, String eventName){
-        handler = new GeneralAddScoreHandler(eventName, person);
+    public GeneralAddScore(Stage stage, String lastPage, String ID, String eventName){
+        handler = new GeneralAddScoreHandler(eventName, ID);
         eventID = eventName;
-        personID = person;
+        genericID = ID;
         this.lastPage = lastPage;
 
         // create the root
@@ -68,8 +70,17 @@ public class GeneralAddScore {
 
         // event listener for the back button
         backButton.setOnAction(event -> {
-            if (Objects.equals(lastPage, "SoloEventStats")) {
-                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+            if (Objects.equals(this.lastPage, "SoloEventStats")) {
+                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
+            else if (Objects.equals(this.lastPage, "GroupEventStats")){
+                GroupEventLeaderboard menu = null;
+                try {
+                    menu = new GroupEventLeaderboard(stage, eventID, genericID);
+                } catch (ParseException | IOException e) {
+                    throw new RuntimeException(e);
+                }
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
         });
@@ -96,9 +107,21 @@ public class GeneralAddScore {
                             handler.setScore(intScores);
 
                             // go back to the leaderboard after entering a new score
-                            if (Objects.equals(lastPage, "SoloEventStats")) {
-                                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+                            if (Objects.equals(this.lastPage, "SoloEventStats")) {
+                                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
                                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                            }
+
+                            //else go back to the group leaderboard if its from there.
+                            else if (Objects.equals(this.lastPage, "GroupEventStats")){
+                                GroupEventLeaderboard menu = null;
+                                try {
+                                    menu = new GroupEventLeaderboard(stage, eventID, genericID);
+                                } catch (ParseException | IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
                             }
                         } catch (NumberFormatException | NullPointerException e){
                             Alert inputAlert = new Alert(Alert.AlertType.ERROR);
@@ -124,8 +147,19 @@ public class GeneralAddScore {
 
                         // go back to the leaderboard after entering a new score
                         if (Objects.equals(lastPage, "SoloEventStats")) {
-                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
                             stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                        }
+
+                        else if (Objects.equals(lastPage, "GroupEventStats")){
+                            GroupEventLeaderboard menu = null;
+                            try {
+                                menu = new GroupEventLeaderboard(stage, eventID, genericID);
+                            } catch (ParseException | IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
                         }
                     } catch (NumberFormatException | NullPointerException e){
                         Alert inputAlert = new Alert(Alert.AlertType.ERROR);
@@ -136,7 +170,6 @@ public class GeneralAddScore {
             }
         });
     }
-
     /**
      * Getter method for the root for swapping scenes in the same stage
      * @return the VBox root of this scene
