@@ -9,10 +9,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class CreateSoloEvent {
     private final VBox root;
     private final String username;
     private final CreateSoloEventHandler handler;
+    private String basicType;
+    private String golfType;
+    private String sortType;
 
     public CreateSoloEvent(Stage stage, String username){
         this.username = username;
@@ -27,14 +32,19 @@ public class CreateSoloEvent {
         AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button("Back");
         TextField eventName = new TextField("Enter Your Event's Name");
-        Label choiceLabel = new Label("Select your event's type");
-        ChoiceBox<String> eventTypes= new ChoiceBox<>();
+        Label basicChoiceLabel = new Label("Select your event's type");
+        ChoiceBox<String> basicEventTypes = new ChoiceBox<>();
+        Label golfChoiceLabel = new Label("Which holes is this golf event on?");
+        ChoiceBox<String> golfEventTypes = new ChoiceBox<>();
+        Label sortingChoiceLabel = new Label("Is a high or low score the best?");
+        ChoiceBox<String> sortingEventTypes = new ChoiceBox<>();
         Button confirm = new Button("Create Event");
-        VBox vbox = new VBox(choiceLabel, eventTypes, eventName, confirm);
+        VBox vbox = new VBox(basicChoiceLabel, basicEventTypes);
 
-        // add event types to the choice box
-        // Other event type just means not a golf event
-        eventTypes.getItems().addAll("18", "Front 9", "Back 9", "Other");
+        // add event types to the choice boxes
+        basicEventTypes.getItems().addAll("Golf", "Timed", "Points");
+        golfEventTypes.getItems().addAll("18", "Front 9", "Back 9");
+        sortingEventTypes.getItems().addAll("Highest", "Lowest");
 
         // set up the vbox with the elements
         vbox.setAlignment(Pos.CENTER);
@@ -55,18 +65,67 @@ public class CreateSoloEvent {
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
+        // event handling for the basic event type selector
+        basicEventTypes.setOnAction(event -> {
+            basicType = basicEventTypes.getSelectionModel().getSelectedItem();
+            vbox.getChildren().removeAll(vbox.getChildren());
+            if (Objects.equals(basicType, "Golf")){
+                vbox.getChildren().addAll(basicChoiceLabel, basicEventTypes, golfChoiceLabel, golfEventTypes);
+            }
+            else {
+                vbox.getChildren().addAll(basicChoiceLabel, basicEventTypes, sortingChoiceLabel, sortingEventTypes);
+            }
+        });
+
+        // event handling for the golf event type selector
+        golfEventTypes.setOnAction(event -> {
+            golfType = golfEventTypes.getSelectionModel().getSelectedItem();
+            vbox.getChildren().removeAll(vbox.getChildren());
+            vbox.getChildren().addAll(basicChoiceLabel, basicEventTypes, golfChoiceLabel, golfEventTypes, eventName, confirm);
+        });
+
+        // event handling for the sorting event type selector
+        sortingEventTypes.setOnAction(event -> {
+            sortType = sortingEventTypes.getSelectionModel().getSelectedItem();
+            vbox.getChildren().removeAll(vbox.getChildren());
+            vbox.getChildren().addAll(basicChoiceLabel, basicEventTypes, sortingChoiceLabel, sortingEventTypes, eventName, confirm);
+        });
+
         // event handling for the create event button
         // text field must have a name and a type must be selected
         confirm.setOnAction(event -> {
-            if (!eventName.getCharacters().toString().equals("Enter Your Event's Name") && eventTypes.getValue() != null){
-                handler.createEvent(eventName.getCharacters().toString(), eventTypes.getValue());
+            if (!eventName.getCharacters().toString().equals("Enter Your Event's Name")){
+
+                // get the event type name to use
+                String eventType = "";
+                if (Objects.equals(basicType, "Golf")){
+                    eventType = golfType;
+                }
+                else if (Objects.equals(basicType, "Timed")){
+                    if (Objects.equals(sortType, "Highest")){
+                        eventType = "Time-Highest";
+                    }
+                    else if (Objects.equals(sortType, "Lowest")){
+                        eventType = "Time-Lowest";
+                    }
+                }
+                else if (Objects.equals(basicType, "Points")){
+                    if (Objects.equals(sortType, "Highest")){
+                        eventType = "Points-Highest";
+                    }
+                    else if (Objects.equals(sortType, "Lowest")){
+                        eventType = "Points-Lowest";
+                    }
+                }
+
+                handler.createEvent(eventName.getCharacters().toString(), eventType);
 
                 // returns to the previous menu after creating the new event successfully
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmAlert.setContentText(String.format("%s event named %s created!", eventTypes.getValue(), eventName.getCharacters().toString()));
+                confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eventName.getCharacters().toString()));
                 confirmAlert.show();
             }
             else {
