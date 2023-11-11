@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CreateSoloEventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,6 +38,8 @@ public class CreateSoloEvent {
 
         // set up the vbox with the elements
         vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(15);
+        vbox.setPadding(new Insets(20));
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 10.0);
