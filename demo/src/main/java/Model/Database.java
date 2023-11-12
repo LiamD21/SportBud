@@ -7,14 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.json.simple.parser.*;
 public class Database {
@@ -97,7 +93,7 @@ public class Database {
                             (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0)).get(j));
 
                     //Initializes the Score Object
-                    p.getPersonalEvents().get(i).inputScores(new Score(type, name, j));
+                    p.getPersonalEvents().get(i).inputScores(new Score(type, userName, j));
 
                     //Inputs the array into the score object
                     p.getPersonalEvents().get(i).getScores().get(j).inputScore(arr);
@@ -121,12 +117,15 @@ public class Database {
         JSONObject groupHT = (JSONObject) array.get(1);
         JSONArray group = (JSONArray) groupHT.get(groupName);
         Group g = new Group((String) group.get(0));
+        HashMap<String,Integer> counters = new HashMap<>();
 
         int groupSize = ((JSONArray) group.get(1)).size();
 
         //Adds group members to group object
         for (int i = 0; i < groupSize; i++){
-            g.AddGroupMember((String) ((JSONArray) group.get(1)).get(i));
+            String name = (String) ((JSONArray) group.get(1)).get(i);
+            g.AddGroupMember(name);
+            counters.put(name,1);
         }
         int x = 0;
 
@@ -138,10 +137,13 @@ public class Database {
             String type = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(2);
             g.AddGroupEvent(new Event(name,type,true));
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
+                int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(0));
+                String personsName = (String) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(1);
+
+                g.getGroupEvents().get(i).inputScores(new Score(type, personsName, counters.get(personsName)));
 
 
-                int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j));
-                g.getGroupEvents().get(i).inputScores(new Score(type, name, j));
+                counters.put(personsName, counters.get(personsName) + 1 );
 
                 //Inputs the array into the score object
                 g.getGroupEvents().get(i).getScores().get(j).inputScore(arr);
@@ -308,21 +310,16 @@ public class Database {
     * Ex, if Braeden is index 0 people ArrayList in the Group Class
     * then his scores MUST ALSO be at index 0 of the scores array
     * */
-    public void AddGroupScores(String groupUsername,String eventName, int[][] scores) throws IOException, ParseException {
+    public void AddGroupScores(String groupUsername,String eventName, int[] scores, String personUsername) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
         JSONArray group = ((JSONArray) groupHT.get(groupUsername));
-        int groupSize = ((JSONArray)group.get(1)).size();
-
-        if (groupSize != scores.length){
-            throw new RuntimeException("Error, The size of the input array is not the same as the number of people in the group");
-        }
 
         JSONArray eventArray = null;
         int eventSize = ((JSONArray) group.get(2)).size();
 
 
-
+        //Searches for the event
         for (int i = 0; i < eventSize; i++){
             if (eventName.equals(((JSONArray)((JSONArray) group.get(2)).get(i)).get(1))){
                 eventArray = ((JSONArray)((JSONArray) group.get(2)).get(i));
@@ -335,9 +332,8 @@ public class Database {
 
         JSONArray scoreArray = (JSONArray) eventArray.get(0);
 
-        for (int i = 0; i < scores.length; i++){
-            scoreArray.add(IntArrayToJsonArray(scores[i]));
-        }
+        scoreArray.add(IntArrayToJsonArray(scores));
+
 
         try (FileWriter file = new FileWriter(filePath)) {
             file.write(array.toJSONString());
@@ -505,9 +501,9 @@ public class Database {
             System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
         }
 
-        if (!Braeden.getPersonalEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
-            System.out.print("Error, Braeden Test 9 should be Golf1 but it is returning");
-            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getEventName());
+        if (!Braeden.getPersonalEvents().get(0).getScores().get(0).getPersonsName().equals("person1")){
+            System.out.print("Error, Braeden Test 9 should be person1 but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getScores().get(0).getPersonsName());
         }
 
         if (!Braeden.getPersonalEvents().get(0).getScores().get(0).getType().equals("Front 9")){
@@ -561,9 +557,9 @@ public class Database {
             System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter());
         }
 
-        if (!Braeden.getPersonalEvents().get(1).getScores().get(0).getEventName().equals("Golf2")){
-            System.out.print("Error Braeden Test 19 should be Golf2 but it is retunring");
-            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getEventName());
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(0).getPersonsName().equals("person1")){
+            System.out.print("Error Braeden Test 19 should be person1 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(0).getPersonsName());
 
         }
 
@@ -583,9 +579,9 @@ public class Database {
             System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getEventCounter());
         }
 
-        if (!Braeden.getPersonalEvents().get(1).getScores().get(1).getEventName().equals("Golf2")){
-            System.out.print("Error Braeden Test 23 should be Golf2 but it is retunring");
-            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getEventName());
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(1).getPersonsName().equals("person1")){
+            System.out.print("Error Braeden Test 23 should be person1 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(1).getPersonsName());
 
         }
 
@@ -605,9 +601,9 @@ public class Database {
             System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getEventCounter());
         }
 
-        if (!Braeden.getPersonalEvents().get(1).getScores().get(2).getEventName().equals("Golf2")){
-            System.out.print("Error Braeden Test 27 should be Golf2 but it is retunring");
-            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getEventName());
+        if (!Braeden.getPersonalEvents().get(1).getScores().get(2).getPersonsName().equals("person1")){
+            System.out.print("Error Braeden Test 27 should be person1 but it is retunring");
+            System.out.println(Braeden.getPersonalEvents().get(1).getScores().get(2).getPersonsName());
 
         }
 
@@ -661,9 +657,9 @@ public class Database {
             System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventCounter());
         }
 
-        if (!M.getPersonalEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
-            System.out.print("Error, Mohammed Golfguy Test 5 should be 0 but it is returning");
-            System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getEventName());
+        if (!M.getPersonalEvents().get(0).getScores().get(0).getPersonsName().equals("person2")){
+            System.out.print("Error, Mohammed Golfguy Test 5 should be person2 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getScores().get(0).getPersonsName());
         }
 
         if (!M.getPersonalEvents().get(0).getScores().get(0).getType().equals("18")){
@@ -682,9 +678,9 @@ public class Database {
             System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getEventCounter());
         }
 
-        if (!M.getPersonalEvents().get(0).getScores().get(1).getEventName().equals("Golf1")){
-            System.out.print("Error, Mohammed Golfguy Test 9 should be 0 but it is returning");
-            System.out.println(M.getPersonalEvents().get(1).getScores().get(1).getEventName());
+        if (!M.getPersonalEvents().get(0).getScores().get(1).getPersonsName().equals("person2")){
+            System.out.print("Error, Mohammed Golfguy Test 9 should be person2 but it is returning");
+            System.out.println(M.getPersonalEvents().get(0).getScores().get(1).getPersonsName());
         }
 
         if (!M.getPersonalEvents().get(0).getScores().get(1).getType().equals("18")){
@@ -791,9 +787,9 @@ public class Database {
             System.out.println(Arrays.toString(group1.getGroupEvents().get(0).getScores().get(0).getScores()));
         }
 
-        if (!group1.getGroupEvents().get(0).getScores().get(0).getEventName().equals("Golf1")){
-            System.out.print("Error group1 Test 9 should be Golf1");
-            System.out.println(group1.getGroupEvents().get(0).getScores().get(0).getEventName());
+        if (!group1.getGroupEvents().get(0).getScores().get(0).getPersonsName().equals("person1")){
+            System.out.print("Error group1 Test 9 should be person1");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(0).getPersonsName());
         }
 
         if (!Arrays.equals(group1.getGroupEvents().get(0).getScores().get(1).getScores(),
@@ -831,15 +827,36 @@ public class Database {
 
         if (!Arrays.equals(group1.getGroupEvents().get(1).getScores().get(0).getScores(),
                 new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1})){
-            System.out.print("Error group1 Test 12 should be [1, 1, 1, 1, 1, 1, 1, 1, 1] but it is returning");
+            System.out.print("Error group1 Test 16 should be [1, 1, 1, 1, 1, 1, 1, 1, 1] but it is returning");
             System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(0).getScores()));
         }
 
         if (!Arrays.equals(group1.getGroupEvents().get(1).getScores().get(1).getScores(),
                 new int[] {32, 34, 36, 835, 31, 33, 35, 343, 33})){
-            System.out.print("Error group1 Test 12 should be [32, 34, 36, 835, 31, 33, 35, 343, 33] but it is returning");
+            System.out.print("Error group1 Test 17 should be [32, 34, 36, 835, 31, 33, 35, 343, 33] but it is returning");
             System.out.println(Arrays.toString(group1.getGroupEvents().get(1).getScores().get(1).getScores()));
         }
+
+        if (group1.getGroupEvents().get(0).getScores().get(3).getEventCounter() != 2){
+            System.out.print("Error group1 test 18 should be 2 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(3).getEventCounter());
+        }
+
+        if (group1.getGroupEvents().get(0).getScores().get(4).getEventCounter() != 3) {
+            System.out.print("Error group1 test 19 should be 3 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(4).getEventCounter());
+        }
+
+        if (group1.getGroupEvents().get(0).getScores().get(5).getEventCounter() != 4) {
+            System.out.print("Error group1 test 20 should be 3 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(5).getEventCounter());
+        }
+
+        if (group1.getGroupEvents().get(0).getScores().get(6).getEventCounter() != 3) {
+            System.out.print("Error group1 test 21 should be 3 but it is returning");
+            System.out.println(group1.getGroupEvents().get(0).getScores().get(6).getEventCounter());
+        }
+
 
         Group proz = db.GetGroup("PGA Proz");
 
@@ -974,11 +991,10 @@ public class Database {
             System.out.println(Arrays.toString(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(1).getScores()));
         }
 
-        System.out.println("Unit Testing Complete");
 
          */
 
-
+        System.out.println("Unit Testing Complete");
 
     }
 }

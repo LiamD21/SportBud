@@ -86,7 +86,7 @@ public class GroupEventLbHandler extends UIHandler{
             for (String stringPerson : group.getPeople()){
                 for(Event personsEvent : db.GetPerson(stringPerson).getPersonalEvents()){
                     // TODO -Liam- this part does not work, it only checks if person is part of the event. We do not have a great way to do this at the moment
-                    if (Objects.equals(personsEvent.getEventName(), item.getEventName())) {
+                    if (Objects.equals(personsEvent.getEventName(), item.getPersonsName())) {
                         personForScore = stringPerson;
                         break;
                     }
