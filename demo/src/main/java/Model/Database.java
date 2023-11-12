@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import org.json.simple.parser.*;
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
     private JSONArray jsonArray;
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
@@ -218,8 +218,13 @@ public class Database {
             ((JSONArray) eventArray.get(i)).add(new JSONArray());
 
             for (int j = 0; j < group.getGroupEvents().get(i).getScores().size(); j++){
+                JSONArray scoreArray = new JSONArray();
                 int[] score = group.getGroupEvents().get(i).getScores().get(j).getScores();
-                ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(IntArrayToJsonArray(score));
+                String personsName = group.getGroupEvents().get(i).getScores().get(j).getPersonsName();
+                scoreArray.add(IntArrayToJsonArray(score));
+                scoreArray.add(personsName);
+                ((JSONArray)((JSONArray) eventArray.get(i)).get(0)).add(scoreArray);
+
             }
 
             ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventName());
@@ -314,6 +319,7 @@ public class Database {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
         JSONArray group = ((JSONArray) groupHT.get(groupUsername));
+        JSONArray inputArray = new JSONArray();
 
         JSONArray eventArray = null;
         int eventSize = ((JSONArray) group.get(2)).size();
@@ -331,8 +337,10 @@ public class Database {
             throw new RuntimeException("Error event not found");
 
         JSONArray scoreArray = (JSONArray) eventArray.get(0);
+        inputArray.add(IntArrayToJsonArray(scores));
+        inputArray.add(personUsername);
 
-        scoreArray.add(IntArrayToJsonArray(scores));
+        scoreArray.add(inputArray);
 
 
         try (FileWriter file = new FileWriter(filePath)) {
@@ -865,7 +873,6 @@ public class Database {
 
         // TESTS THAT MODIFY THE DATABASE
         /*
-
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
@@ -875,30 +882,32 @@ public class Database {
 
 
         g.AddGroupEvent(new Event("Golf2","Back 9",true));
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","person1",0));
         g.getGroupEvents().get(0).getScores().get(0).inputScore(new int[]{1,1,1,1,1,1,1,1,1});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",0));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","person2",0));
         g.getGroupEvents().get(0).getScores().get(1).inputScore(new int[]{1,1,2,3,420,60,69,70,28});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","person1",1));
         g.getGroupEvents().get(0).getScores().get(2).inputScore(new int[]{1,1,1,1,1,2,1,1,1});
-        g.getGroupEvents().get(0).inputScores(new Score("Back 9","Golf1",1));
+        g.getGroupEvents().get(0).inputScores(new Score("Back 9","person2",1));
         g.getGroupEvents().get(0).getScores().get(3).inputScore(new int[]{1,1,1,1,1,2,420,1,1});
 
-        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","person1",0));
         g.getGroupEvents().get(1).getScores().get(0).inputScore(new int[]{69,1,2,3,4,5,6,7,8});
-        g.getGroupEvents().get(1).inputScores(new Score("Front 9","Golf1",0));
+        g.getGroupEvents().get(1).inputScores(new Score("Front 9","person2",0));
         g.getGroupEvents().get(1).getScores().get(1).inputScore(new int[]{1,1,2,3,420,5,69,7,8});
 
         g.AddGroupEvent(new Event("Push Ups","Push Ups",true));
-        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","PU1",0));
+        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","person1",0));
         g.getGroupEvents().get(2).getScores().get(0).inputScore(new int[]{20});
-        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","PU1",0));
+        g.getGroupEvents().get(2).inputScores(new Score("Push Ups","person2",0));
         g.getGroupEvents().get(2).getScores().get(1).inputScore(new int[]{69});
 
 
 
 
         db.AddGroup("test",g);
+
+
 
         if (db.GetGroup("test").getGroupEvents().get(2).isGolf())
             System.out.println("Error, group push up event should not be golf");
@@ -939,6 +948,7 @@ public class Database {
             System.out.print("Error PersonToGroup() Test Failed should have returned [person1, person 2, person434] ");
             System.out.println("but it is returning"+db.GetGroup("test").getPeople().toString());
         }
+
 
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
@@ -992,7 +1002,22 @@ public class Database {
         }
 
 
+
+        db.AddGroupScores("group1","Golf2",new int[]{42,42,42,424,6,4,5,2,7},"person2");
+
+        if (!db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getPersonsName().equals("person2")) {
+            System.out.print("Error should be person2 but it is returning");
+            System.out.println(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getPersonsName());
+        }
+
+        if (!Arrays.equals(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getScores(),
+                new int[] {42,42,42,424,6,4,5,2,7})) {
+            System.out.println("Error should be [42,42,42,424,6,4,5,2,7] but it is returning");
+            System.out.println(Arrays.toString(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getScores()));
+        }
+
          */
+
 
         System.out.println("Unit Testing Complete");
 
