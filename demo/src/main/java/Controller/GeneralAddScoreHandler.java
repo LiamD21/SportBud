@@ -6,6 +6,8 @@ import Model.Person;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class GeneralAddScoreHandler extends UIHandler{
@@ -14,30 +16,34 @@ public class GeneralAddScoreHandler extends UIHandler{
     private final Group group;
     private final Event event;
     private final String lastpage;
+    private final String groupID;
+    private final String personID;
 
-    private final String username;
-
-    public GeneralAddScoreHandler(String eventID, String ID, String lastPage){
-        username = ID;
+    public GeneralAddScoreHandler(String eventID, String personID, String lastPage, String groupID){
         lastpage = lastPage;
         super.setDb();
         try {
             // if the last page was from the solo side, its a person and get from DB
             if (lastpage.equals("SoloEventStats")){
-                person = db.GetPerson(username);
+                person = db.GetPerson(personID);
                 group = null;
-
+                this.personID = personID;
+                this.groupID = null;
             }
             //if the last page was from the group side, its a group and get from DB
             else if (lastpage.equals("GroupEventStats")){
-                group = db.GetGroup(username);
+                group = db.GetGroup(groupID);
                 person = null;
+                this.personID = null;
+                this.groupID = groupID;
             }
 
             //something wrong occured. Both dont exist
             else{
                 group = null;
                 person = null;
+                this.personID = null;
+                this.groupID = null;
             }
 
         } catch (ParseException | IOException e) {
@@ -91,21 +97,34 @@ public class GeneralAddScoreHandler extends UIHandler{
      * adds a new score to this event
      * @param scores an integer array containing all the scores for this event
      */
-    public void setScore(int[] scores){
+    public void setScore(int[] scores, String person){
         // if the event is not a group event, use the add solo scores
-        if (!event.getIsGroup()) {
+        if (!Objects.equals(lastpage, "GroupEventStats")) {
             try {
-                db.AddSoloScores(this.username, this.event.getEventName(), scores);
+                db.AddSoloScores(this.personID, this.event.getEventName(), scores);
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        //else, if it is a group event, we need to add the int[] scores to the appropriate person
-        //how do we get the appropriate person??
-//        else {
-//            this.group.
-//            db.AddGroupScores(this.username, this.event.getEventName(), );
-//        }
+        else {
+            try {
+                db.AddGroupScores(this.groupID, this.event.getEventName(), scores, person);
+            } catch (IOException | ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * If the event is a group event, get the array of people in the group
+     * @return the array list of strings of people in the event
+     */
+    public ArrayList<String> getPeople(){
+        ArrayList<String> people = new ArrayList<>();
+        if (groupID != null){
+            people.addAll(this.group.getPeople());
+        }
+        return people;
     }
 }

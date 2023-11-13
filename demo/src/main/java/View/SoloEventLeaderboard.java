@@ -192,14 +192,22 @@ public class SoloEventLeaderboard {
 
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
-            GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, eventID);
+            GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, null, eventID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
         // event listener for the stats page button
+        // only go to more stats page if there are scores. If not, display an alert
         toStatsPage.setOnAction(event -> {
-            SoloStats menu = new SoloStats(stage, eventID, personID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            if (handler.hasScores()) {
+                SoloStats menu = new SoloStats(stage, eventID, personID);
+                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            }
+            else {
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Cannot display stats if there are no scores");
+                invalidAlert.show();
+            }
         });
     }
 

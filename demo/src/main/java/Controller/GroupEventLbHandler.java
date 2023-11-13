@@ -80,18 +80,7 @@ public class GroupEventLbHandler extends UIHandler{
         for (int i = 0; i < scores.size(); i++){
             Score item = scores.get(i);
             int[] holes = item.getScores();
-            String personForScore = null;
-            //need to loop through and get the groups people, loop through each person's events
-            // and check if each event's string is equal to the event string of the score...
-            for (String stringPerson : group.getPeople()){
-                for(Event personsEvent : db.GetPerson(stringPerson).getPersonalEvents()){
-                    // TODO -Liam- this part does not work, it only checks if person is part of the event. We do not have a great way to do this at the moment
-                    if (Objects.equals(personsEvent.getEventName(), item.getEventName())) {
-                        personForScore = stringPerson;
-                        break;
-                    }
-                }
-            }
+            String personForScore = item.getPersonsName();
             int total;
 
             // find total, if that is the specified hole to search for (aka hole = 0)
@@ -140,7 +129,6 @@ public class GroupEventLbHandler extends UIHandler{
         ArrayList<Integer> bests = new ArrayList<>(group.getGroupSize());
         ArrayList<String> seen = new ArrayList<>(group.getGroupSize());
         for (int i = 0; i < totalsPlaceholder.size(); i++){
-            System.out.println(peoplesScoresMirrorArr.get(i));
             if (!seen.contains(peoplesScoresMirrorArr.get(i))){
                 seen.add(peoplesScoresMirrorArr.get(i));
                 bests.add(totalsPlaceholder.get(i));

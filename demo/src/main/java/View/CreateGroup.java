@@ -96,8 +96,9 @@ public class CreateGroup {
         });
 
         //Event listener for the Create Button, send the list members to the handler
+        // only create a group if the user has entered new text in the input box
         createGroup.setOnAction(event -> {
-            if (!members.getItems().isEmpty()) {
+            if (!members.getItems().isEmpty() && !groupname.getText().equals("Set group name here")) {
                 int createdSuccess;
                 try {
                     createdSuccess = handler.handleCreatedGroup(members.getItems(), groupname.getText());

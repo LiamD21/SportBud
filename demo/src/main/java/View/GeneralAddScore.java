@@ -4,35 +4,33 @@ import Controller.GeneralAddScoreHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class GeneralAddScore {
 
     private final VBox root;
-
     private final String eventID;
-
-    private final String genericID;
-
+    private final String personID;
+    private final String groupID;
     private final GeneralAddScoreHandler handler;
-
     private final String lastPage;
+    private final ChoiceBox<String> people;
 
-    public GeneralAddScore(Stage stage, String lastPage, String ID, String eventName){
-        handler = new GeneralAddScoreHandler(eventName, ID, lastPage);
+    public GeneralAddScore(Stage stage, String lastPage, String personID, String groupID, String eventName){
+        handler = new GeneralAddScoreHandler(eventName,personID, lastPage, groupID);
         eventID = eventName;
-        genericID = ID;
+        this.personID = personID;
+        this.groupID = groupID;
         this.lastPage = lastPage;
+        people = new ChoiceBox<>();
 
         // create the root
         stage.setTitle(String.format("Add Your %s Score", eventID));
@@ -45,6 +43,18 @@ public class GeneralAddScore {
         Button backButton = new Button("Back");
         AnchorPane anchorPane = new AnchorPane();
         VBox scoreEntryBox = new VBox();
+
+        // if the event is a group event, add a dropdown to select who we add the score for
+        if (Objects.equals(lastPage, "GroupEventStats")){
+            Label peopleBoxLabel = new Label("Select the group member to give a new score to");
+
+            ArrayList<String> groupPeople = handler.getPeople();
+            for (String person:groupPeople){
+                people.getItems().add(person);
+            }
+
+            scoreEntryBox.getChildren().addAll(peopleBoxLabel, people);
+        }
 
         // create score entering elements
         Label label;
@@ -69,13 +79,13 @@ public class GeneralAddScore {
         // event listener for the back button
         backButton.setOnAction(event -> {
             if (Objects.equals(this.lastPage, "SoloEventStats")) {
-                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
+                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
             }
             else if (Objects.equals(this.lastPage, "GroupEventStats")){
                 GroupEventLeaderboard menu = null;
                 try {
-                    menu = new GroupEventLeaderboard(stage, eventID, genericID);
+                    menu = new GroupEventLeaderboard(stage, eventID, groupID);
                 } catch (ParseException | IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -102,24 +112,34 @@ public class GeneralAddScore {
                                 }
                                 intScores[i] = Integer.parseInt(scores[i]);
                             }
-                            handler.setScore(intScores);
 
                             // go back to the leaderboard after entering a new score
                             if (Objects.equals(this.lastPage, "SoloEventStats")) {
-                                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
+                                handler.setScore(intScores, personID);
+
+                                SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
                             }
 
                             //else go back to the group leaderboard if its from there.
+                            // group scores must have a person selected to enter it
                             else if (Objects.equals(this.lastPage, "GroupEventStats")){
-                                GroupEventLeaderboard menu = null;
-                                try {
-                                    menu = new GroupEventLeaderboard(stage, eventID, genericID);
-                                } catch (ParseException | IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                if (people.getValue() != null){
+                                    handler.setScore(intScores, people.getValue());
 
+                                    GroupEventLeaderboard menu = null;
+                                    try {
+                                        menu = new GroupEventLeaderboard(stage, eventID, groupID);
+                                    } catch (ParseException | IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                }
+                                else {
+                                    Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                                    invalidAlert.setContentText("Error: To add a score in a group event, you must select a person.");
+                                    invalidAlert.show();
+                                }
                             }
                         } catch (NumberFormatException | NullPointerException e){
                             Alert inputAlert = new Alert(Alert.AlertType.ERROR);
@@ -141,25 +161,35 @@ public class GeneralAddScore {
                     try {
                         int score = Integer.parseInt(scoreIn.getCharacters().toString());
                         int[] scores = {score};
-                        handler.setScore(scores);
 
                         // go back to the leaderboard after entering a new score
                         if (Objects.equals(lastPage, "SoloEventStats")) {
-                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, genericID);
+                            handler.setScore(scores, personID);
+
+                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                             stage.setScene(new Scene(menu.getRoot(), 500, 500));
                         }
 
                         else if (Objects.equals(lastPage, "GroupEventStats")){
-                            GroupEventLeaderboard menu = null;
-                            try {
-                                menu = new GroupEventLeaderboard(stage, eventID, genericID);
-                            } catch (ParseException | IOException e) {
-                                throw new RuntimeException(e);
+                            if (people.getValue() != null) {
+                                handler.setScore(scores, people.getValue());
+                                GroupEventLeaderboard menu = null;
+                                try {
+                                    menu = new GroupEventLeaderboard(stage, eventID, groupID);
+                                } catch (ParseException | IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
                             }
-                            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                            else {
+                                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                                invalidAlert.setContentText("Error: To add a score in a group event, you must select a person.");
+                                invalidAlert.show();
+                            }
 
                         }
                     } catch (NumberFormatException | NullPointerException e){
+                        e.printStackTrace();
                         Alert inputAlert = new Alert(Alert.AlertType.ERROR);
                         inputAlert.setContentText("Error: Input for an event must be entered as a single integer");
                         inputAlert.show();
