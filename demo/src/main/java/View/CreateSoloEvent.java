@@ -94,7 +94,7 @@ public class CreateSoloEvent {
         // event handling for the create event button
         // text field must have a name and a type must be selected
         confirm.setOnAction(event -> {
-            if (!eventName.getCharacters().toString().equals("Enter Your Event's Name")){
+            if (!eventName.getText().equals("Enter Your Event's Name")){
 
                 // get the event type name to use
                 String eventType = "";
@@ -118,14 +118,14 @@ public class CreateSoloEvent {
                     }
                 }
 
-                handler.createEvent(eventName.getCharacters().toString(), eventType);
+                handler.createEvent(eventName.getText(), eventType);
 
                 // returns to the previous menu after creating the new event successfully
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eventName.getCharacters().toString()));
+                confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eventName.getText()));
                 confirmAlert.show();
             }
             else {

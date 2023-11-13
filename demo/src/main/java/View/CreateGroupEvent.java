@@ -90,7 +90,7 @@ public class CreateGroupEvent {
         // event handling for the create event button
         // text field must have a name and a type must be selected
         confirm.setOnAction(event -> {
-            if (!eName.getCharacters().toString().equals("Enter Your Event's Name")){
+            if (!eName.getText().equals("Enter Your Event's Name")){
 
                 // get the event type name to use
                 String eventType = "";
@@ -114,14 +114,14 @@ public class CreateGroupEvent {
                     }
                 }
 
-                handler.createEvent(groupName, eName.getCharacters().toString(), eventType);
+                handler.createEvent(groupName, eName.getText(), eventType);
 
                 // returns to the previous menu after creating the new event successfully
                 GroupSelectEvent menu = new GroupSelectEvent(stage, groupName);
                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eName.getCharacters().toString()));
+                confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eName.getText()));
                 confirmAlert.show();
             }
             else {
