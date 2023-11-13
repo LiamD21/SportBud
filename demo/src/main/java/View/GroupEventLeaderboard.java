@@ -169,7 +169,7 @@ public class GroupEventLeaderboard {
 
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
-            GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", groupname, eventID);
+            GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", null, groupname, eventID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
