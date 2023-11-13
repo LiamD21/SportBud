@@ -44,6 +44,11 @@ public class GeneralAddScore {
         AnchorPane anchorPane = new AnchorPane();
         VBox scoreEntryBox = new VBox();
 
+        // do VBox alignment
+        scoreEntryBox.setAlignment(Pos.CENTER);
+        scoreEntryBox.setSpacing(15);
+        scoreEntryBox.setPadding(new Insets(20));
+
         // if the event is a group event, add a dropdown to select who we add the score for
         if (Objects.equals(lastPage, "GroupEventStats")){
             Label peopleBoxLabel = new Label("Select the group member to give a new score to");
