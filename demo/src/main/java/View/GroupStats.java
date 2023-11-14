@@ -121,10 +121,14 @@ public class GroupStats {
         }
 
 
-
-
+        //chart creation with the x and y axis
         ScoreChart = new BarChart<>(xAxis, yAxis);
         ScoreChart.setTitle(eventname + " Scores for group: " + groupname);
+
+        // for every series in the series list, add in the series to the barChart
+        for (int i = 0; i < series.size(); i++){
+            ScoreChart.getData().add(series.get(i));
+        }
 
 
 
