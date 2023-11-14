@@ -40,6 +40,7 @@ public class GroupStats {
         groupName = groupname;
         handler = new GroupStatsHandler(groupName, eventname);
         String type = handler.getEventType();
+        series = new ArrayList<>();
 
 
         // VBox root creation
@@ -131,6 +132,10 @@ public class GroupStats {
         }
 
 
+        // Anchor back button to the top corner of the screen
+        AnchorPane.setTopAnchor(backButton, 0.0);
+        AnchorPane.setLeftAnchor(backButton, 5.0);
+        anchorPane.getChildren().addAll(backButton);
 
         //populate the root node
         root.getChildren().addAll(anchorPane, numberStats, ScoreChart, statFilter);

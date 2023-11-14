@@ -50,12 +50,16 @@ public class GroupStatsHandler extends UIHandler{
     public void populatePersonsSeries(XYChart.Series series, int holeNumber){
         //go through each score in the event, and if the person has that score, getScore()
         // and insert with that persons name
-        for (Score score : event.getScores()){
+        int nthScore = 0;   //holds the n'th score that was inserted for this event by a single player
+
+        for (int i = 0; i < event.getScores().size(); i++){
+            Score score = event.getScores().get(i);
             //if score name ==  series name (ie same person) getScore
             if(score.getPersonsName().equals(series.getName())){
+                nthScore += 1;
                 //get the persons score, and add it to the series with .. Name? and the personsScore
                 int personsScore = getAScore(score, holeNumber);
-                series.getData().add(new XYChart.Data(series.getName(), personsScore));
+                series.getData().add(new XYChart.Data("Score # "+nthScore, personsScore));
 
             }
         }
