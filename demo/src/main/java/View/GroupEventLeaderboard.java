@@ -173,6 +173,14 @@ public class GroupEventLeaderboard {
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
+        // event listener for the stats page button
+        toStatsPage.setOnAction(event -> {
+            GroupStats menu = new GroupStats(stage, eventID, groupname);
+            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+        });
+
+
+
 
         //event listener for the sort button (must take into account all people in the group
 

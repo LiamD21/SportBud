@@ -149,7 +149,7 @@ public class GroupSelectEvent {
         statsButton.setOnAction(event ->{
             //TODO  *This may not be needed*
             //stats page stage set scene
-//            GroupStatsLeaderboard groupStats = new GroupStatsLeaderboard(stage, groupName);
+//            GroupStats groupStats = new GroupStats(stage, groupName);
 //            stage.setScene((new Scene(groupStats.getRoot(), 500, 500)));
 
         });
