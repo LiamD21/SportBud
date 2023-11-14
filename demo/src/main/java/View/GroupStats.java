@@ -102,9 +102,9 @@ public class GroupStats {
         String high  = handler.getHigh(statScoreView);
         String low = handler.getLow(statScoreView);
 
-        avgInfo = new Text(String.format("Overall average at this hole is: %d", avg));
-        minInfo = new Text("The loser of the hole is: " + low);
-        maxInfo = new Text("The winner of the hole is: " + high);
+        avgInfo = new Text(String.format("Overall average is: %d", avg));
+        minInfo = new Text("The loser  is: " + high);
+        maxInfo = new Text("The winner  is: " + low);
 
         //setup the barChart
 
@@ -173,10 +173,10 @@ public class GroupStats {
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
+
+        // event listener for the average choice box button
         refreshAllStatsButton.setOnAction(event -> {
             statScoreView = handler.convertScoreView(specificChoice.getValue());
-
-
 
             //remove all the series so that the barchart can be refilled
             while (!ScoreChart.getData().isEmpty()){
@@ -187,6 +187,7 @@ public class GroupStats {
             //clean the serieslist
             emptySeriesList();
 
+            //set these for the new values when the graph changes
             int newAverage;
             String newHigh;
             String newLow;
@@ -212,8 +213,8 @@ public class GroupStats {
 
             //repopulate the details.
             avgInfo.setText(String.format("Overall average at this hole is: %d", newAverage));
-            minInfo.setText("The loser of the hole is: " + newLow);
-            maxInfo.setText("The winner of the hole is: " + newHigh);
+            minInfo.setText("The loser of the hole is: " + newHigh);
+            maxInfo.setText("The winner of the hole is: " + newLow);
 
 
 
@@ -228,12 +229,11 @@ public class GroupStats {
                 invalidAlert.setContentText("Error: Select something to get average by before trying to get a new average");
                 invalidAlert.show();
             }
-
-
         });
-
-
     }
+
+
+
 
     public void fillSeriesList(int holeNumber){
         //set the series, each player in the group should have one (their color and bar)
