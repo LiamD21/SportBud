@@ -86,6 +86,50 @@ public class GroupStatsHandler extends UIHandler{
         return scoreTotaled;
     }
 
+    public int getAverage(int holeNumber){
+        ArrayList<Score> scores = event.getScores();
+        int totalScoreSum = 0;
+        //for each score in the event, getAScore from the hole, and add them all up together
+        for (Score score: scores){
+            totalScoreSum += getAScore(score, holeNumber);
+        }
+
+        //return the rounded total/number of scores) (aka the average out of all the scores for that hole)
+        return Math.round(totalScoreSum/ scores.size());
+    }
+
+    public String getHigh(int holeNumber){
+        ArrayList<Score> scores = event.getScores();
+        int highestScore = 0;
+        String personWithHighest = null;
+
+        //for each score in the vent, getAscore from the hole, and if it is higher than previous set
+        //the string personWithHighest to the person whos score it is
+        for (Score score : scores){
+            if (getAScore(score, holeNumber) >highestScore){
+                personWithHighest = score.getPersonsName();
+            }
+        }
+        return personWithHighest;
+
+    }
+
+    public String getLow(int holeNumber){
+        ArrayList<Score> scores = event.getScores();
+        int lowestScore = Integer.MAX_VALUE;
+        String personWithLowest = null;
+
+        //for each score in the vent, getAscore from the hole, and if it is higher than previous set
+        //the string personWithHighest to the person whos score it is
+        for (Score score : scores){
+            if (getAScore(score, holeNumber) < lowestScore){
+                personWithLowest = score.getPersonsName();
+            }
+        }
+        return personWithLowest;
+    }
+
+
     public boolean isGolfEvent(){
         return event.isGolf();
     }

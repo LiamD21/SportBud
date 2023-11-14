@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
@@ -28,9 +29,9 @@ public class GroupStats {
     private final String groupName;
     private final String eventID;
     private int statScoreView = 0;
-//    private final Text avgInfo;
-//    private final Text minInfo;
-//    private final Text maxInfo;
+    private final Text avgInfo;
+    private final Text minInfo;
+    private final Text maxInfo;
     private final BarChart<String, Number> ScoreChart;
     ArrayList<XYChart.Series> series;
 
@@ -96,6 +97,14 @@ public class GroupStats {
             }
         }
 
+        //fill the stats above with data and information
+        int avg = handler.getAverage(statScoreView);
+        String high  = handler.getHigh(statScoreView);
+        String low = handler.getLow(statScoreView);
+
+        avgInfo = new Text(String.format("Overall average at this hole is: %d", avg));
+        minInfo = new Text(String.format("The loser of the hole is: %d", low));
+        maxInfo = new Text(String.format("The winner of the hole is: %d", high));
 
         //setup the barChart
 
@@ -106,20 +115,22 @@ public class GroupStats {
         xAxis.setLabel("Player");
         yAxis.setLabel("Score");
 
-        //set the series, each player in the group should have one (their color and bar)
-        // send to handler
-        for (int i = 0 ; i < handler.getGroupPeople().size(); i++){
-            //creates a series for the person (color of bars)
-            XYChart.Series personSeries = new XYChart.Series<>();
-            personSeries.setName(handler.getGroupPeople().get(i));
+//        //set the series, each player in the group should have one (their color and bar)
+//        // send to handler
+//        for (int i = 0 ; i < handler.getGroupPeople().size(); i++){
+//            //creates a series for the person (color of bars)
+//            XYChart.Series personSeries = new XYChart.Series<>();
+//            personSeries.setName(handler.getGroupPeople().get(i));
+//
+//            //take the series, and populate it with the scores of the event based on the hole chosen
+//            handler.populatePersonsSeries(personSeries, statScoreView);
+//
+//            //now add it to the list of series? Each series in list should be added to chart
+//            series.add(personSeries);
+//        }
 
-            //take the series, and populate it with the scores of the event based on the hole chosen
-            handler.populatePersonsSeries(personSeries, statScoreView);
-
-            //now add it to the list of series? Each series in list should be added to chart
-            series.add(personSeries);
-
-        }
+        //fill up the series list with each players series (scores)
+        fillSeriesList(statScoreView);
 
 
         //chart creation with the x and y axis
@@ -136,6 +147,11 @@ public class GroupStats {
         AnchorPane.setTopAnchor(backButton, 0.0);
         AnchorPane.setLeftAnchor(backButton, 5.0);
         anchorPane.getChildren().addAll(backButton);
+        //set up the stats
+        numberStats.getChildren().addAll(avgInfo, maxInfo, minInfo);
+        numberStats.setSpacing(8);
+        numberStats.setAlignment(Pos.CENTER);
+
 
         //populate the root node
         root.getChildren().addAll(anchorPane, numberStats, ScoreChart, statFilter);
@@ -157,7 +173,77 @@ public class GroupStats {
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 
+        refreshAllStatsButton.setOnAction(event -> {
+            statScoreView = handler.convertScoreView(specificChoice.getValue());
+            //clear the series list to start again?
+            emptySeriesList();
 
+            int newAverage;
+            String newHigh;
+            String newLow;
+
+            //get the new average scoring, the new Leader, and the new loser and recalculate the date
+            // for the barCharts bars. (showing based on hole, not total)
+
+            //if the type is back 9, or the option hole is total or nothing
+            if (!Objects.equals(type, "Back 9") || statScoreView == 0 || statScoreView == -1) {
+                fillSeriesList(statScoreView);  //refill out the barchart's data (not yet plugged in)
+                newAverage = handler.getAverage(statScoreView);
+                newHigh = handler.getHigh(statScoreView);
+                newLow = handler.getLow(statScoreView);
+            }
+
+            //else ... uhh.. if its not the back nine or total?
+            else {
+                fillSeriesList(statScoreView-9);
+                newAverage = handler.getAverage(statScoreView - 9);
+                newHigh = handler.getHigh(statScoreView - 9);
+                newLow = handler.getLow(statScoreView - 9);
+            }
+
+            //refill the barchart with the modified data
+            ScoreChart.getData().removeAll();
+
+            // for every series in the series list, add in the series to the barChart
+            for (int i = 0; i < series.size(); i++){
+                ScoreChart.getData().add(series.get(i));
+            }
+
+            // error message if nothing was selected to sort by
+            if (statScoreView == -1){
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: Select something to get average by before trying to get a new average");
+                invalidAlert.show();
+            }
+
+
+        });
+
+
+    }
+
+    public void fillSeriesList(int holeNumber){
+        //set the series, each player in the group should have one (their color and bar)
+        // send to handler
+        for (int i = 0 ; i < this.handler.getGroupPeople().size(); i++){
+            //creates a series for the person (color of bars)
+            XYChart.Series personSeries = new XYChart.Series<>();
+            personSeries.setName(this.handler.getGroupPeople().get(i));
+
+            //take the series, and populate it with the scores of the event based on the hole chosen
+            this.handler.populatePersonsSeries(personSeries, holeNumber);
+
+            //now add it to the list of series? Each series in list should be added to chart
+            this.series.add(personSeries);
+        }
+    }
+
+    public void emptySeriesList(){
+        //for each series in the series list, remove it. (because we need to repopulate the names
+        // with new scores for specified hole.
+        for (int i = 0;  i < this.series.size(); i++){
+            series.remove(i);
+        }
     }
 
 
