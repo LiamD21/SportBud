@@ -103,8 +103,8 @@ public class GroupStats {
         String low = handler.getLow(statScoreView);
 
         avgInfo = new Text(String.format("Overall average at this hole is: %d", avg));
-        minInfo = new Text(String.format("The loser of the hole is: %d", low));
-        maxInfo = new Text(String.format("The winner of the hole is: %d", high));
+        minInfo = new Text("The loser of the hole is: " + low);
+        maxInfo = new Text("The winner of the hole is: " + high);
 
         //setup the barChart
 
@@ -175,7 +175,16 @@ public class GroupStats {
 
         refreshAllStatsButton.setOnAction(event -> {
             statScoreView = handler.convertScoreView(specificChoice.getValue());
-            //clear the series list to start again?
+
+
+
+            //remove all the series so that the barchart can be refilled
+            while (!ScoreChart.getData().isEmpty()){
+                ScoreChart.getData().remove(0);
+                System.out.println(ScoreChart.getData());
+            }
+
+            //clean the serieslist
             emptySeriesList();
 
             int newAverage;
@@ -201,8 +210,12 @@ public class GroupStats {
                 newLow = handler.getLow(statScoreView - 9);
             }
 
-            //refill the barchart with the modified data
-            ScoreChart.getData().removeAll();
+            //repopulate the details.
+            avgInfo.setText(String.format("Overall average at this hole is: %d", newAverage));
+            minInfo.setText("The loser of the hole is: " + newLow);
+            maxInfo.setText("The winner of the hole is: " + newHigh);
+
+
 
             // for every series in the series list, add in the series to the barChart
             for (int i = 0; i < series.size(); i++){
@@ -239,10 +252,12 @@ public class GroupStats {
     }
 
     public void emptySeriesList(){
-        //for each series in the series list, remove it. (because we need to repopulate the names
+        //while there are series in the series list, remove it. (because we need to repopulate the names
         // with new scores for specified hole.
-        for (int i = 0;  i < this.series.size(); i++){
-            series.remove(i);
+
+        while (!this.series.isEmpty()){
+            this.series.remove(0);
+            System.out.println(series);
         }
     }
 
