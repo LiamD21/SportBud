@@ -124,6 +124,25 @@ public class GroupEventLbHandler extends UIHandler{
             }
         }
 
+        // if we want to sort by highest scores, reverse the array before removing scores
+        if (Objects.equals(event.getEventType(), "Time-Highest") || Objects.equals(event.getEventType(), "Points-Highest")) {
+            int start = 0;
+            int end = totalsPlaceholder.size() - 1;
+
+            while (start < end){
+                int temp = totalsPlaceholder.get(start);
+                String temp2 = peoplesScoresMirrorArr.get(start);
+
+                totalsPlaceholder.set(start, totalsPlaceholder.get(end));
+                peoplesScoresMirrorArr.set(start, peoplesScoresMirrorArr.get(end));
+                totalsPlaceholder.set(end, temp);
+                peoplesScoresMirrorArr.set(end, temp2);
+
+                start = start + 1;
+                end = end - 1;
+            }
+        }
+
         // check and remove scores from people who have more than one
         // keep their highest score
         ArrayList<Integer> bests = new ArrayList<>(group.getGroupSize());
@@ -132,6 +151,25 @@ public class GroupEventLbHandler extends UIHandler{
             if (!seen.contains(peoplesScoresMirrorArr.get(i))){
                 seen.add(peoplesScoresMirrorArr.get(i));
                 bests.add(totalsPlaceholder.get(i));
+            }
+        }
+
+        // if we initially reversed the array, we must reverse it again before returning
+        if (Objects.equals(event.getEventType(), "Time-Highest") || Objects.equals(event.getEventType(), "Points-Highest")) {
+            int start = 0;
+            int end = bests.size() - 1;
+
+            while (start < end){
+                int temp = bests.get(start);
+                String temp2 = seen.get(start);
+
+                bests.set(start, bests.get(end));
+                seen.set(start, seen.get(end));
+                bests.set(end, temp);
+                seen.set(end, temp2);
+
+                start = start + 1;
+                end = end - 1;
             }
         }
 

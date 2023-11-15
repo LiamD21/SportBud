@@ -3,6 +3,7 @@ package Controller;
 import Model.Event;
 import Model.Group;
 import Model.Person;
+import Model.Score;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -126,5 +127,53 @@ public class GeneralAddScoreHandler extends UIHandler{
             people.addAll(this.group.getPeople());
         }
         return people;
+    }
+
+    /**
+     * finds if a given score is a new high score for this event
+     * @param score the integer array containing the new score
+     * @return true if this is a new high score, not counting the first score for an event
+     */
+    public boolean isBestScore(int[] score){
+        boolean highestFirst = Objects.equals(event.getEventType(), "Points-Highest") || Objects.equals(event.getEventType(), "Time-Highest");
+        boolean flag = true;
+        // checking if score's length is only 1
+        ArrayList<Score> scores = event.getScores();
+        if (score.length == 1){
+            for (Score sc:scores){
+                if (highestFirst) {
+                    if (sc.getScores()[0] >= score[0]){
+                        flag = false;
+                    }
+                }
+                else {
+                    if (sc.getScores()[0] <= score[0]){
+                        flag = false;
+                    }
+                }
+            }
+        }
+        // if length is not 1, check the totals, it also must be lowest first because it must be golf
+        else {
+            int newTotal = 0;
+            for (Integer num: score){
+                newTotal += num;
+            }
+            for (Score sc: scores){
+                int total = 0;
+                for (Integer hole:sc.getScores()){
+                    total += hole;
+                }
+                if (total <= newTotal){
+                    flag = false;
+                }
+            }
+        }
+
+        // if this is the first score, do not say new high score
+        if (event.getScores().size() == 0){
+            return false;
+        }
+        return flag;
     }
 }

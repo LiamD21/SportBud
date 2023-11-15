@@ -44,6 +44,11 @@ public class GeneralAddScore {
         AnchorPane anchorPane = new AnchorPane();
         VBox scoreEntryBox = new VBox();
 
+        // do VBox alignment
+        scoreEntryBox.setAlignment(Pos.CENTER);
+        scoreEntryBox.setSpacing(15);
+        scoreEntryBox.setPadding(new Insets(20));
+
         // if the event is a group event, add a dropdown to select who we add the score for
         if (Objects.equals(lastPage, "GroupEventStats")){
             Label peopleBoxLabel = new Label("Select the group member to give a new score to");
@@ -119,6 +124,13 @@ public class GeneralAddScore {
 
                                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
+                                // show popup if it was a new high score
+                                if (handler.isBestScore(intScores)){
+                                    Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                    highScore.setContentText("NEW HIGH SCORE!");
+                                    highScore.show();
+                                }
                             }
 
                             //else go back to the group leaderboard if its from there.
@@ -134,6 +146,13 @@ public class GeneralAddScore {
                                         throw new RuntimeException(e);
                                     }
                                     stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
+                                    // show popup if it was a new high score
+                                    if (handler.isBestScore(intScores)){
+                                        Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                        highScore.setContentText("NEW HIGH SCORE!");
+                                        highScore.show();
+                                    }
                                 }
                                 else {
                                     Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
@@ -168,11 +187,19 @@ public class GeneralAddScore {
 
                             SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
                             stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
+                            // show popup if it was a new high score
+                            if (handler.isBestScore(scores)){
+                                Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                highScore.setContentText("NEW HIGH SCORE!");
+                                highScore.show();
+                            }
                         }
 
                         else if (Objects.equals(lastPage, "GroupEventStats")){
                             if (people.getValue() != null) {
                                 handler.setScore(scores, people.getValue());
+
                                 GroupEventLeaderboard menu = null;
                                 try {
                                     menu = new GroupEventLeaderboard(stage, eventID, groupID);
@@ -180,6 +207,13 @@ public class GeneralAddScore {
                                     throw new RuntimeException(e);
                                 }
                                 stage.setScene(new Scene(menu.getRoot(), 500, 500));
+
+                                // show popup if it was a new high score
+                                if (handler.isBestScore(scores)){
+                                    Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                    highScore.setContentText("NEW HIGH SCORE!");
+                                    highScore.show();
+                                }
                             }
                             else {
                                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);

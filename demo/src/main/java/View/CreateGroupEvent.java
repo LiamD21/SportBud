@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CreateGroupEventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -46,6 +47,8 @@ public class CreateGroupEvent {
         sortingEventTypes.getItems().addAll("Highest", "Lowest");
 
         vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(15);
+        vbox.setPadding(new Insets(20));
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backB, 10.0);
