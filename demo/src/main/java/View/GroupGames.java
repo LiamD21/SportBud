@@ -29,6 +29,7 @@ public class GroupGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Create elements
         Button backButton = new Button("Back");
@@ -69,7 +70,7 @@ public class GroupGames {
         // buttons and what not, on button click.
         newGroupButton.setOnAction(event ->{
             CreateGroup creategroup = new CreateGroup(stage);
-            stage.setScene(new Scene(creategroup.getRoot(),600,600));
+            stage.setScene(new Scene(creategroup.getRoot(),800,600));
         });
 
 

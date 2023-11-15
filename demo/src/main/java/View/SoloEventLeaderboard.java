@@ -37,6 +37,7 @@ public class SoloEventLeaderboard {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
         root.setPadding(new Insets(10));
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
         Button backButton = new Button("back");
@@ -128,7 +129,7 @@ public class SoloEventLeaderboard {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the sort button
@@ -169,13 +170,13 @@ public class SoloEventLeaderboard {
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
             GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, eventID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the stats page button
         toStatsPage.setOnAction(event -> {
             SoloStats menu = new SoloStats(stage, eventID, personID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
     }
 

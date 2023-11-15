@@ -31,6 +31,7 @@ public class SoloGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Initialize the handler
         handler = new SoloGamesHandler();
@@ -103,7 +104,7 @@ public class SoloGames {
         selectButton.setOnAction(event -> {
             if (personChooser.getValue() != null){
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personChooser.getValue());
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);

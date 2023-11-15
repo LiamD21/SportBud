@@ -6,8 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -18,14 +21,18 @@ public class MainMenu extends Application {
 
     @Override
     public void start(Stage stage) {
+        // setting icon
+        stage.getIcons().add(new Image("icon.png"));
+
         // Create the menu pane and scene
         VBox menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
-        menuScene = new Scene(menuRoot, 500,500);
+        menuScene = new Scene(menuRoot, 800,600);
+        menuScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Create elements
         ImageView imageView =  new ImageView();
-        imageView.setImage(new Image("blacklogo.png"));
+        imageView.setImage(new Image("logorecolour.png"));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
         imageView.setCache(true);
@@ -33,7 +40,6 @@ public class MainMenu extends Application {
         imageView.setVisible(true);
 
         Text chooseYourMenu = new Text("Choose Your Menu!");
-        chooseYourMenu.setFont(new Font(16));
 
         //holds the buttons
         HBox buttons = new HBox();
@@ -42,6 +48,7 @@ public class MainMenu extends Application {
 
         //the buttons
         Button soloButton = new Button("SOLO");
+
         Button groupButton = new Button("GROUP");
 
         // add buttons into the box
@@ -53,12 +60,12 @@ public class MainMenu extends Application {
         // Event Listening for going to group games screen or solo games screen
         soloButton.setOnAction(event -> {
                 SoloGames nextMenu = new SoloGames(stage);
-                stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+                stage.setScene(new Scene(nextMenu.getRoot(), 800, 600));
         });
 
         groupButton.setOnAction(event -> {
             GroupGames nextMenu = new GroupGames(stage);
-            stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+            stage.setScene(new Scene(nextMenu.getRoot(), 800, 600));
 
         });
 

@@ -29,7 +29,7 @@ public class CreateGroup {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(10,10,10,10));
-
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         //modify title
         Text createGroupTitle = new Text("Create Your Group");
@@ -91,7 +91,7 @@ public class CreateGroup {
         // Event listener for return to GroupGames menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
-            stage.setScene(new Scene(groupgames.getRoot(), 500, 500));
+            stage.setScene(new Scene(groupgames.getRoot(), 800, 600));
             stage.setTitle("Group Events");
         });
 

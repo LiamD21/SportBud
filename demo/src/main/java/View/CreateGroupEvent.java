@@ -24,6 +24,7 @@ public class CreateGroupEvent {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         handler = new CreateGroupEventHandler(gName);
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         AnchorPane ap = new AnchorPane();
         Button backB = new Button("Back");
@@ -50,7 +51,7 @@ public class CreateGroupEvent {
         // event handling for the back button
         backB.setOnAction(event -> {
             GroupSelectEvent menu = new GroupSelectEvent(stage, groupName);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event handling for the create event button
@@ -61,7 +62,7 @@ public class CreateGroupEvent {
 
                 // goes back to event select after creating
                 GroupSelectEvent menu = new GroupSelectEvent(stage, groupName);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmAlert.setContentText(String.format("%s event named %s created!", eventTypes.getValue(), eName.getCharacters().toString()));

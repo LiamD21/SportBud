@@ -40,6 +40,7 @@ public class SoloStats {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
         root.setPadding(new Insets(10));
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
         Button backButton = new Button("back");
@@ -113,7 +114,7 @@ public class SoloStats {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the average choice box button

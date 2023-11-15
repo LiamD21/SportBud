@@ -27,7 +27,7 @@ public class GroupSelectEvent {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
         root.setPadding(new Insets(10));
-
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // panes in which the nodes will be laid out
         AnchorPane anchorPane = new AnchorPane();
@@ -107,7 +107,7 @@ public class GroupSelectEvent {
         // Event listener for return to GroupGames menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
-            stage.setScene(new Scene(groupgames.getRoot(), 500, 500));
+            stage.setScene(new Scene(groupgames.getRoot(), 800, 600));
             stage.setTitle("Group Events");
         });
 
@@ -123,7 +123,7 @@ public class GroupSelectEvent {
             //New event page stage set scene
 
             CreateGroupEvent cge = new CreateGroupEvent(stage, groupName);
-            stage.setScene(new Scene(cge.getRoot(), 500, 500));
+            stage.setScene(new Scene(cge.getRoot(), 800, 600));
         });
 
         //event listener for stats Page

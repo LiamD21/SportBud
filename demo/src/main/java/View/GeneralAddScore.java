@@ -40,6 +40,7 @@ public class GeneralAddScore {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
         root.setPadding(new Insets(10));
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
         Button backButton = new Button("Back");
@@ -70,7 +71,7 @@ public class GeneralAddScore {
         backButton.setOnAction(event -> {
             if (Objects.equals(lastPage, "SoloEventStats")) {
                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
         });
 
@@ -98,7 +99,7 @@ public class GeneralAddScore {
                             // go back to the leaderboard after entering a new score
                             if (Objects.equals(lastPage, "SoloEventStats")) {
                                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                stage.setScene(new Scene(menu.getRoot(), 800, 600));
                             }
                         } catch (NumberFormatException | NullPointerException e){
                             Alert inputAlert = new Alert(Alert.AlertType.ERROR);
@@ -125,7 +126,7 @@ public class GeneralAddScore {
                         // go back to the leaderboard after entering a new score
                         if (Objects.equals(lastPage, "SoloEventStats")) {
                             SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                            stage.setScene(new Scene(menu.getRoot(), 800, 600));
                         }
                     } catch (NumberFormatException | NullPointerException e){
                         Alert inputAlert = new Alert(Alert.AlertType.ERROR);
