@@ -141,6 +141,7 @@ public class GroupStatsHandler extends UIHandler{
     }
 
 
+
     public int convertScoreView(String item){
         if (Objects.equals(item, "Total")){
             return 0;

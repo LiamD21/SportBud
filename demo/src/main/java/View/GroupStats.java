@@ -102,9 +102,21 @@ public class GroupStats {
         String high  = handler.getHigh(statScoreView);
         String low = handler.getLow(statScoreView);
 
-        avgInfo = new Text(String.format("Overall average is: %d", avg));
-        minInfo = new Text("The loser  is: " + high);
-        maxInfo = new Text("The winner  is: " + low);
+
+
+        //set the starting top stats, if its golf or a lowest wins, then those are set
+        if (handler.isGolfEvent() || type.equals("Time-Lowest") || type.equals("Points-Lowest")) {
+            avgInfo = new Text(String.format("Overall average is: %d", avg));
+            minInfo = new Text("The loser  is: " + high);
+            maxInfo = new Text("The winner  is: " + low);
+        }
+        //if its highest wins its output accordinhly
+        else {
+            avgInfo = new Text(String.format("Overall average is: %d", avg));
+            minInfo = new Text("The loser  is: " + low);
+            maxInfo = new Text("The winner  is: " + high);
+        }
+
 
         //setup the barChart
 
@@ -115,19 +127,6 @@ public class GroupStats {
         xAxis.setLabel("Player");
         yAxis.setLabel("Score");
 
-//        //set the series, each player in the group should have one (their color and bar)
-//        // send to handler
-//        for (int i = 0 ; i < handler.getGroupPeople().size(); i++){
-//            //creates a series for the person (color of bars)
-//            XYChart.Series personSeries = new XYChart.Series<>();
-//            personSeries.setName(handler.getGroupPeople().get(i));
-//
-//            //take the series, and populate it with the scores of the event based on the hole chosen
-//            handler.populatePersonsSeries(personSeries, statScoreView);
-//
-//            //now add it to the list of series? Each series in list should be added to chart
-//            series.add(personSeries);
-//        }
 
         //fill up the series list with each players series (scores)
         fillSeriesList(statScoreView);
