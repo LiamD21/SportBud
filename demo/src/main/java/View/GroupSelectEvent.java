@@ -31,8 +31,8 @@ public class GroupSelectEvent {
 
         // panes in which the nodes will be laid out
         AnchorPane anchorPane = new AnchorPane();
-        Button backButton = new Button("Back");
-        backButton.setPrefSize(60,25);
+        Button backButton = new Button("🠔");
+//        backButton.setPrefSize(60,25);
 
 
         Text nameTitle = new Text(String.format("%s's HomePage", groupName));
@@ -43,9 +43,9 @@ public class GroupSelectEvent {
 
         //Listview to show the roster of the group
         ListView<String> roster = new ListView<String>();
-        roster.setPrefHeight(100);
-        roster.setMaxWidth(200);
-        roster.setMaxHeight(200);
+//        roster.setPrefHeight(100);
+//        roster.setMaxWidth(200);
+//        roster.setMaxHeight(200);
 
         Text rosterTitle = new Text(String.format("Group Roster"));
         rosterTitle.setFont(new Font(16));
@@ -55,17 +55,16 @@ public class GroupSelectEvent {
                 roster.getItems().add(person);
         }
 
-
         //Listview to show all the events for the group
         ListView<String> eventList = new ListView<String>();
-        eventList.setPrefHeight(100);
+//        eventList.setPrefHeight(100);
 
         Text eventTitle = new Text(String.format("%s's Events", groupName));
         eventTitle.setFont(new Font(16));
 
         Button selectEvent = new Button("Select Event");
         selectEvent.setPadding(new Insets(5));
-        selectEvent.setPrefSize(55, 80);
+//        selectEvent.setPrefSize(55, 80);
         selectEvent.setWrapText(true);
 
 
@@ -86,13 +85,13 @@ public class GroupSelectEvent {
 
         // create buttons for stats and create event pages in the bottom HBox
         Button statsButton = new Button(String.format("%s's Stats", groupName));
-        statsButton.setPrefSize(125,25);
+//        statsButton.setPrefSize(125,25);
 
         Button newEventButton = new Button("New Event");
-        newEventButton.setPrefSize(125,25);
+//        newEventButton.setPrefSize(125,25);
 
         bottomButtons.getChildren().addAll(statsButton, newEventButton);
-        bottomButtons.setSpacing(15);
+//        bottomButtons.setSpacing(15);
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 0.0);

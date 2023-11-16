@@ -1,17 +1,13 @@
 package View;
 
 import Controller.CreateGroupHandler;
-import Model.Group;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
-import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
@@ -33,13 +29,13 @@ public class CreateGroup {
 
         //modify title
         Text createGroupTitle = new Text("Create Your Group");
-        createGroupTitle.setFont(Font.font("Calibri", FontWeight.BOLD, FontPosture.REGULAR, 20));
+//        createGroupTitle.setFont(Font.font("Calibri", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         //Buttons:
         Button backButton = new Button("Back to Groups");
-        backButton.setPrefWidth(100);
+//        backButton.setPrefWidth(100);
         Button createGroup = new Button("Create!");
-        createGroup.setPrefWidth(100);
+//        createGroup.setPrefWidth(100);
         Button addPerson = new Button("Add Person");
         Button removePerson = new Button("Remove Person");
 
@@ -57,8 +53,8 @@ public class CreateGroup {
         //text inputs:
         TextField groupname = new TextField("Set group name here");
         groupname.setPrefColumnCount(20);
-        groupname.setMaxWidth(300);
-        groupname.setMinWidth(20);
+//        groupname.setMaxWidth(300);
+//        groupname.setMinWidth(20);
         groupname.setPadding(new Insets(8,8,8,8));
 
         ListView<String> availableMembers = new ListView<>();

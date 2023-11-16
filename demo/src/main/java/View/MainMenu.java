@@ -6,13 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
@@ -24,14 +23,30 @@ public class MainMenu extends Application {
         // setting icon
         stage.getIcons().add(new Image("icon.png"));
 
+        //help button
+        StackPane sp = new StackPane();
+        AnchorPane ap = new AnchorPane();
+        Button helpButton = new Button("?");
+        sp.getChildren().add(ap);
+        ap.getChildren().add(helpButton);
+        AnchorPane.setTopAnchor(helpButton, 10.0);
+        AnchorPane.setRightAnchor(helpButton, 15.0);
+
+        helpButton.setOnAction(event -> {
+            Popup p = new Popup();
+
+
+        });
+
         // Create the menu pane and scene
         VBox menuRoot = new VBox();
+        menuRoot.getChildren().add(sp);
         menuRoot.setAlignment(Pos.CENTER);
         menuScene = new Scene(menuRoot, 800,600);
         menuScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Create elements
-        ImageView imageView =  new ImageView();
+        ImageView imageView = new ImageView();
         imageView.setImage(new Image("logorecolour.png"));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
@@ -44,7 +59,7 @@ public class MainMenu extends Application {
         //holds the buttons
         HBox buttons = new HBox();
         buttons.setAlignment(Pos.CENTER);
-        buttons.setSpacing(12);
+//        buttons.setSpacing(12);
 
         //the buttons
         Button soloButton = new Button("SOLO");
@@ -55,7 +70,7 @@ public class MainMenu extends Application {
         buttons.getChildren().addAll(soloButton,groupButton);
 
         // Add spacing
-        menuRoot.setSpacing(30);
+//        menuRoot.setSpacing(30);
 
         // Event Listening for going to group games screen or solo games screen
         soloButton.setOnAction(event -> {

@@ -5,10 +5,13 @@
     -fx-font-color : #393E46;
     -fx-accent: #F2E7D5;
     -fx-focus-color: #F2E7D5;
+    -fx-spacing: 8;
 }
 
 .button{
     -fx-background-color: #6D9886;
+    -fx-background-insets: 5;
+    -fx-padding: 10;
 }
 
 .button:hover{
@@ -21,4 +24,19 @@
 
 .choice-box:hover{
     -fx-background-color: #5C8071;
+}
+
+.region{
+    -fx-spacing: 100;
+}
+
+#backButton{
+    -fx-background-color: transparent;
+    -fx-font-weight: BOLD;
+    -fx-font-size: 100;
+    -fx-font-color: #393E46;
+}
+
+#backButton:hover{
+    -fx-font-color: #292d33;
 }

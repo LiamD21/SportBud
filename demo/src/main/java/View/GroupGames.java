@@ -32,7 +32,7 @@ public class GroupGames {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Create elements
-        Button backButton = new Button("Back");
+        Button backButton = new Button("🠔");
         Text titleText = new Text("Groups: Choose a group");
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
         Button newGroupButton = new Button("Create a New Group");
@@ -79,7 +79,7 @@ public class GroupGames {
             //TODO Implement the group event viewer when chosen selection
             GroupSelectEvent groupSelectEvent = new GroupSelectEvent(stage,
                     groupChoice.getSelectionModel().getSelectedItem());
-            stage.setScene(new Scene(groupSelectEvent.getRoot(), 500,500));
+            stage.setScene(new Scene(groupSelectEvent.getRoot(), 800,600));
         });
     }
 

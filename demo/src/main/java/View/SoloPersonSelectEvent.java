@@ -31,7 +31,7 @@ public class SoloPersonSelectEvent {
 
         // create elements
         AnchorPane anchorPane = new AnchorPane();
-        Button backButton = new Button("Back");
+        Button backButton = new Button("🠔");
         Text nameTitle = new Text(handler.getName());
         BorderPane myEvents = new BorderPane();
         HBox bottomButtons = new HBox();

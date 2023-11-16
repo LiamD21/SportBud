@@ -27,7 +27,7 @@ public class CreateGroupEvent {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         AnchorPane ap = new AnchorPane();
-        Button backB = new Button("Back");
+        Button backB = new Button("🠔");
         TextField eName = new TextField("Enter your event's name");
         Label cLabel = new Label("Select your event's type");
         ChoiceBox<String> eventTypes = new ChoiceBox<>();
