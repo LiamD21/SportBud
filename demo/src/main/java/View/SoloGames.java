@@ -81,11 +81,11 @@ public class SoloGames {
         // If add person button clicked, pass to the controller
         // New person is only created if the user actually enters a name, else there is just an error popup
         addPersonButton.setOnAction(event -> {
-            if (!newName.getCharacters().toString().equals("Full Name") && !userName.getCharacters().toString().equals("Username")){
-                handler.handleNewPerson(newName.getCharacters().toString(), userName.getCharacters().toString());
+            if (!newName.getText().equals("Full Name") && !userName.getText().equals("Username")){
+                handler.handleNewPerson(newName.getText(), userName.getText());
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmAlert.setContentText(String.format("New Person %s Created successfully with username %s", newName.getCharacters().toString(), userName.getCharacters().toString()));
+                confirmAlert.setContentText(String.format("New Person %s Created successfully with username %s", newName.getText(), userName.getText()));
                 confirmAlert.show();
 
                 selectPerson.getChildren().removeAll(personChooser, selectButton);

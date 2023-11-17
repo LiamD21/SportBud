@@ -137,4 +137,26 @@ public class SoloStatsHandler extends UIHandler{
     public ArrayList<Integer> getChartData(int hole){
         return getScores(hole);
     }
+
+    /**
+     * Gets the highest and lowest scores
+     * @param hole the integer which specifies a total score, 0, or a specific hole
+     * @return an array of 2 elements, first is maximum score, second is minimum score
+     */
+    public int[] getHighLowScores(int hole){
+        ArrayList<Integer> scores = getScores(hole);
+        int max = scores.get(0);
+        int min = scores.get(0);
+
+        for (Integer score:scores){
+            if (score > max){
+                max = score;
+            }
+            if (score < min){
+                min = score;
+            }
+        }
+
+        return new int[]{max, min};
+    }
 }

@@ -17,8 +17,8 @@ public class SoloGamesHandler extends UIHandler{
     public String[] getPersonList(){
         try {
             return db.GetPeople();
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | ParseException | ArrayIndexOutOfBoundsException e) {
+            return new String[]{};
         }
     }
 
