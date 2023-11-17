@@ -29,7 +29,9 @@ public class GeneralAddScore {
     private final String lastPage;
 
     public GeneralAddScore(Stage stage, String lastPage, String person, String eventName){
-        handler = new GeneralAddScoreHandler(eventName, person);
+        // handler = new GeneralAddScoreHandler(eventName, person); TODO did i fix this correctly? - isaac
+        handler = new GeneralAddScoreHandler(eventName, person, lastPage, null);
+        // TODO PUT THE GROUP ID IN THE ABOVE, I DIDNT DO THAT BECAUSE I WAS SCARED OF BREAKING THINGS - Isaac
         eventID = eventName;
         personID = person;
         this.lastPage = lastPage;
@@ -43,7 +45,7 @@ public class GeneralAddScore {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
         AnchorPane anchorPane = new AnchorPane();
         VBox scoreEntryBox = new VBox();
 
@@ -94,7 +96,7 @@ public class GeneralAddScore {
                                 }
                                 intScores[i] = Integer.parseInt(scores[i]);
                             }
-                            handler.setScore(intScores);
+                            handler.setScore(intScores, person);
 
                             // go back to the leaderboard after entering a new score
                             if (Objects.equals(lastPage, "SoloEventStats")) {
@@ -121,7 +123,7 @@ public class GeneralAddScore {
                     try {
                         int score = Integer.parseInt(scoreIn.getCharacters().toString());
                         int[] scores = {score};
-                        handler.setScore(scores);
+                        handler.setScore(scores, person);
 
                         // go back to the leaderboard after entering a new score
                         if (Objects.equals(lastPage, "SoloEventStats")) {

@@ -39,7 +39,7 @@ public class GroupEventLeaderboard {
         root.setPadding(new Insets(10));
 
         //Backbutton
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
 
         //Anchorpane to hold the Boxes
         AnchorPane anchorPane = new AnchorPane();
@@ -169,7 +169,9 @@ public class GroupEventLeaderboard {
 
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
-            GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", null, groupname, eventID);
+            // TODO ISAAC DOES NOT KNOW IF HE FIXED THIS CORRECTLY (OLD COMMENTED OUT BEFORE)
+            //GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", null, groupname, eventID);
+            GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", groupname, eventID);
             stage.setScene(new Scene(menu.getRoot(), 500, 500));
         });
 

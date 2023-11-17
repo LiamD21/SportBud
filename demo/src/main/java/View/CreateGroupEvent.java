@@ -31,8 +31,8 @@ public class CreateGroupEvent {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         AnchorPane ap = new AnchorPane();
-        Button backB = new Button("⇐");
-        backB.setId("boldButton");
+        Button backButton = new Button(" ◄ ");
+        backButton.setId("boldButton");
         TextField eName = new TextField("Enter your event's name");
         Label basicChoiceLabel = new Label("Select your event's type");
         ChoiceBox<String> basicEventTypes = new ChoiceBox<>();
@@ -53,15 +53,15 @@ public class CreateGroupEvent {
         vbox.setPadding(new Insets(20));
 
         // Anchor back button to the top corner of the screen
-        AnchorPane.setTopAnchor(backB, 10.0);
-        AnchorPane.setLeftAnchor(backB, 15.0);
-        ap.getChildren().addAll(backB);
+        AnchorPane.setTopAnchor(backButton, 10.0);
+        AnchorPane.setLeftAnchor(backButton, 15.0);
+        ap.getChildren().addAll(backButton);
 
         // add elements to the root
         root.getChildren().addAll(ap, vbox);
 
         // event handling for the back button
-        backB.setOnAction(event -> {
+        backButton.setOnAction(event -> {
             GroupSelectEvent menu = new GroupSelectEvent(stage, groupName);
             stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });

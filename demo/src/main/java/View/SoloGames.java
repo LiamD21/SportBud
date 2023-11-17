@@ -38,7 +38,7 @@ public class SoloGames {
 
         // Create elements
         AnchorPane anchorPane = new AnchorPane();
-        Button backButton = new Button("⇐");
+        Button backButton = new Button(" ◄ ");
         Text titleText = new Text("Solo Events");
         HBox newPerson = new HBox();
         HBox selectPerson = new HBox();

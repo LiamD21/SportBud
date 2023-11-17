@@ -40,8 +40,7 @@ public class SoloEventLeaderboard {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
-        Button backButton = new Button("⇐");
-        backButton.setId("boldButton");
+        Button backButton = new Button(" ◄ ");
         AnchorPane anchorPane = new AnchorPane();
         Text nameTitle = new Text(handler.getEventName());
         Text eventType = new Text();
