@@ -5,7 +5,7 @@
     -fx-font-color : #393E46;
     -fx-accent: #F2E7D5;
     -fx-focus-color: #F2E7D5;
-    -fx-spacing: 8;
+    -fx-spacing: 10;
 }
 
 .button{
@@ -16,6 +16,7 @@
 
 .button:hover{
     -fx-background-color: #5C8071;
+    -fx-font-color: #23262b;
 }
 
 .choice-box{
@@ -26,17 +27,8 @@
     -fx-background-color: #5C8071;
 }
 
-.region{
-    -fx-spacing: 100;
-}
-
-#backButton{
-    -fx-background-color: transparent;
+#boldButton{
     -fx-font-weight: BOLD;
-    -fx-font-size: 100;
-    -fx-font-color: #393E46;
-}
-
-#backButton:hover{
-    -fx-font-color: #292d33;
+    -fx-min-height: 20;
+    -fx-min-width: 20;
 }

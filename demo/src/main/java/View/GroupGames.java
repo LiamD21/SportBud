@@ -32,7 +32,7 @@ public class GroupGames {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Create elements
-        Button backButton = new Button("🠔");
+        Button backButton = new Button(" ◄ ");
         Text titleText = new Text("Groups: Choose a group");
         ChoiceBox<String> groupChoice = new ChoiceBox<>();
         Button newGroupButton = new Button("Create a New Group");

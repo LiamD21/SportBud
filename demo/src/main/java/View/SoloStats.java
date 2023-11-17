@@ -43,7 +43,8 @@ public class SoloStats {
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // create elements
-        Button backButton = new Button("🠔");
+        Button backButton = new Button("⇐");
+        backButton.setId("boldButton");
         AnchorPane anchorPane = new AnchorPane();
         HBox averageStat = new HBox();
 

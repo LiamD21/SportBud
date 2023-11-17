@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
@@ -24,23 +23,21 @@ public class MainMenu extends Application {
         stage.getIcons().add(new Image("icon.png"));
 
         //help button
-        StackPane sp = new StackPane();
         AnchorPane ap = new AnchorPane();
-        Button helpButton = new Button("?");
-        sp.getChildren().add(ap);
+        Button helpButton = new Button(" ? ");
+        helpButton.setId("boldButton");
         ap.getChildren().add(helpButton);
         AnchorPane.setTopAnchor(helpButton, 10.0);
         AnchorPane.setRightAnchor(helpButton, 15.0);
 
         helpButton.setOnAction(event -> {
             Popup p = new Popup();
-
-
+            p.show(stage);
+            // TODO add popup help window ISAAC DO THIS NEXT
         });
 
         // Create the menu pane and scene
         VBox menuRoot = new VBox();
-        menuRoot.getChildren().add(sp);
         menuRoot.setAlignment(Pos.CENTER);
         menuScene = new Scene(menuRoot, 800,600);
         menuScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
@@ -85,7 +82,7 @@ public class MainMenu extends Application {
         });
 
         // Add to root
-        menuRoot.getChildren().addAll(imageView, chooseYourMenu, buttons);
+        menuRoot.getChildren().addAll(ap, imageView, chooseYourMenu, buttons);
 
         // Setup of the stage and then show it
         stage.setTitle("Menu");

@@ -32,7 +32,8 @@ public class CreateGroup {
 //        createGroupTitle.setFont(Font.font("Calibri", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         //Buttons:
-        Button backButton = new Button("Back to Groups");
+        Button backButton = new Button(" < ");
+        backButton.setId("boldButton");
 //        backButton.setPrefWidth(100);
         Button createGroup = new Button("Create!");
 //        createGroup.setPrefWidth(100);
