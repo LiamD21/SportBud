@@ -25,6 +25,7 @@ public class MainMenu extends Application {
         menuRoot.setAlignment(Pos.CENTER);
         menuScene = new Scene(menuRoot, 800,600);
         menuScene.getStylesheets().add("style.css");
+        stage.getIcons().add(new Image("icon.png"));
 
         // Create elements
         ImageView imageView =  new ImageView();
