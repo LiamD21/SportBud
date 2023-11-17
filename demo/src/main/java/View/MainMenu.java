@@ -21,8 +21,6 @@ public class MainMenu extends Application {
     @Override
     public void start(Stage stage) {
         // Create the menu pane and scene
-        File f = new File("");
-        System.out.println(f.getAbsolutePath());
         VBox menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
         menuScene = new Scene(menuRoot, 800,600);
