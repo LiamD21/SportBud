@@ -53,7 +53,7 @@ public class GroupStats {
         root.getStylesheets().add("style.css");
 
         //Buttons and windows
-        Button backButton  =  new Button( "Back");
+        Button backButton = new Button(" ◄ ");
 
         // creating the stat filter choices and selection button
         ChoiceBox<String> specificChoice = new ChoiceBox<>();
