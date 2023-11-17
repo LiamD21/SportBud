@@ -94,7 +94,7 @@ public class CreateGroup {
         // Event listener for return to GroupGames menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
-            stage.setScene(new Scene(groupgames.getRoot(), 500, 500));
+            stage.setScene(new Scene(groupgames.getRoot(), 800, 600));
             stage.setTitle("Group Events");
         });
 

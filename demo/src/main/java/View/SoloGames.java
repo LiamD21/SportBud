@@ -103,7 +103,7 @@ public class SoloGames {
         selectButton.setOnAction(event -> {
             if (personChooser.getValue() != null){
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personChooser.getValue());
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);

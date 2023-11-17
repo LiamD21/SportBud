@@ -164,19 +164,19 @@ public class GroupEventLeaderboard {
         // event listener for the back button
         backButton.setOnAction(event -> {
             GroupSelectEvent goBack = new GroupSelectEvent(stage,groupname);
-            stage.setScene(new Scene(goBack.getRoot(), 500, 500));
+            stage.setScene(new Scene(goBack.getRoot(), 800, 600));
         });
 
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
             GeneralAddScore menu = new GeneralAddScore(stage, "GroupEventStats", null, groupname, eventID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the stats page button
         toStatsPage.setOnAction(event -> {
             GroupStats menu = new GroupStats(stage, eventID, groupname);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
 

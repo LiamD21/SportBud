@@ -69,7 +69,7 @@ public class GroupGames {
         // buttons and what not, on button click.
         newGroupButton.setOnAction(event ->{
             CreateGroup creategroup = new CreateGroup(stage);
-            stage.setScene(new Scene(creategroup.getRoot(),600,600));
+            stage.setScene(new Scene(creategroup.getRoot(),800,600));
         });
 
 
@@ -78,7 +78,7 @@ public class GroupGames {
             //TODO Implement the group event viewer when chosen selection
             GroupSelectEvent groupSelectEvent = new GroupSelectEvent(stage,
                     groupChoice.getSelectionModel().getSelectedItem());
-            stage.setScene(new Scene(groupSelectEvent.getRoot(), 500,500));
+            stage.setScene(new Scene(groupSelectEvent.getRoot(), 800,600));
         });
     }
 

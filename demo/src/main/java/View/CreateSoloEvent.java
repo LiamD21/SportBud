@@ -62,7 +62,7 @@ public class CreateSoloEvent {
         // event handling for the back button
         backButton.setOnAction(event -> {
             SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event handling for the basic event type selector
@@ -122,7 +122,7 @@ public class CreateSoloEvent {
 
                 // returns to the previous menu after creating the new event successfully
                 SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, username);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmAlert.setContentText(String.format("%s event named %s created!", eventType, eventName.getText()));

@@ -67,13 +67,13 @@ public class SoloPersonSelectEvent {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloGames menu = new SoloGames(stage);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the create new solo event button
         newEventButton.setOnAction(event -> {
             CreateSoloEvent menu = new CreateSoloEvent(stage, username);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the view selected event button
@@ -81,7 +81,7 @@ public class SoloPersonSelectEvent {
         statsButton.setOnAction(event -> {
             if (eventList.getSelectionModel().getSelectedItem() != null) {
                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventList.getSelectionModel().getSelectedItem(), username);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);

@@ -143,7 +143,7 @@ public class SoloEventLeaderboard {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the sort button
@@ -193,7 +193,7 @@ public class SoloEventLeaderboard {
         // event listener for the add score button
         addScoreButton.setOnAction(event -> {
             GeneralAddScore menu = new GeneralAddScore(stage, "SoloEventStats", personID, null, eventID);
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
         // event listener for the stats page button
@@ -201,7 +201,7 @@ public class SoloEventLeaderboard {
         toStatsPage.setOnAction(event -> {
             if (handler.hasScores()) {
                 SoloStats menu = new SoloStats(stage, eventID, personID);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);

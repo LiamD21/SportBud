@@ -112,7 +112,7 @@ public class GroupSelectEvent {
         // Event listener for return to GroupGames menu
         backButton.setOnAction(event -> {
             GroupGames groupgames = new GroupGames(stage);
-            stage.setScene(new Scene(groupgames.getRoot(), 500, 500));
+            stage.setScene(new Scene(groupgames.getRoot(), 800, 600));
             stage.setTitle("Group Events");
         });
 
@@ -126,7 +126,7 @@ public class GroupSelectEvent {
                 } catch (ParseException | IOException e) {
                     throw new RuntimeException(e);
                 }
-                stage.setScene(new Scene(eventPage.getRoot(), 500, 500));
+                stage.setScene(new Scene(eventPage.getRoot(), 800, 600));
             }
             else {
                 Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
@@ -141,7 +141,7 @@ public class GroupSelectEvent {
             //New event page stage set scene
 
             CreateGroupEvent cge = new CreateGroupEvent(stage, groupName);
-            stage.setScene(new Scene(cge.getRoot(), 500, 500));
+            stage.setScene(new Scene(cge.getRoot(), 800, 600));
         });
 
         //event listener for stats Page
@@ -150,7 +150,7 @@ public class GroupSelectEvent {
             //TODO  *This may not be needed*
             //stats page stage set scene
 //            GroupStats groupStats = new GroupStats(stage, groupName);
-//            stage.setScene((new Scene(groupStats.getRoot(), 500, 500)));
+//            stage.setScene((new Scene(groupStats.getRoot(), 800, 600)));
 
         });
     }

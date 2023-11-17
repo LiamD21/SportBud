@@ -169,7 +169,7 @@ public class GroupStats {
             } catch (ParseException | IOException e) {
                 throw new RuntimeException(e);
             }
-            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
 

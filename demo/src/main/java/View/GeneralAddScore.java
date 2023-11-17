@@ -85,7 +85,7 @@ public class GeneralAddScore {
         backButton.setOnAction(event -> {
             if (Objects.equals(this.lastPage, "SoloEventStats")) {
                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
             else if (Objects.equals(this.lastPage, "GroupEventStats")){
                 GroupEventLeaderboard menu = null;
@@ -94,7 +94,7 @@ public class GeneralAddScore {
                 } catch (ParseException | IOException e) {
                     throw new RuntimeException(e);
                 }
-                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
             }
         });
 
@@ -123,7 +123,7 @@ public class GeneralAddScore {
                                 handler.setScore(intScores, personID);
 
                                 SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                                 // show popup if it was a new high score
                                 if (handler.isBestScore(intScores)){
@@ -145,7 +145,7 @@ public class GeneralAddScore {
                                     } catch (ParseException | IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                    stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                                     // show popup if it was a new high score
                                     if (handler.isBestScore(intScores)){
@@ -186,7 +186,7 @@ public class GeneralAddScore {
                             handler.setScore(scores, personID);
 
                             SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
-                            stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                            stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                             // show popup if it was a new high score
                             if (handler.isBestScore(scores)){
@@ -206,7 +206,7 @@ public class GeneralAddScore {
                                 } catch (ParseException | IOException e) {
                                     throw new RuntimeException(e);
                                 }
-                                stage.setScene(new Scene(menu.getRoot(), 500, 500));
+                                stage.setScene(new Scene(menu.getRoot(), 800, 600));
 
                                 // show popup if it was a new high score
                                 if (handler.isBestScore(scores)){

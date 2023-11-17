@@ -21,11 +21,11 @@ public class MainMenu extends Application {
         // Create the menu pane and scene
         VBox menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
-        menuScene = new Scene(menuRoot, 500,500);
+        menuScene = new Scene(menuRoot, 800,600);
 
         // Create elements
         ImageView imageView =  new ImageView();
-        imageView.setImage(new Image("blacklogo.png"));
+        imageView.setImage(new Image("logorecolour.png"));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
         imageView.setCache(true);
@@ -53,12 +53,12 @@ public class MainMenu extends Application {
         // Event Listening for going to group games screen or solo games screen
         soloButton.setOnAction(event -> {
                 SoloGames nextMenu = new SoloGames(stage);
-                stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+                stage.setScene(new Scene(nextMenu.getRoot(), 800, 600));
         });
 
         groupButton.setOnAction(event -> {
             GroupGames nextMenu = new GroupGames(stage);
-            stage.setScene(new Scene(nextMenu.getRoot(), 500, 500));
+            stage.setScene(new Scene(nextMenu.getRoot(), 800, 600));
 
         });
 
