@@ -31,6 +31,7 @@ public class SoloGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+        root.getStylesheets().add("style.css");
 
         // Initialize the handler
         handler = new SoloGamesHandler();

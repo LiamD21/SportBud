@@ -37,6 +37,7 @@ public class GroupEventLeaderboard {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
         root.setPadding(new Insets(10));
+        root.getStylesheets().add("style.css");
 
         //Backbutton
         Button backButton = new Button("Back");

@@ -32,6 +32,7 @@ public class CreateGroup {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(10,10,10,10));
+        root.getStylesheets().add("style.css");
 
 
         //modify title

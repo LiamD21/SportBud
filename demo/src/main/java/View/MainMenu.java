@@ -12,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class MainMenu extends Application {
 
     private Scene menuScene;
@@ -19,9 +21,12 @@ public class MainMenu extends Application {
     @Override
     public void start(Stage stage) {
         // Create the menu pane and scene
+        File f = new File("");
+        System.out.println(f.getAbsolutePath());
         VBox menuRoot = new VBox();
         menuRoot.setAlignment(Pos.CENTER);
         menuScene = new Scene(menuRoot, 800,600);
+        menuScene.getStylesheets().add("style.css");
 
         // Create elements
         ImageView imageView =  new ImageView();

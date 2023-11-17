@@ -27,6 +27,7 @@ public class CreateGroupEvent {
         groupName = gName;
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
+        root.getStylesheets().add("style.css");
         handler = new CreateGroupEventHandler(gName);
 
         AnchorPane ap = new AnchorPane();

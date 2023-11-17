@@ -29,6 +29,7 @@ public class GroupGames {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(30);
+        root.getStylesheets().add("style.css");
 
         // Create elements
         Button backButton = new Button("Back");

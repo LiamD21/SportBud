@@ -39,6 +39,7 @@ public class SoloStats {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(15));
+        root.getStylesheets().add("style.css");
 
         // create elements
         Button backButton = new Button("back");

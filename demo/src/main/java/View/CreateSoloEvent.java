@@ -27,6 +27,7 @@ public class CreateSoloEvent {
         stage.setTitle("Create New Solo Event");
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
+        root.getStylesheets().add("style.css");
 
         // create elements
         AnchorPane anchorPane = new AnchorPane();

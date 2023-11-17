@@ -50,6 +50,7 @@ public class GroupStats {
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(15);
         root.setPadding(new Insets(10));
+        root.getStylesheets().add("style.css");
 
         //Buttons and windows
         Button backButton  =  new Button( "Back");
