@@ -35,7 +35,7 @@ public class GroupSelectEvent {
 
         // panes in which the nodes will be laid out
         AnchorPane anchorPane = new AnchorPane();
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
         backButton.setPrefSize(60,25);
 
 

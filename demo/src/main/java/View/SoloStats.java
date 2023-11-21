@@ -42,7 +42,7 @@ public class SoloStats {
         root.getStylesheets().add("style.css");
 
         // create elements
-        Button backButton = new Button("back");
+        Button backButton = new Button(" ◄ ");
         AnchorPane anchorPane = new AnchorPane();
         VBox numberStats = new VBox();
         HBox statFilter = new HBox();

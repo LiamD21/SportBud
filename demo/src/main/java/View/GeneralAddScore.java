@@ -41,7 +41,7 @@ public class GeneralAddScore {
         root.getStylesheets().add("style.css");
 
         // create elements
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
         AnchorPane anchorPane = new AnchorPane();
         VBox scoreEntryBox = new VBox();
 

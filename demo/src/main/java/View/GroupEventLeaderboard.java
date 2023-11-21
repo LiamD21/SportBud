@@ -40,7 +40,7 @@ public class GroupEventLeaderboard {
         root.getStylesheets().add("style.css");
 
         //Backbutton
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
 
         //Anchorpane to hold the Boxes
         AnchorPane anchorPane = new AnchorPane();
