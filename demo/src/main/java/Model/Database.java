@@ -417,7 +417,6 @@ public class Database {
     public void AddSoloEvent(String Username, String eventName, String eventType) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
-
         JSONArray person = ((JSONArray) personHT.get(Username));
         JSONArray events = (JSONArray) person.get(1);
 
@@ -440,6 +439,54 @@ public class Database {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+    * Adds a new chat to a solo event
+     * */
+    public void AddSoloChat(String username, String eventName, String msg) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+        JSONArray person = (JSONArray) personHT.get(username);
+        JSONArray eventArray = (JSONArray) person.get(1);
+        JSONArray event = null;
+
+        for (Object o : eventArray) {
+            if (eventName.equals(((JSONArray) o).get(1))) {
+                event = ((JSONArray) o);
+                break;
+            }
+        }
+
+        if (event == null)
+            throw new RuntimeException("Error, there is no event by the name of " + eventName);
+
+
+    }
+
+    /**
+     * Adds a new chat to a group event
+     * */
+    public void AddGroupChat(String groupUsername, String username, String eventName, String msg) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = ((JSONArray) groupHT.get(groupUsername));
+        JSONArray inputArray = new JSONArray();
+
+        JSONArray eventArray = null;
+        int eventSize = ((JSONArray) group.get(2)).size();
+
+
+        //Searches for the event
+        for (int i = 0; i < eventSize; i++){
+            if (eventName.equals(((JSONArray)((JSONArray) group.get(2)).get(i)).get(1))){
+                eventArray = ((JSONArray)((JSONArray) group.get(2)).get(i));
+                break;
+            }
+        }
+
+        if (eventArray == null)
+            throw new RuntimeException("Error event not found");
     }
 
     public static void main(String[] args) throws IOException, ParseException {
