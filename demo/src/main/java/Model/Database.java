@@ -133,8 +133,6 @@ public class Database {
             g.AddGroupMember(name);
             counters.put(name,1);
         }
-        int x = 0;
-
 
         int numOfEvents = ((JSONArray) group.get(2)).size();
         for (int i = 0; i < numOfEvents; i++){
@@ -461,7 +459,15 @@ public class Database {
         if (event == null)
             throw new RuntimeException("Error, there is no event by the name of " + eventName);
 
+        JSONArray chatArray = (JSONArray) event.get(4);
+        chatArray.add(msg);
 
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -947,6 +953,8 @@ public class Database {
         // TESTS THAT MODIFY THE DATABASE
 
 
+
+        /*
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
@@ -1048,6 +1056,8 @@ public class Database {
 
         db.AddPerson("WinstonS",Winston);
 
+        db.AddSoloChat("WinstonS","test","hi");
+
 
         if (!Arrays.equals(db.GetPerson("WinstonS").
                 getPersonalEvents().get(0).getScores().get(0).getScores(),new int[]{1,1,1,1,1,1,1,1,1})){
@@ -1075,6 +1085,13 @@ public class Database {
             System.out.println(Arrays.toString(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(1).getScores()));
         }
 
+        ArrayList<String> WinstonChat = new ArrayList<>();
+        WinstonChat.add("WinstonS: hi");
+        if (!db.GetPerson("WinstonS").getPersonalEvents().get(0).getChat().equals(WinstonChat)){
+            System.out.print("Error should be returning WinstonS: hi");
+            System.out.println("but it is returning" + db.GetPerson("WinstonS").getPersonalEvents().get(0).getChat());
+        }
+
 
 
         db.AddGroupScores("group1","Golf2",new int[]{42,42,42,424,6,4,5,2,7},"person2");
@@ -1090,8 +1107,7 @@ public class Database {
             System.out.println(Arrays.toString(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getScores()));
         }
 
-
-
+         */
         System.out.println("Unit Testing Complete");
 
     }
