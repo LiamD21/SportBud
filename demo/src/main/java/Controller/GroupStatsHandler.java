@@ -109,9 +109,6 @@ public class GroupStatsHandler extends UIHandler{
             if (getAScore(score, holeNumber) >highestScore){
                 highestScore =getAScore(score, holeNumber);
                 personWithHighest = score.getPersonsName();
-                System.out.println(getAScore(score, holeNumber));
-                System.out.println(personWithHighest +" high");
-
             }
         }
         return personWithHighest;
@@ -129,7 +126,6 @@ public class GroupStatsHandler extends UIHandler{
             if (getAScore(score, holeNumber) < lowestScore){
                 lowestScore = getAScore(score, holeNumber);
                 personWithLowest = score.getPersonsName();
-                System.out.println(personWithLowest + " low");
             }
         }
         return personWithLowest;

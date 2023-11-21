@@ -31,7 +31,7 @@ public class CreateSoloEvent {
 
         // create elements
         AnchorPane anchorPane = new AnchorPane();
-        Button backButton = new Button("Back");
+        Button backButton = new Button(" ◄ ");
         TextField eventName = new TextField("Enter Your Event's Name");
         Label basicChoiceLabel = new Label("Select your event's type");
         ChoiceBox<String> basicEventTypes = new ChoiceBox<>();

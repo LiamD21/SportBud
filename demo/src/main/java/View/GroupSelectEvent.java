@@ -30,13 +30,13 @@ public class GroupSelectEvent {
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(20);
+        root.setPadding(new Insets(10));
         root.getStylesheets().add("style.css");
 
 
         // panes in which the nodes will be laid out
         AnchorPane anchorPane = new AnchorPane();
         Button backButton = new Button(" ◄ ");
-        backButton.setPrefSize(60,25);
 
 
         Text nameTitle = new Text(String.format("%s's HomePage", groupName));
@@ -69,7 +69,6 @@ public class GroupSelectEvent {
 
         Button selectEvent = new Button("View Selected Event");
         selectEvent.setPadding(new Insets(5));
-        selectEvent.setPrefSize(60, 80);
         selectEvent.setWrapText(true);
 
 
@@ -90,11 +89,8 @@ public class GroupSelectEvent {
 
         // create buttons for stats and create event pages in the bottom HBox
         Button statsButton = new Button(String.format("%s's Stats", groupName));
-        statsButton.setPrefHeight(25);
-        statsButton.setPrefWidth(statsButton.getText().length()*7);
 
         Button newEventButton = new Button("New Event");
-        newEventButton.setPrefSize(125,25);
 
         bottomButtons.getChildren().addAll(statsButton, newEventButton);
         bottomButtons.setSpacing(15);

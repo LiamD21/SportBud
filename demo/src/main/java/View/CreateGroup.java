@@ -41,9 +41,7 @@ public class CreateGroup {
 
         //Buttons:
         Button backButton = new Button("Back to Groups");
-        backButton.setPrefWidth(100);
         Button createGroup = new Button("Create!");
-        createGroup.setPrefWidth(100);
         Button addPerson = new Button("Add Person");
         Button removePerson = new Button("Remove Person");
 
@@ -80,8 +78,8 @@ public class CreateGroup {
 
         // Anchoring buttons
         AnchorPane anchorPane = new AnchorPane();
-        AnchorPane.setBottomAnchor(backButton, 10.0);
-        AnchorPane.setLeftAnchor(backButton,10.0);
+        AnchorPane.setBottomAnchor(backButton, 0.0);
+        AnchorPane.setLeftAnchor(backButton,5.0);
 
         AnchorPane.setBottomAnchor(createGroup, 10.0);
         AnchorPane.setRightAnchor(createGroup, 10.0);
