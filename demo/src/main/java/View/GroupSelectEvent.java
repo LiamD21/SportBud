@@ -87,12 +87,11 @@ public class GroupSelectEvent {
             }
         }
 
-        // create buttons for stats and create event pages in the bottom HBox
-        Button statsButton = new Button(String.format("%s's Stats", groupName));
+        // create button for create event page in the bottom
 
         Button newEventButton = new Button("New Event");
 
-        bottomButtons.getChildren().addAll(statsButton, newEventButton);
+        bottomButtons.getChildren().addAll(newEventButton);
         bottomButtons.setSpacing(15);
 
         // Anchor back button to the top corner of the screen
@@ -133,21 +132,8 @@ public class GroupSelectEvent {
 
         //event listener for new Event
         newEventButton.setOnAction(event ->{
-            //TODO
-            //New event page stage set scene
-
             CreateGroupEvent cge = new CreateGroupEvent(stage, groupName);
             stage.setScene(new Scene(cge.getRoot(), 800, 600));
-        });
-
-        //event listener for stats Page
-
-        statsButton.setOnAction(event ->{
-            //TODO  *This may not be needed*
-            //stats page stage set scene
-//            GroupStats groupStats = new GroupStats(stage, groupName);
-//            stage.setScene((new Scene(groupStats.getRoot(), 800, 600)));
-
         });
     }
 
