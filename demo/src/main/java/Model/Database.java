@@ -181,6 +181,7 @@ public class Database {
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventName());
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventType());
             ((JSONArray) eventArray.get(i)).add(false);
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
         }
 
         info.add(eventArray);
@@ -236,6 +237,8 @@ public class Database {
             ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventName());
             ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventType());
             ((JSONArray) eventArray.get(i)).add(true);
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
+
         }
 
         info.add(eventArray);
@@ -895,7 +898,8 @@ public class Database {
 
 
         // TESTS THAT MODIFY THE DATABASE
-        /*
+
+
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
@@ -1039,7 +1043,6 @@ public class Database {
             System.out.println(Arrays.toString(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getScores()));
         }
 
-         */
 
 
         System.out.println("Unit Testing Complete");
