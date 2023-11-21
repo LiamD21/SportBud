@@ -86,6 +86,12 @@ public class Database {
                 Boolean isGroup = (Boolean) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(3);
                 p.addPersonalEvent(new Event(name, type, isGroup));
                 int numOfTimesEventHasBeenPlayed = (((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0))).size();
+                int numOfMessages = ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).size();
+                for (int j = 0; j < numOfMessages; j++){
+                    p.getPersonalEvents().get(i).addChat(userName,
+                            (String) ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).get(j));
+                }
+
                 for (int j = 0; j < numOfTimesEventHasBeenPlayed; j++) {
 
                     //The current score array
@@ -633,6 +639,23 @@ public class Database {
         if (!Braeden.getGroups().equals(test1)){
             System.out.println("Error, Braeden Test 30 should be [group1, PGA Proz] but it is returning"
                     + Braeden.getGroups());
+        }
+
+        // Getting Chats from GetPerson() Tests
+        ArrayList<String> chatTest = new ArrayList<>();
+        chatTest.add("person1: Awful Cox");
+        chatTest.add("person1: lalala");
+        if (!Braeden.getPersonalEvents().get(0).getChat().equals(chatTest)){
+            System.out.print("Error Braeden Test 31 should be [person1: Awful Cox, person1: lalala] but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getChat().toString());
+        }
+
+        ArrayList<String> chatTest1 = new ArrayList<>();
+        chatTest1.add("person1: I suck at golf");
+
+        if (!Braeden.getPersonalEvents().get(1).getChat().equals(chatTest1)){
+            System.out.print("Error Braeden Test 32 should be [person1: I suck at golf] but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getChat().toString());
         }
 
         Person M = db.GetPerson("person2");

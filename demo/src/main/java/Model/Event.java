@@ -7,12 +7,14 @@ public class Event {
     private String eventName;
     private String eventType;
     private Boolean isGroup;
+    private ArrayList<String> chat;
 
     public Event(String name, String type, Boolean group){
-        scores = new ArrayList<>();
+        this.scores = new ArrayList<>();
         this.eventName = name;
         this.eventType = type;
         this.isGroup = group;
+        this.chat = new ArrayList<>();
     }
 
     public boolean isGolf(){
@@ -35,9 +37,15 @@ public class Event {
         return this.scores;
     }
 
+    public ArrayList<String> getChat() {return this.chat;}
+
+    public void addChat(String username, String message){
+        this.chat.add(username + ": " + message);
+    }
+
     /*
-    Take the scores and add them to the event
-     */
+        Take the scores and add them to the event
+         */
     public void inputScores(Score inputScore){
         this.scores.add(inputScore);
     }
