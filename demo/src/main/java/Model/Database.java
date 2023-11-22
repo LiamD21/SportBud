@@ -74,8 +74,6 @@ public class Database {
         JSONArray person = (JSONArray) personHT.get(userName);
         Person p = new Person((String) person.get(0));
 
-        int x = 0;
-
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
@@ -87,9 +85,10 @@ public class Database {
                 p.addPersonalEvent(new Event(name, type, isGroup));
                 int numOfTimesEventHasBeenPlayed = (((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0))).size();
                 int numOfMessages = ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).size();
+
                 for (int j = 0; j < numOfMessages; j++){
-                    p.getPersonalEvents().get(i).addChat(userName,
-                            (String) ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).get(j));
+                    String msg = (String) ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).get(j);
+                    p.getPersonalEvents().get(i).addChat(userName, msg);
                 }
 
                 for (int j = 0; j < numOfTimesEventHasBeenPlayed; j++) {
@@ -113,8 +112,6 @@ public class Database {
                 p.addGroup((String) ((JSONArray) person.get(2)).get(i));
             }
         }
-
-
         return p;
     }
 
@@ -140,6 +137,19 @@ public class Database {
             String name = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(1);
             String type = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(2);
             g.AddGroupEvent(new Event(name,type,true));
+
+            int numOfMessages = ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).size();
+
+
+
+            for (int j = 0; j < numOfMessages; j++){
+               String groupMemberMsgUsername = (String) ((JSONArray) ((JSONArray) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).get(j)).get(0);
+                String msg =  (String) ((JSONArray) ((JSONArray) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).get(j)).get(1);
+
+                g.getGroupEvents().get(i).addChat(groupMemberMsgUsername, msg);
+            }
+
+
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
                 int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(0));
                 String personsName = (String) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(1);
@@ -943,6 +953,17 @@ public class Database {
             System.out.print("Error group1 test 21 should be 3 but it is returning");
             System.out.println(group1.getGroupEvents().get(0).getScores().get(6).getEventCounter());
         }
+
+        ArrayList<String> groupChatTest = new ArrayList<>();
+        groupChatTest.add("person1: I hate golf!");
+        groupChatTest.add("person2: That's cause you suck!");
+
+        if (!group1.getGroupEvents().get(0).getChat().equals(groupChatTest)){
+            System.out.print("Error group1 test 22 should be [person1: I hate golf!, person2: That's cause you suck!]");
+            System.out.println("but it is returning" + group1.getGroupEvents().get(0).getChat().toString());
+        }
+
+        System.out.println(group1.getGroupEvents().get(0).getChat().toString());
 
 
         Group proz = db.GetGroup("PGA Proz");
