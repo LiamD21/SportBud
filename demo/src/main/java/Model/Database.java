@@ -503,6 +503,20 @@ public class Database {
 
         if (eventArray == null)
             throw new RuntimeException("Error event not found");
+
+        JSONArray chatArray = (JSONArray) eventArray.get(4);
+        JSONArray newMsg = new JSONArray();
+        newMsg.add(username);
+        newMsg.add(msg);
+
+        chatArray.add(newMsg);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException, ParseException {
@@ -963,9 +977,6 @@ public class Database {
             System.out.println("but it is returning" + group1.getGroupEvents().get(0).getChat().toString());
         }
 
-        System.out.println(group1.getGroupEvents().get(0).getChat().toString());
-
-
         Group proz = db.GetGroup("PGA Proz");
 
 
@@ -1052,6 +1063,14 @@ public class Database {
             System.out.println("but it is returning"+db.GetGroup("test").getPeople().toString());
         }
 
+        groupChatTest.add("person1: this course sucks");
+        db.AddGroupChat("group1","person1","Golf1","this course sucks");
+
+        if (!db.GetGroup("group1").getGroupEvents().get(0).getChat().equals(groupChatTest)){
+            System.out.print("Error group1 chat should be [person1: I hate golf!, person2: That's cause you suck!, person1: this course sucks]");
+            System.out.println("but it is returning" + group1.getGroupEvents().get(0).getChat().toString());
+        }
+
 
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
@@ -1129,6 +1148,7 @@ public class Database {
         }
 
          */
+
         System.out.println("Unit Testing Complete");
 
     }
