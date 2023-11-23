@@ -67,6 +67,9 @@ public class GeneralAddScore {
         if (handler.isGolfEvent()){
             label = new Label("Enter your scores, \neach hole separated by a comma");
         }
+        else if (handler.isTimedEvent()){
+            label = new Label("Enter your new score in the form hh:mm:ss or mm:ss or just ss");
+        }
         else{
             label = new Label("Enter your new score");
         }
@@ -172,6 +175,83 @@ public class GeneralAddScore {
                     else {
                         Alert inputAlert = new Alert(Alert.AlertType.ERROR);
                         inputAlert.setContentText("Error: Input for a Golf event must be either 9 or 18 hole scores separated by commas");
+                        inputAlert.show();
+                    }
+                }
+                else if (handler.isTimedEvent()){
+                    // split hour, min, seconds
+                    String[] splitTime = scoreIn.getCharacters().toString().split(":");
+
+                    int[] intScores = new int[splitTime.length];
+                    // check for valid score input of minute and second counts
+                    try {
+                        for (int i = splitTime.length - 1; i >= 0; i--) {
+                            if (splitTime[i].charAt(0) == ' ') {
+                                splitTime[i] = splitTime[i].substring(1);
+                            }
+                            intScores[i] = Integer.parseInt(splitTime[i]);
+                        }
+
+                        // change score to a count of seconds only
+                        int[] finalTime = new int[]{0};
+                        if (intScores.length == 3){
+                            finalTime[0] += (intScores[0] * 60 * 60);
+                            finalTime[0] += (intScores[1] * 60);
+                            finalTime[0] += intScores[2];
+                        }
+                        else if (intScores.length == 2){
+                            finalTime[0] += (intScores[0] * 60);
+                            finalTime[0] += intScores[1];
+                        }
+                        else {
+                            finalTime[0] += intScores[0];
+                        }
+
+                        // go back to the leaderboard after entering a new score
+                        if (Objects.equals(this.lastPage, "SoloEventStats")) {
+                            handler.setScore(finalTime, personID);
+
+                            SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
+                            stage.setScene(new Scene(menu.getRoot(), 800, 600));
+
+                            // show popup if it was a new high score
+                            if (handler.isBestScore(finalTime)){
+                                Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                highScore.setContentText("NEW HIGH SCORE!");
+                                highScore.show();
+                            }
+                        }
+
+                        //else go back to the group leaderboard if its from there.
+                        // group scores must have a person selected to enter it
+                        else if (Objects.equals(this.lastPage, "GroupEventStats")){
+                            if (people.getValue() != null){
+                                handler.setScore(finalTime, people.getValue());
+
+                                GroupEventLeaderboard menu = null;
+                                try {
+                                    menu = new GroupEventLeaderboard(stage, eventID, groupID);
+                                } catch (ParseException | IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                stage.setScene(new Scene(menu.getRoot(), 800, 600));
+
+                                // show popup if it was a new high score
+                                if (handler.isBestScore(finalTime)){
+                                    Alert highScore = new Alert(Alert.AlertType.INFORMATION);
+                                    highScore.setContentText("NEW HIGH SCORE!");
+                                    highScore.show();
+                                }
+                            }
+                            else {
+                                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                                invalidAlert.setContentText("Error: To add a score in a group event, you must select a person.");
+                                invalidAlert.show();
+                            }
+                        }
+                    } catch (NumberFormatException | NullPointerException e){
+                        Alert inputAlert = new Alert(Alert.AlertType.ERROR);
+                        inputAlert.setContentText("Error: Input for each hole's score must be an integer");
                         inputAlert.show();
                     }
                 }
