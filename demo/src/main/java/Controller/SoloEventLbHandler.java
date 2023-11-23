@@ -98,13 +98,13 @@ public class SoloEventLbHandler extends UIHandler{
             int m = 0;
 
             // find hours
-            while (Hms > 3600){
+            while (Hms >= 3600){
                 Hms -= 3600;
                 h ++;
             }
 
             // find minutes
-            while (Hms > 60){
+            while (Hms >= 60){
                 Hms -= 60;
                 m++;
             }

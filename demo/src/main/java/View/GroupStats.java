@@ -108,14 +108,14 @@ public class GroupStats {
         //set the starting top stats, if its golf or a lowest wins, then those are set
         if (handler.isGolfEvent() || type.equals("Time-Lowest") || type.equals("Points-Lowest")) {
             avgInfo = new Text(String.format("Overall average is: %d", avg));
-            minInfo = new Text("The loser  is: " + high);
-            maxInfo = new Text("The winner  is: " + low);
+            minInfo = new Text(high + " has the best result");
+            maxInfo = new Text(low + " has the worst result");
         }
         //if its highest wins its output accordinhly
         else {
             avgInfo = new Text(String.format("Overall average is: %d", avg));
-            minInfo = new Text("The loser  is: " + low);
-            maxInfo = new Text("The winner  is: " + high);
+            minInfo = new Text(low + " has the worst result");
+            maxInfo = new Text(high + " has the best result");
         }
 
 

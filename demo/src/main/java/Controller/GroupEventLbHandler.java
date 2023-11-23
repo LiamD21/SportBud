@@ -57,6 +57,91 @@ public class GroupEventLbHandler extends UIHandler{
 
 
     /**
+     * Checks if the current event is a timed event
+     * @return true if the current event is a timed event, false otherwise
+     */
+    public boolean isTimedEvent(){
+        return Objects.equals(event.getEventType(), "Time-Highest") || Objects.equals(event.getEventType(), "Time-Lowest");
+    }
+
+    /**
+     * takes an array of completed ready to display score strings and replaces the score part of each string with a time specific string
+     * @param scores the array of strings containing the score and number of attempts
+     * @return the updated array of scores with time formatting
+     */
+    private ArrayList<String> convertTime(ArrayList<String> scores){
+        // create empty placeholder arrays
+        ArrayList<String> onlyScore = new ArrayList<>(scores.size());
+        ArrayList<String> onlyText = new ArrayList<>(scores.size());
+
+        // split and extract each part of the original array
+        for (int i = 0; i < scores.size(); i++){
+            String secondsScore = "";
+            String attemptsText = "";
+            for (int j = 0; j < scores.get(i).length(); j++){
+                if (scores.get(i).charAt(j) == ' '){
+                    secondsScore = scores.get(i).substring(0, j);
+                    for (int k = j+1; k < scores.get(i).length(); k++){
+                        if (scores.get(i).charAt(k) != ' '){
+                            attemptsText = scores.get(i).substring(k);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            onlyScore.add(i, secondsScore);
+            onlyText.add(i, attemptsText);
+        }
+
+        // for each score, extract hours, minutes, and seconds and replace the array element with it
+        for (int i = 0; i < onlyScore.size(); i++){
+            int Hms = Integer.parseInt(onlyScore.get(i));
+            int h = 0;
+            int m = 0;
+
+            // find hours
+            while (Hms >= 3600){
+                Hms -= 3600;
+                h ++;
+            }
+
+            // find minutes
+            while (Hms >= 60){
+                Hms -= 60;
+                m++;
+            }
+
+            // remaining amount is seconds
+            int s = Hms;
+
+            // create a new string to display the hours, minutes, and seconds
+            String newDisplayStr = "";
+            if (h > 0){
+                newDisplayStr += String.format("%dhrs ", h);
+            }
+            if (m > 0){
+                newDisplayStr += String.format("%dmins ", m);
+            }
+            if (s > 0){
+                newDisplayStr += String.format("%dsec ", s);
+            }
+
+            // replace the current display string with the new one
+            onlyScore.set(i, newDisplayStr);
+        }
+
+        // put the full strings back together then return
+        for (int i = 0; i < onlyScore.size(); i++){
+            onlyScore.set(i, onlyScore.get(i) + "      " + onlyText.get(i));
+        }
+
+        return onlyScore;
+    }
+
+
+    /**
      * Gets a sorted array list of scores from lowest to highest
      * @param hole an integet to see what hole to sort by. 0 means total, -1 means
      *             no input, so we also sort by total.
@@ -65,6 +150,9 @@ public class GroupEventLbHandler extends UIHandler{
     public ArrayList<String> getScores(int hole) throws ParseException, IOException {
         if (hole  ==-1){
             hole =0;
+        }
+        if (this.isTimedEvent()){
+            return convertTime(sortScores(event.getScores(), hole));
         }
         return sortScores(event.getScores(),hole);
     }
