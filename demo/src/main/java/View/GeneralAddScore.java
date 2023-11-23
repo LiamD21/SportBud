@@ -178,6 +178,8 @@ public class GeneralAddScore {
                         inputAlert.show();
                     }
                 }
+
+                // inputting a score for a timed event
                 else if (handler.isTimedEvent()){
                     // split hour, min, seconds
                     String[] splitTime = scoreIn.getCharacters().toString().split(":");

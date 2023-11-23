@@ -176,6 +176,10 @@ public class GeneralAddScoreHandler extends UIHandler{
         return flag;
     }
 
+    /**
+     * Checks if the current event is a timed event
+     * @return true if the current event is a timed event, false otherwise
+     */
     public boolean isTimedEvent(){
         return Objects.equals(event.getEventType(), "Time-Highest") || Objects.equals(event.getEventType(), "Time-Lowest");
     }
