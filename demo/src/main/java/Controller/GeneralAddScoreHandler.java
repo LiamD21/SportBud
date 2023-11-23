@@ -7,7 +7,6 @@ import Model.Score;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -175,5 +174,9 @@ public class GeneralAddScoreHandler extends UIHandler{
             return false;
         }
         return flag;
+    }
+
+    public boolean isTimedEvent(){
+        return Objects.equals(event.getEventType(), "Time-Highest") || Objects.equals(event.getEventType(), "Time-Lowest");
     }
 }
