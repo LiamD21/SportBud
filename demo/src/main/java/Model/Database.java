@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.simple.parser.*;
+
+// Database class is intializing JSON file where data is being stored
 public class Database {
     private String filePath = "databaseTEST.json";
     private JSONArray jsonArray;
