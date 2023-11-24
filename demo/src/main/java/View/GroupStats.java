@@ -103,17 +103,52 @@ public class GroupStats {
         String high  = handler.getHigh(statScoreView);
         String low = handler.getLow(statScoreView);
 
+        // if the event is timed, convert average into hours, mins, seconds format
+        String newDisplayStr = "";
+        if (type.equals("Time-Lowest") || type.equals("Time-Highest")){
+            int h = 0;
+            int m = 0;
+            while (avg >= 3600){
+                h += 1;
+                avg -= 3600;
+            }
+            while (avg >= 60){
+                m += 1;
+                avg -= 60;
+            }
+            int s = avg;
+
+            if (h > 0){
+                newDisplayStr += String.format("%dhrs ", h);
+            }
+            if (m > 0){
+                newDisplayStr += String.format("%dmins ", m);
+            }
+            if (s > 0){
+                newDisplayStr += String.format("%dsec ", s);
+            }
+        }
 
 
         //set the starting top stats, if its golf or a lowest wins, then those are set
         if (handler.isGolfEvent() || type.equals("Time-Lowest") || type.equals("Points-Lowest")) {
-            avgInfo = new Text(String.format("Overall average is: %d", avg));
-            minInfo = new Text(high + " has the best result");
-            maxInfo = new Text(low + " has the worst result");
+            if (type.equals(("Time-Lowest"))){
+                avgInfo = new Text(String.format("Overall average is: %s", newDisplayStr));
+            }
+            else {
+                avgInfo = new Text(String.format("Overall average is: %d", avg));
+            }
+            minInfo = new Text(high + " has the worst result");
+            maxInfo = new Text(low + " has the best result");
         }
-        //if its highest wins its output accordinhly
+        //if its highest wins its output accordingly
         else {
-            avgInfo = new Text(String.format("Overall average is: %d", avg));
+            if (type.equals(("Time-Highest"))){
+                avgInfo = new Text(String.format("Overall average is: %s", newDisplayStr));
+            }
+            else {
+                avgInfo = new Text(String.format("Overall average is: %d", avg));
+            }
             minInfo = new Text(low + " has the worst result");
             maxInfo = new Text(high + " has the best result");
         }

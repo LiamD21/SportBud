@@ -79,13 +79,91 @@ public class SoloStats {
                 specificChoice.getItems().add(String.valueOf(i));
             }
         }
-
-        // find stats and add them to the display box
+        // find stats
         int avg = handler.getAverage(statScoreView);
         int[] maxMin = handler.getHighLowScores(statScoreView);
-        avgInfo = new Text(String.format("Your Average Score is: %d", avg));
-        minInfo = new Text(String.format("Your Lowest Score is: %d", maxMin[1]));
-        maxInfo = new Text(String.format("Your Highest Score is: %d", maxMin[0]));
+
+        // if the event is timed, convert average into hours, mins, seconds format
+        String newDisplayStrAvg = "";
+        String newDisplayStrMax = "";
+        String newDisplayStrMin = "";
+        if (type.equals("Time-Lowest") || type.equals("Time-Highest")){
+            int Avgh = 0;
+            int Avgm = 0;
+            int Maxh = 0;
+            int Maxm = 0;
+            int Minh = 0;
+            int Minm = 0;
+            while (avg >= 3600){
+                Avgh += 1;
+                avg -= 3600;
+            }
+            while (maxMin[0] >= 3600){
+                Maxh += 1;
+                maxMin[0] -= 3600;
+            }
+            while (maxMin[1] >= 3600){
+                Minh += 1;
+                maxMin[1] -= 3600;
+            }
+            while (avg >= 60){
+                Avgm += 1;
+                avg -= 60;
+            }
+            while (maxMin[0] >= 60){
+                Maxm += 1;
+                maxMin[0] -= 60;
+            }
+            while (maxMin[1] >= 60){
+                Minm += 1;
+                maxMin[1] -= 60;
+            }
+            int Avgs = avg;
+            int Maxs = maxMin[0];
+            int Mins = maxMin[1];
+
+            if (Avgh > 0){
+                newDisplayStrAvg += String.format("%dhrs ", Avgh);
+            }
+            if (Avgm > 0){
+                newDisplayStrAvg += String.format("%dmins ", Avgm);
+            }
+            if (Avgs > 0){
+                newDisplayStrAvg += String.format("%dsec ", Avgs);
+            }
+
+            if (Maxh > 0){
+                newDisplayStrMax += String.format("%dhrs ", Maxh);
+            }
+            if (Maxm > 0){
+                newDisplayStrMax += String.format("%dmins ", Maxm);
+            }
+            if (Maxs > 0){
+                newDisplayStrMax += String.format("%dsec ", Maxs);
+            }
+
+            if (Minh > 0){
+                newDisplayStrMin += String.format("%dhrs ", Minh);
+            }
+            if (Minm > 0){
+                newDisplayStrMin += String.format("%dmins ", Minm);
+            }
+            if (Mins > 0){
+                newDisplayStrMin += String.format("%dsec ", Mins);
+            }
+        }
+
+        // add the stats to the display box
+        if (type.equals("Time-Lowest") || type.equals("Time-Highest")) {
+            avgInfo = new Text(String.format("Your Average Time is: %s", newDisplayStrAvg));
+            minInfo = new Text(String.format("Your Shortest Time is: %s", newDisplayStrMax));
+            maxInfo = new Text(String.format("Your Longest Time is: %s", newDisplayStrMin));
+        }
+        else {
+            avgInfo = new Text(String.format("Your Average Score is: %d", avg));
+            minInfo = new Text(String.format("Your Lowest Score is: %d", maxMin[1]));
+            maxInfo = new Text(String.format("Your Highest Score is: %d", maxMin[0]));
+        }
         numberStats.getChildren().addAll(avgInfo, maxInfo, minInfo);
         numberStats.setSpacing(8);
         numberStats.setAlignment(Pos.CENTER);
