@@ -76,8 +76,6 @@ public class Database {
         JSONArray person = (JSONArray) personHT.get(userName);
         Person p = new Person((String) person.get(0));
 
-        int x = 0;
-
         int numOfEvents = ((JSONArray) person.get(1)).size();
         int numOfGroups = ((JSONArray) person.get(2)).size();
 
@@ -88,6 +86,13 @@ public class Database {
                 Boolean isGroup = (Boolean) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(3);
                 p.addPersonalEvent(new Event(name, type, isGroup));
                 int numOfTimesEventHasBeenPlayed = (((JSONArray) ((JSONArray) ((JSONArray) person.get(1)).get(i)).get(0))).size();
+                int numOfMessages = ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).size();
+
+                for (int j = 0; j < numOfMessages; j++){
+                    String msg = (String) ((JSONArray)((JSONArray) ((JSONArray) person.get(1)).get(i)).get(4)).get(j);
+                    p.getPersonalEvents().get(i).addChat(userName, msg);
+                }
+
                 for (int j = 0; j < numOfTimesEventHasBeenPlayed; j++) {
 
                     //The current score array
@@ -109,8 +114,6 @@ public class Database {
                 p.addGroup((String) ((JSONArray) person.get(2)).get(i));
             }
         }
-
-
         return p;
     }
 
@@ -129,8 +132,6 @@ public class Database {
             g.AddGroupMember(name);
             counters.put(name,1);
         }
-        int x = 0;
-
 
         int numOfEvents = ((JSONArray) group.get(2)).size();
         for (int i = 0; i < numOfEvents; i++){
@@ -138,6 +139,19 @@ public class Database {
             String name = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(1);
             String type = (String) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(2);
             g.AddGroupEvent(new Event(name,type,true));
+
+            int numOfMessages = ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).size();
+
+
+
+            for (int j = 0; j < numOfMessages; j++){
+               String groupMemberMsgUsername = (String) ((JSONArray) ((JSONArray) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).get(j)).get(0);
+                String msg =  (String) ((JSONArray) ((JSONArray) ((JSONArray)((JSONArray) group.get(2)).get(i)).get(4)).get(j)).get(1);
+
+                g.getGroupEvents().get(i).addChat(groupMemberMsgUsername, msg);
+            }
+
+
             for (int j = 0; j < numOfTimeEventHasBeenPlayed; j++){
                 int[] arr = JSONArrayToJavaIntArray((JSONArray) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(0));
                 String personsName = (String) ((JSONArray) ((JSONArray)((JSONArray)((JSONArray) group.get(2)).get(i)).get(0)).get(j)).get(1);
@@ -177,6 +191,7 @@ public class Database {
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventName());
             ((JSONArray) eventArray.get(i)).add(person.getPersonalEvents().get(i).getEventType());
             ((JSONArray) eventArray.get(i)).add(false);
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
         }
 
         info.add(eventArray);
@@ -232,6 +247,8 @@ public class Database {
             ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventName());
             ((JSONArray) eventArray.get(i)).add(group.getGroupEvents().get(i).getEventType());
             ((JSONArray) eventArray.get(i)).add(true);
+            ((JSONArray) eventArray.get(i)).add(new JSONArray());
+
         }
 
         info.add(eventArray);
@@ -410,7 +427,6 @@ public class Database {
     public void AddSoloEvent(String Username, String eventName, String eventType) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
-
         JSONArray person = ((JSONArray) personHT.get(Username));
         JSONArray events = (JSONArray) person.get(1);
 
@@ -426,6 +442,76 @@ public class Database {
 
 
         events.add(newEvent);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+    * Adds a new chat to a solo event
+     * */
+    public void AddSoloChat(String username, String eventName, String msg) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject personHT = (JSONObject) array.get(0);
+        JSONArray person = (JSONArray) personHT.get(username);
+        JSONArray eventArray = (JSONArray) person.get(1);
+        JSONArray event = null;
+
+        for (Object o : eventArray) {
+            if (eventName.equals(((JSONArray) o).get(1))) {
+                event = ((JSONArray) o);
+                break;
+            }
+        }
+
+        if (event == null)
+            throw new RuntimeException("Error, there is no event by the name of " + eventName);
+
+        JSONArray chatArray = (JSONArray) event.get(4);
+        chatArray.add(msg);
+
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(array.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adds a new chat to a group event
+     * */
+    public void AddGroupChat(String groupUsername, String username, String eventName, String msg) throws IOException, ParseException {
+        JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
+        JSONObject groupHT = (JSONObject) array.get(1);
+        JSONArray group = ((JSONArray) groupHT.get(groupUsername));
+        JSONArray inputArray = new JSONArray();
+
+        JSONArray eventArray = null;
+        int eventSize = ((JSONArray) group.get(2)).size();
+
+
+        //Searches for the event
+        for (int i = 0; i < eventSize; i++){
+            if (eventName.equals(((JSONArray)((JSONArray) group.get(2)).get(i)).get(1))){
+                eventArray = ((JSONArray)((JSONArray) group.get(2)).get(i));
+                break;
+            }
+        }
+
+        if (eventArray == null)
+            throw new RuntimeException("Error event not found");
+
+        JSONArray chatArray = (JSONArray) eventArray.get(4);
+        JSONArray newMsg = new JSONArray();
+        newMsg.add(username);
+        newMsg.add(msg);
+
+        chatArray.add(newMsg);
 
         try (FileWriter file = new FileWriter(filePath)) {
             file.write(array.toJSONString());
@@ -635,6 +721,23 @@ public class Database {
         if (!Braeden.getGroups().equals(test1)){
             System.out.println("Error, Braeden Test 30 should be [group1, PGA Proz] but it is returning"
                     + Braeden.getGroups());
+        }
+
+        // Getting Chats from GetPerson() Tests
+        ArrayList<String> chatTest = new ArrayList<>();
+        chatTest.add("person1: Awful Cox");
+        chatTest.add("person1: lalala");
+        if (!Braeden.getPersonalEvents().get(0).getChat().equals(chatTest)){
+            System.out.print("Error Braeden Test 31 should be [person1: Awful Cox, person1: lalala] but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(0).getChat().toString());
+        }
+
+        ArrayList<String> chatTest1 = new ArrayList<>();
+        chatTest1.add("person1: I suck at golf");
+
+        if (!Braeden.getPersonalEvents().get(1).getChat().equals(chatTest1)){
+            System.out.print("Error Braeden Test 32 should be [person1: I suck at golf] but it is returning");
+            System.out.println(Braeden.getPersonalEvents().get(1).getChat().toString());
         }
 
         Person M = db.GetPerson("person2");
@@ -867,6 +970,14 @@ public class Database {
             System.out.println(group1.getGroupEvents().get(0).getScores().get(6).getEventCounter());
         }
 
+        ArrayList<String> groupChatTest = new ArrayList<>();
+        groupChatTest.add("person1: I hate golf!");
+        groupChatTest.add("person2: That's cause you suck!");
+
+        if (!group1.getGroupEvents().get(0).getChat().equals(groupChatTest)){
+            System.out.print("Error group1 test 22 should be [person1: I hate golf!, person2: That's cause you suck!]");
+            System.out.println("but it is returning" + group1.getGroupEvents().get(0).getChat().toString());
+        }
 
         Group proz = db.GetGroup("PGA Proz");
 
@@ -874,6 +985,9 @@ public class Database {
 
 
         // TESTS THAT MODIFY THE DATABASE
+
+
+
         /*
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
@@ -951,6 +1065,14 @@ public class Database {
             System.out.println("but it is returning"+db.GetGroup("test").getPeople().toString());
         }
 
+        groupChatTest.add("person1: this course sucks");
+        db.AddGroupChat("group1","person1","Golf1","this course sucks");
+
+        if (!db.GetGroup("group1").getGroupEvents().get(0).getChat().equals(groupChatTest)){
+            System.out.print("Error group1 chat should be [person1: I hate golf!, person2: That's cause you suck!, person1: this course sucks]");
+            System.out.println("but it is returning" + group1.getGroupEvents().get(0).getChat().toString());
+        }
+
 
         Person Winston = new Person("Winston Smith");
         Winston.addPersonalEvent(new Event("test","Front 9",false));
@@ -975,6 +1097,8 @@ public class Database {
         Winston.getPersonalEvents().get(2).getScores().get(1).inputScore(new int[]{6});
 
         db.AddPerson("WinstonS",Winston);
+
+        db.AddSoloChat("WinstonS","test","hi");
 
 
         if (!Arrays.equals(db.GetPerson("WinstonS").
@@ -1003,6 +1127,13 @@ public class Database {
             System.out.println(Arrays.toString(db.GetPerson("WinstonS").getPersonalEvents().get(2).getScores().get(1).getScores()));
         }
 
+        ArrayList<String> WinstonChat = new ArrayList<>();
+        WinstonChat.add("WinstonS: hi");
+        if (!db.GetPerson("WinstonS").getPersonalEvents().get(0).getChat().equals(WinstonChat)){
+            System.out.print("Error should be returning WinstonS: hi");
+            System.out.println("but it is returning" + db.GetPerson("WinstonS").getPersonalEvents().get(0).getChat());
+        }
+
 
 
         db.AddGroupScores("group1","Golf2",new int[]{42,42,42,424,6,4,5,2,7},"person2");
@@ -1019,7 +1150,6 @@ public class Database {
         }
 
          */
-
 
         System.out.println("Unit Testing Complete");
 
