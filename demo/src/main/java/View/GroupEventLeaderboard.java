@@ -14,11 +14,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GroupEventLeaderboard {
@@ -31,7 +33,7 @@ public class GroupEventLeaderboard {
         handler = new GroupEventLbHandler(eventID, groupname);
         sortByHighest = handler.getSortByHighest();
 
-        //VBox root creation
+        // VBox root creation
         stage.setTitle(String.format("%s Leaderboard", handler.getEventName()));
         root = new VBox();
         root.setAlignment(Pos.TOP_CENTER);
@@ -39,10 +41,10 @@ public class GroupEventLeaderboard {
         root.setPadding(new Insets(10));
         root.getStylesheets().add("style.css");
 
-        //Backbutton
+        // Backbutton
         Button backButton = new Button(" ◄ ");
 
-        //Anchorpane to hold the Boxes
+        // Anchorpane to hold the Boxes
         AnchorPane anchorPane = new AnchorPane();
 
         // Anchor back button to the top corner of the screen
@@ -57,6 +59,24 @@ public class GroupEventLeaderboard {
         //borderpane to hold things?
         BorderPane leaderboardPane = new BorderPane();
 
+        //comment things
+        BorderPane commentPane = new BorderPane();
+        commentPane.setPadding(new Insets(10, 10, 10, 10));
+        Text commentsTitle = new Text("Comments on " + handler.getEventName());
+        commentsTitle.setTextAlignment(TextAlignment.CENTER);
+        ListView<String> commentView = new ListView<>();
+        commentView.setPrefWidth(250.0);
+//        commentView.setPrefHeight(150);
+//        commentView.setPrefWidth(300);
+        for (String s: handler.getComments()) {
+            commentView.getItems().add(s);
+        }
+        Button addCommentButton = new Button("add");
+        // TODO - adding scores on button
+        commentPane.setTop(commentsTitle);
+        commentPane.setCenter(commentView);
+        commentPane.setBottom(addCommentButton);
+
         //Viewing list for each member of the groups score for the event
         ListView<String> eachMembersScores = new ListView<>();
 
@@ -64,10 +84,13 @@ public class GroupEventLeaderboard {
         HBox bottomButtonsBox = new HBox();
 
         //Buttons/ widgets for sorting, adding scores, and going to the stats page
+        HBox scoreCommentSplit = new HBox();
+        scoreCommentSplit.setPrefWidth(stage.getMaxWidth());
         ChoiceBox<String> leaderboardSorter = new ChoiceBox<>();
         Text sorterText = new Text("Leaderboard sorted by:");
         Button sort = new Button("Sort");
         Button addScoreButton = new Button("Add Score");
+        //HBox for splitting the view between leaderboard and comments
         Button toStatsPage = new Button("View More Stats");
 
         // Set event type text and the sorting parameters
@@ -109,13 +132,13 @@ public class GroupEventLeaderboard {
         }
 
         eachMembersScores.setPrefHeight(150);
-        eachMembersScores.setPrefWidth(300);
-
+        eachMembersScores.setPrefWidth(400);
 
         //add the elements to the borderPane, specified to their location
         Text leaderboardTitle = new Text("Leaderboard");
-        leaderboardPane.setLeft(leaderboardTitle);
-        leaderboardPane.setBottom(eachMembersScores);
+        leaderboardPane.setTop(leaderboardTitle);
+        leaderboardPane.setCenter(eachMembersScores);
+        leaderboardPane.setPadding(new Insets(10, 10, 10, 10));
 
 
         // Modify Title text
@@ -145,9 +168,11 @@ public class GroupEventLeaderboard {
             }
         }
 
+        scoreCommentSplit.getChildren().addAll(leaderboardPane, commentPane);
+        scoreCommentSplit.setAlignment(Pos.CENTER);
 
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, scoreCommentSplit);
 
         // only add sorting buttons if this event is a golf event and there are options to sort between
         if (handler.isGolfEvent()) {

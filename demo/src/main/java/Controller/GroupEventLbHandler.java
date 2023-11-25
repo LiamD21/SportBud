@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class GroupEventLbHandler extends UIHandler{
@@ -324,5 +325,9 @@ public class GroupEventLbHandler extends UIHandler{
             return false;
         }
         return true;
+    }
+
+    public ArrayList<String> getComments() {
+        return event.getChat();
     }
 }
