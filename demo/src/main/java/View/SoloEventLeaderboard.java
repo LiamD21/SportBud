@@ -51,6 +51,7 @@ public class SoloEventLeaderboard {
         Button sort = new Button("Sort");
         Button addScoreButton = new Button("Add Score");
         Button toStatsPage = new Button("View More Stats");
+        Button toCompare = new Button("Compare With Friends");
 
         // Set event type text and the sorting parameters
         String type = handler.getEventType();
@@ -133,8 +134,9 @@ public class SoloEventLeaderboard {
         root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane);
 
         // only add sorting buttons if this event is a golf event and there are options to sort between
+        // only add compare button for a golf event
         if (handler.isGolfEvent()) {
-            root.getChildren().addAll(bottomButtonsBox, toStatsPage);
+            root.getChildren().addAll(bottomButtonsBox, toStatsPage, toCompare);
         }
 
         else {
@@ -144,6 +146,12 @@ public class SoloEventLeaderboard {
         // event listener for the back button
         backButton.setOnAction(event -> {
             SoloPersonSelectEvent menu = new SoloPersonSelectEvent(stage, personID);
+            stage.setScene(new Scene(menu.getRoot(), 800, 600));
+        });
+
+        // event listener for the compare button
+        toCompare.setOnAction(event -> {
+            CompareScores menu = new CompareScores(stage, personID, eventID);
             stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
 
