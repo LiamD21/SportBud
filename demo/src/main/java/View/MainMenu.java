@@ -12,8 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 public class MainMenu extends Application {
 
     private Scene menuScene;

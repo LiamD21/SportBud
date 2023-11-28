@@ -5,9 +5,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class CompareScores {
 
@@ -28,6 +33,20 @@ public class CompareScores {
         // create elements
         Button backButton = new Button(" ◄ ");
         AnchorPane anchorPane = new AnchorPane();
+        ChoiceBox<String> comparePersonBox = new ChoiceBox<>();
+        Label compareLabel = new Label("Pick a player to compare against");
+        HBox chooseBox = new HBox();
+
+        // filling the choice box
+        ArrayList<String> peopleToCompare = handler.getOtherGolfPlayers();
+        for (String person:peopleToCompare){
+            comparePersonBox.getItems().add(person);
+        }
+
+        // adding the person to compare against choices to the HBox
+        chooseBox.setSpacing(15);
+        chooseBox.setAlignment(Pos.CENTER);
+        chooseBox.getChildren().addAll(compareLabel, comparePersonBox);
 
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 0.0);
@@ -35,7 +54,7 @@ public class CompareScores {
         anchorPane.getChildren().addAll(backButton);
 
         // add to the root
-        root.getChildren().addAll(anchorPane);
+        root.getChildren().addAll(anchorPane, chooseBox);
 
         // event handler for the back button
         backButton.setOnAction(event -> {
