@@ -330,4 +330,11 @@ public class GroupEventLbHandler extends UIHandler{
     public ArrayList<String> getComments() {
         return event.getChat();
     }
+
+    /**
+     * append a comment to the event chat
+     */
+    public void handleCommentAdd(String name, String comment) {
+        event.addChat(name, comment);
+    }
 }

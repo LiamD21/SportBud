@@ -63,7 +63,6 @@ public class MainMenu extends Application {
         groupButton.setOnAction(event -> {
             GroupGames nextMenu = new GroupGames(stage);
             stage.setScene(new Scene(nextMenu.getRoot(), 800, 600));
-
         });
 
         // Add to root

@@ -17,8 +17,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GroupEventLeaderboard {
     private final VBox root;
@@ -161,6 +161,14 @@ public class GroupEventLeaderboard {
         }
 
         //comment things
+        TextInputDialog tdName = new TextInputDialog();
+        TextInputDialog tdComment = new TextInputDialog();
+        tdName.setTitle("Enter Name");
+        tdName.setContentText("Please enter your name");
+        tdComment.setTitle("Enter Comment");
+        tdComment.setContentText("Please enter your comment");
+        // TODO DIALOG BOX STUFF
+
         BorderPane commentPane = new BorderPane();
         commentPane.setPadding(new Insets(10, 10, 10, 10));
         Text commentsTitle = new Text("Comments on " + handler.getEventName());
@@ -192,6 +200,21 @@ public class GroupEventLeaderboard {
 
         // SETONACTIONS (eventhandlers) =====================================================
 
+        // handlers for adding comments
+        addCommentButton.setOnAction(event -> {
+            tdName.showAndWait().ifPresent(response1 -> {
+                if (!response1.equals("")) {
+                    tdComment.showAndWait().ifPresent(response2 -> {
+                        if (!response2.equals("")) {
+                            handler.handleCommentAdd(String.valueOf(response1), String.valueOf(response2));
+                            commentView.getItems().clear();
+                            commentView.getItems().addAll(handler.getComments());
+                        }
+                    });
+                }
+            });
+        });
+
         // event listener for the back button
         backButton.setOnAction(event -> {
             GroupSelectEvent goBack = new GroupSelectEvent(stage,groupname);
@@ -209,9 +232,6 @@ public class GroupEventLeaderboard {
             GroupStats menu = new GroupStats(stage, eventID, groupname);
             stage.setScene(new Scene(menu.getRoot(), 800, 600));
         });
-
-
-
 
         //event listener for the sort button (must take into account all people in the group
 
