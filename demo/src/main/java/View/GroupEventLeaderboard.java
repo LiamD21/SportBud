@@ -4,10 +4,7 @@ import Controller.GroupEventLbHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -47,6 +44,7 @@ public class GroupEventLeaderboard {
         // Anchorpane to hold the Boxes
         AnchorPane anchorPane = new AnchorPane();
 
+
         // Anchor back button to the top corner of the screen
         AnchorPane.setTopAnchor(backButton, 0.0);
         AnchorPane.setLeftAnchor(backButton, 5.0);
@@ -59,33 +57,15 @@ public class GroupEventLeaderboard {
         //borderpane to hold things?
         BorderPane leaderboardPane = new BorderPane();
 
-        //comment things
-        BorderPane commentPane = new BorderPane();
-        commentPane.setPadding(new Insets(10, 10, 10, 10));
-        Text commentsTitle = new Text("Comments on " + handler.getEventName());
-        commentsTitle.setTextAlignment(TextAlignment.CENTER);
-        ListView<String> commentView = new ListView<>();
-        commentView.setPrefWidth(250.0);
-//        commentView.setPrefHeight(150);
-//        commentView.setPrefWidth(300);
-        for (String s: handler.getComments()) {
-            commentView.getItems().add(s);
-        }
-        Button addCommentButton = new Button("add");
-        // TODO - adding scores on button
-        commentPane.setTop(commentsTitle);
-        commentPane.setCenter(commentView);
-        commentPane.setBottom(addCommentButton);
-
         //Viewing list for each member of the groups score for the event
         ListView<String> eachMembersScores = new ListView<>();
+        eachMembersScores.setPadding(new Insets(10, 10, 10, 10));
+        eachMembersScores.setPrefWidth(stage.getWidth());
 
         //HBox for the bottom buttons
         HBox bottomButtonsBox = new HBox();
 
         //Buttons/ widgets for sorting, adding scores, and going to the stats page
-        HBox scoreCommentSplit = new HBox();
-        scoreCommentSplit.setPrefWidth(stage.getMaxWidth());
         ChoiceBox<String> leaderboardSorter = new ChoiceBox<>();
         Text sorterText = new Text("Leaderboard sorted by:");
         Button sort = new Button("Sort");
@@ -137,9 +117,9 @@ public class GroupEventLeaderboard {
         //add the elements to the borderPane, specified to their location
         Text leaderboardTitle = new Text("Leaderboard");
         leaderboardPane.setTop(leaderboardTitle);
+        leaderboardPane.getTop().setTranslateX(leaderboardPane.getWidth()/2 - leaderboardPane.getWidth()/2);
         leaderboardPane.setCenter(eachMembersScores);
         leaderboardPane.setPadding(new Insets(10, 10, 10, 10));
-
 
         // Modify Title text
         nameTitle.setFont(new Font(22));
@@ -168,11 +148,8 @@ public class GroupEventLeaderboard {
             }
         }
 
-        scoreCommentSplit.getChildren().addAll(leaderboardPane, commentPane);
-        scoreCommentSplit.setAlignment(Pos.CENTER);
-
         // add all children to root
-        root.getChildren().addAll(anchorPane, nameTitle, eventType, scoreCommentSplit);
+        root.getChildren().addAll(anchorPane, nameTitle, eventType, leaderboardPane);
 
         // only add sorting buttons if this event is a golf event and there are options to sort between
         if (handler.isGolfEvent()) {
@@ -183,7 +160,35 @@ public class GroupEventLeaderboard {
             root.getChildren().addAll(addScoreButton, toStatsPage);
         }
 
+        //comment things
+        BorderPane commentPane = new BorderPane();
+        commentPane.setPadding(new Insets(10, 10, 10, 10));
+        Text commentsTitle = new Text("Comments on " + handler.getEventName());
+        commentsTitle.setTextAlignment(TextAlignment.CENTER);
+        ListView<String> commentView = new ListView<>();
+        for (String s: handler.getComments()) {
+            commentView.getItems().add(s);
+        }
+        commentView.setStyle("-fx-font-size : 10");
+        commentView.setMinHeight(50);
+        commentView.setPrefHeight(commentView.getItems().size() * 10 + 10);
+        commentView.setMinWidth(200);
+        Button addCommentButton = new Button("add");
+        addCommentButton.setAlignment(Pos.CENTER);
+        // TODO - adding scores on button
+        commentPane.setTop(commentsTitle);
+        commentPane.setCenter(commentView);
+        commentPane.setBottom(addCommentButton);
+        commentPane.setPrefHeight(50);
+        commentPane.setPrefWidth(75);
 
+        // AnchorPane for putting comments at the bottom right
+        AnchorPane bottomAnchor = new AnchorPane();
+        AnchorPane.setRightAnchor(commentPane, 5.0);
+        AnchorPane.setBottomAnchor(commentPane, 5.0);
+        bottomAnchor.getChildren().add(commentPane);
+
+        root.getChildren().add(bottomAnchor);
 
         // SETONACTIONS (eventhandlers) =====================================================
 
