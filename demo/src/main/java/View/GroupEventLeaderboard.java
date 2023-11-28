@@ -167,7 +167,6 @@ public class GroupEventLeaderboard {
         tdName.setContentText("Please enter your name");
         tdComment.setTitle("Enter Comment");
         tdComment.setContentText("Please enter your comment");
-        // TODO DIALOG BOX STUFF
 
         BorderPane commentPane = new BorderPane();
         commentPane.setPadding(new Insets(10, 10, 10, 10));
@@ -183,7 +182,6 @@ public class GroupEventLeaderboard {
         commentView.setMinWidth(200);
         Button addCommentButton = new Button("add");
         addCommentButton.setAlignment(Pos.CENTER);
-        // TODO - adding scores on button
         commentPane.setTop(commentsTitle);
         commentPane.setCenter(commentView);
         commentPane.setBottom(addCommentButton);
@@ -203,14 +201,24 @@ public class GroupEventLeaderboard {
         // handlers for adding comments
         addCommentButton.setOnAction(event -> {
             tdName.showAndWait().ifPresent(response1 -> {
+                tdName.close();
                 if (!response1.equals("")) {
                     tdComment.showAndWait().ifPresent(response2 -> {
+                        tdComment.close();
                         if (!response2.equals("")) {
                             handler.handleCommentAdd(String.valueOf(response1), String.valueOf(response2));
                             commentView.getItems().clear();
                             commentView.getItems().addAll(handler.getComments());
+                        } else {
+                            Alert commentFailAlert = new Alert(Alert.AlertType.ERROR);
+                            commentFailAlert.setContentText("Error: empty input!");
+                            commentFailAlert.show();
                         }
                     });
+                } else {
+                    Alert nameFailAlert = new Alert(Alert.AlertType.ERROR);
+                    nameFailAlert.setContentText("Error: empty input!");
+                    nameFailAlert.show();
                 }
             });
         });
