@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Event;
 import Model.Person;
+import Model.Score;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ public class CompareScoresHandler extends UIHandler {
     Person person;
     String eventType;
     String personID;
+    Event event;
 
     public CompareScoresHandler(String eventID, String personID){
         super.setDb();
@@ -23,6 +25,7 @@ public class CompareScoresHandler extends UIHandler {
         }
         setEventType(eventID);
         this.personID = personID;
+        event = getEvent(eventID);
     }
 
     /**
@@ -34,6 +37,33 @@ public class CompareScoresHandler extends UIHandler {
             if (Objects.equals(event.getEventName(), eventID)){
                 eventType = event.getEventType();
             }
+        }
+    }
+
+    /**
+     * gets the event object that matches the event name passed in
+     * @param eventID the String event name to find object of
+     * @return the object that relates to the string passed in
+     */
+    private Event getEvent(String eventID){
+        for (Event event : person.getPersonalEvents()){
+            if (Objects.equals(event.getEventName(), eventID)){
+                return event;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the full name of a given person id
+     * @param personID the string person id
+     * @return the string person name
+     */
+    public String getPersonName(String personID){
+        try {
+            return db.GetPerson(personID).getName();
+        } catch (ParseException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -85,5 +115,39 @@ public class CompareScoresHandler extends UIHandler {
             }
         }
         return returnList;
+    }
+
+    /**
+     * Finds the best score for a given either 9 or 18 holes of golf
+     * @param personID the string person id that we want to find the best score of
+     * @return the integer best score
+     */
+    public int getBestScore(String personID){
+        ArrayList<Event> events;
+        int bestScore = -1;
+        try {
+            events = db.GetPerson(personID).getPersonalEvents();
+        } catch (ParseException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        events.removeIf(event -> !event.isGolf() || (getNumberHoles() == 18 && !Objects.equals(event.getEventType(), "18")) || (getNumberHoles() == 9 && !Objects.equals(event.getEventType(), "Back 9") && !Objects.equals(event.getEventType(), "Front 9")));
+
+        for (Event eve:events){
+            ArrayList<Score> scores = eve.getScores();
+            for (Score sc:scores){
+                int[] scoreList = sc.getScores();
+                int sum = 0;
+                for (Integer i:scoreList){
+                    sum += i;
+                }
+
+                if (sum < bestScore || bestScore == -1){
+                    bestScore = sum;
+                }
+            }
+        }
+
+        return bestScore;
     }
 }

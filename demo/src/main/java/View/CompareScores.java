@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class CompareScores {
 
     private final VBox root;
     private final CompareScoresHandler handler;
+    private String comparePersonID = null;
+    private Text theirBest;
 
     public CompareScores(Stage stage, String personID, String eventID){
         handler = new CompareScoresHandler(eventID, personID);
@@ -36,6 +39,8 @@ public class CompareScores {
         ChoiceBox<String> comparePersonBox = new ChoiceBox<>();
         Label compareLabel = new Label("Pick a player to compare against");
         HBox chooseBox = new HBox();
+        Text myBest = new Text(String.format("Your best score is %d", handler.getBestScore(personID)));
+        theirBest = new Text();
 
         // filling the choice box
         ArrayList<String> peopleToCompare = handler.getOtherGolfPlayers();
@@ -54,12 +59,18 @@ public class CompareScores {
         anchorPane.getChildren().addAll(backButton);
 
         // add to the root
-        root.getChildren().addAll(anchorPane, chooseBox);
+        root.getChildren().addAll(anchorPane, chooseBox, myBest, theirBest);
 
         // event handler for the back button
         backButton.setOnAction(event -> {
             SoloEventLeaderboard menu = new SoloEventLeaderboard(stage, eventID, personID);
             stage.setScene(new Scene(menu.getRoot(), 800, 600));
+        });
+
+        // event handler for the choice box
+        comparePersonBox.setOnAction(event -> {
+            comparePersonID = comparePersonBox.getValue();
+            theirBest.setText(String.format("%s's best score is %d", handler.getPersonName(comparePersonID), handler.getBestScore(comparePersonID)));
         });
     }
 
