@@ -120,6 +120,11 @@ public class GeneralAddScore {
                                     scores[i] = scores[i].substring(1);
                                 }
                                 intScores[i] = Integer.parseInt(scores[i]);
+
+                                // Check if the score is a non-positive number
+                                if (intScores[i] <= 0){
+                                    throw new NumberFormatException("Score cannot be 0 or negative integer");
+                                }
                             }
 
                             // go back to the leaderboard after entering a new score
@@ -166,7 +171,7 @@ public class GeneralAddScore {
                             }
                         } catch (NumberFormatException | NullPointerException e){
                             Alert inputAlert = new Alert(Alert.AlertType.ERROR);
-                            inputAlert.setContentText("Error: Input for each hole's score must be an integer");
+                            inputAlert.setContentText("Error: Input for each hole's score must be a positive integer");
                             inputAlert.show();
                         }
                     }
@@ -192,6 +197,11 @@ public class GeneralAddScore {
                                 splitTime[i] = splitTime[i].substring(1);
                             }
                             intScores[i] = Integer.parseInt(splitTime[i]);
+
+                            // Check if the score is a non-positive number
+                            if (intScores[i] < 0) {
+                                throw new NumberFormatException("Timed event cannot be 0 or a negative integer");
+                            }
                         }
 
                         // change score to a count of seconds only
@@ -253,7 +263,7 @@ public class GeneralAddScore {
                         }
                     } catch (NumberFormatException | NullPointerException e){
                         Alert inputAlert = new Alert(Alert.AlertType.ERROR);
-                        inputAlert.setContentText("Error: Input for each hole's score must be an integer");
+                        inputAlert.setContentText("Error: Input for timed event must be a positive integer");
                         inputAlert.show();
                     }
                 }
