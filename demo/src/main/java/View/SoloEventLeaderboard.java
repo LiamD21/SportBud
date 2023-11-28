@@ -150,9 +150,17 @@ public class SoloEventLeaderboard {
         });
 
         // event listener for the compare button
+        // give error message if you don't have any scores to compare
         toCompare.setOnAction(event -> {
-            CompareScores menu = new CompareScores(stage, personID, eventID);
-            stage.setScene(new Scene(menu.getRoot(), 800, 600));
+            if (handler.hasScores()) {
+                CompareScores menu = new CompareScores(stage, personID, eventID);
+                stage.setScene(new Scene(menu.getRoot(), 800, 600));
+            }
+            else {
+                Alert invalidAlert = new Alert(Alert.AlertType.ERROR);
+                invalidAlert.setContentText("Error: You have no scores to compare");
+                invalidAlert.show();
+            }
         });
 
         // event listener for the sort button

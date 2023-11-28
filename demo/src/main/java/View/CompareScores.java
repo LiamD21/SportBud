@@ -20,7 +20,7 @@ public class CompareScores {
     private final VBox root;
     private final CompareScoresHandler handler;
     private String comparePersonID = null;
-    private Text theirBest;
+    private final Text theirBest;
 
     public CompareScores(Stage stage, String personID, String eventID){
         handler = new CompareScoresHandler(eventID, personID);
