@@ -17,6 +17,7 @@
     - **Clone with SSH:** [git@git.cs.usask.ca:cmpt370_group11/a_project.git](git@git.cs.usask.ca:cmpt370_group11/a_project.git)
     - **Clone with HTTPS:** https://git.cs.usask.ca/cmpt370_group11/a_project.git
 - Once cloned, all files will be added to your project structure
+- Correctly install JavaFX & JSON
 - Go to ab_project -> Demo -> src -> main -> Java -> View -> MainMenu and run the code
 - After running, you'll be taken to the Main Screen of the program, where you can continue exploring the product.
 
