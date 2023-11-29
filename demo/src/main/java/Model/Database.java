@@ -16,7 +16,7 @@ import org.json.simple.parser.*;
 
 // Database class is intializing JSON file where data is being stored
 public class Database {
-    private String filePath = "database.json";
+    private String filePath = "databaseTEST.json";
     private JSONArray jsonArray;
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
@@ -497,6 +497,9 @@ public class Database {
         newEvent.add(eventType);
         newEvent.add(true);
 
+        //adding an empty chat array
+        newEvent.add(new JSONArray());
+
         events.add(newEvent);
 
         try (FileWriter file = new FileWriter(filePath)) {
@@ -533,6 +536,8 @@ public class Database {
         newEvent.add(eventType);
         newEvent.add(false);
 
+        //Adding an empty chat array
+        newEvent.add(new JSONArray());
 
         events.add(newEvent);
 
@@ -616,6 +621,8 @@ public class Database {
 
     public static void main(String[] args) throws IOException, ParseException {
         Database db = new Database();
+
+
 
         //GetGroup() Test
         if (!Arrays.equals(db.GetGroups(),new String[]{"group1", "PGA Proz"})){
@@ -739,7 +746,7 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(0).getScores().get(2).getScores())+"\n");
         }
 
-        // Golf2 tests (Score class) */
+        // Golf2 tests (Score class)
 
         if (Braeden.getPersonalEvents().get(1).getScores().get(0).getEventCounter() != 0){
             System.out.print("Error, Braeden Test 18 should be 0 but it is returning");
@@ -807,7 +814,7 @@ public class Database {
             System.out.println(Arrays.toString(Braeden.getPersonalEvents().get(1).getScores().get(2).getScores())+"\n");
         }
 
-        // Group tests (Person Class)*/
+        // Group tests (Person Class)
         ArrayList<String> test1 = new ArrayList<>();
         test1.add("group1");
         test1.add("PGA Proz");
@@ -835,7 +842,7 @@ public class Database {
 
         Person M = db.GetPerson("person2");
 
-        // Person Class Tests */
+        // Person Class Tests
 
         if (!M.getName().equals("Mohammed Golfguy")) {
             System.out.println("Error, Mohammed Golfguy Test 1 should be Mohammed Golfguy but it is returning" + M.getName());
@@ -1080,8 +1087,8 @@ public class Database {
         // TESTS THAT MODIFY THE DATABASE
 
 
-
         /*
+
         //AddGroup Tests
         Group g = new Group("Golf Group 1");
         g.AddGroupEvent( new Event("Golf1","Front 9",true) );
@@ -1242,7 +1249,36 @@ public class Database {
             System.out.println(Arrays.toString(db.GetGroup("group1").getGroupEvents().get(1).getScores().get(2).getScores()));
         }
 
+                Person p = new Person("Dwight Makaroff");
+        Person p2 = new Person("Jon Konnor");
+
+        Group g69 = new Group("g1");
+
+        db.AddPerson("dm123",p);
+        db.AddPerson("jk123",p2);
+        db.AddGroup("g1",g69);
+        db.AddPersontoGroup("dm123","g1");
+        db.AddPersontoGroup("jk123","g1");
+        db.AddGroupEvent("g1","Golf1","Front 9");
+        db.AddSoloEvent("dm123","Golf1","Back 9");
+        db.AddGroupScores("g1","Golf1",new int[]{40,40,40,40,40,40,40,40,40},"dm123");
+        db.AddGroupScores("g1","Golf1",new int[]{40,40,40,40,40,40,40,40,40},"jk123");
+        db.AddGroupChat("g1","jk123","Golf1","I hate golf!");
+        db.AddSoloChat("dm123","Golf1","I love golf!");
+
+        if (!db.GetGroup("g1").getGroupEvents().get(0).getChat().get(0).equals("jk123: I hate golf!")){
+            System.out.print("Error Chat Test should be returning jk123: I hate golf! but it is returning");
+            System.out.println(db.GetGroup("g1").getGroupEvents().get(0).getChat().get(0));
+        }
+
+        if (!db.GetPerson("dm123").getPersonalEvents().get(0).getChat().get(0).equals("dm123: I love golf!")){
+            System.out.print("Error Chat Test should be returning dm123: I love golf! but it is returning");
+            System.out.println(db.GetPerson("dm123").getPersonalEvents().get(0).getChat().get(0));
+
+        }
+
          */
+
 
         System.out.println("Unit Testing Complete");
 
