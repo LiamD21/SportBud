@@ -4,6 +4,7 @@ import Controller.GroupGamesHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
@@ -69,14 +70,20 @@ public class GroupGames {
         //Event listener for newGroupButton (creating a new group); creates new creategroup class with all its
         // buttons and what not, on button click.
         newGroupButton.setOnAction(event ->{
-            CreateGroup creategroup = new CreateGroup(stage);
-            stage.setScene(new Scene(creategroup.getRoot(),800,600));
+            if (handler.dbHasPeople()) {
+                CreateGroup creategroup = new CreateGroup(stage);
+                stage.setScene(new Scene(creategroup.getRoot(), 800, 600));
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error: There are no people created. Use the solo page to add new people before creating a new group.");
+                alert.show();
+            }
         });
 
 
         //event listener to listen for group chosen.
         groupChoice.setOnAction(event ->{
-            //TODO Implement the group event viewer when chosen selection
             GroupSelectEvent groupSelectEvent = new GroupSelectEvent(stage,
                     groupChoice.getSelectionModel().getSelectedItem());
             stage.setScene(new Scene(groupSelectEvent.getRoot(), 800,600));

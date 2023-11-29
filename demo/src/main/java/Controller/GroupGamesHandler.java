@@ -15,4 +15,13 @@ public class GroupGamesHandler extends UIHandler {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean dbHasPeople(){
+        try {
+            db.GetPeople();
+        } catch (IOException | ParseException | ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+        return true;
+    }
 }
