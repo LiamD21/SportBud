@@ -15,8 +15,14 @@ public class GroupEventLbHandler extends UIHandler{
     private Event event;
     private Group group;
 
+    private String groupIDStr;
+
+    private String eventIDStr;
+
     public GroupEventLbHandler(String eventID, String groupID){
         super.setDb();
+        eventIDStr = eventID;
+        groupIDStr = groupID;
         try {
             group = db.GetGroup(groupID);
         } catch (ParseException | IOException e){
@@ -334,7 +340,7 @@ public class GroupEventLbHandler extends UIHandler{
     /**
      * append a comment to the event chat
      */
-    public void handleCommentAdd(String name, String comment) {
-        event.addChat(name, comment);
+    public void handleCommentAdd(String name, String comment) throws IOException, ParseException {
+        db.AddGroupChat(groupIDStr, name, eventIDStr, comment);
     }
 }

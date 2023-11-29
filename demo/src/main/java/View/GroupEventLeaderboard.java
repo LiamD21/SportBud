@@ -18,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class GroupEventLeaderboard {
@@ -164,9 +165,9 @@ public class GroupEventLeaderboard {
         TextInputDialog tdName = new TextInputDialog();
         TextInputDialog tdComment = new TextInputDialog();
         tdName.setTitle("Enter Name");
-        tdName.setContentText("Please enter your name");
+        tdName.setHeaderText("Please enter your name");
         tdComment.setTitle("Enter Comment");
-        tdComment.setContentText("Please enter your comment");
+        tdComment.setHeaderText("Please enter your comment");
 
         BorderPane commentPane = new BorderPane();
         commentPane.setPadding(new Insets(10, 10, 10, 10));
@@ -178,15 +179,14 @@ public class GroupEventLeaderboard {
         }
         commentView.setStyle("-fx-font-size : 10");
         commentView.setMinHeight(50);
-        commentView.setPrefHeight(commentView.getItems().size() * 10 + 10);
+        commentView.setPrefHeight(67);
+        commentView.setMaxHeight(75);
         commentView.setMinWidth(200);
         Button addCommentButton = new Button("add");
         addCommentButton.setAlignment(Pos.CENTER);
         commentPane.setTop(commentsTitle);
         commentPane.setCenter(commentView);
         commentPane.setBottom(addCommentButton);
-        commentPane.setPrefHeight(50);
-        commentPane.setPrefWidth(75);
 
         // AnchorPane for putting comments at the bottom right
         AnchorPane bottomAnchor = new AnchorPane();
@@ -200,27 +200,31 @@ public class GroupEventLeaderboard {
 
         // handlers for adding comments
         addCommentButton.setOnAction(event -> {
-            tdName.showAndWait().ifPresent(response1 -> {
-                tdName.close();
-                if (!response1.equals("")) {
-                    tdComment.showAndWait().ifPresent(response2 -> {
-                        tdComment.close();
-                        if (!response2.equals("")) {
-                            handler.handleCommentAdd(String.valueOf(response1), String.valueOf(response2));
-                            commentView.getItems().clear();
-                            commentView.getItems().addAll(handler.getComments());
-                        } else {
-                            Alert commentFailAlert = new Alert(Alert.AlertType.ERROR);
-                            commentFailAlert.setContentText("Error: empty input!");
-                            commentFailAlert.show();
-                        }
-                    });
+            Optional<String> name = tdName.showAndWait();
+            if (name.isPresent() && !name.get().equals("")) {
+                Optional<String> comment = tdComment.showAndWait();
+                tdComment.getEditor().clear();
+                if (comment.isPresent() && !comment.get().equals("")) {
+                    try {
+                        handler.handleCommentAdd(name.get(), comment.get());
+                        commentView.getItems().add(name.get() + ": " + comment.get());
+                        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmAlert.setContentText("Comment added successfully!");
+                        confirmAlert.show();
+                    } catch (IOException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                        Alert commentFailAlert = new Alert(Alert.AlertType.ERROR);
+                        commentFailAlert.setContentText("Error: empty input!");
+                        commentFailAlert.show();
+                }
+
                 } else {
                     Alert nameFailAlert = new Alert(Alert.AlertType.ERROR);
                     nameFailAlert.setContentText("Error: empty input!");
                     nameFailAlert.show();
                 }
-            });
         });
 
         // event listener for the back button
