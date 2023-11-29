@@ -31,6 +31,8 @@ public class Database {
             }
         }
     }
+
+    /* Sets up the initial state of the data used by our program */
     private void initializeData() {
 
         JSONArray existingData = new JSONArray();
@@ -70,6 +72,18 @@ public class Database {
         return jsonArray;
     }
 
+    /**
+     * Retrieves a Person object from the data stored
+     *
+     * This method parses a JSON file to retrieve a Person's information from the 'userName' parameter
+     * It then constructs a Person object and fills it with that person's
+     * associated events, groups and scores.
+     *
+     * @param userName: Person's id
+     * @return p: A Person object with the information retrieved
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public Person GetPerson(String userName) throws ParseException, IOException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
@@ -117,6 +131,18 @@ public class Database {
         return p;
     }
 
+    /**
+     * Retrieves a Group object from the data stored
+     *
+     * This method parses a JSON file to retrieve a Group's information from the 'groupName' parameter
+     * It then constructs a Group object and fills it with the group's
+     * associated events, people and scores.
+     *
+     * @param groupName: Group's id
+     * @return g: A Ggroup object with the information retrieved
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public Group GetGroup(String groupName) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
@@ -168,6 +194,17 @@ public class Database {
         }
         return g;
     }
+    /**
+     * Adds a new person to the data stored
+     *
+     * This method parses a JSON file and adds the person's information to the data
+     * Data includes the person's name, events, scores, group members
+     *
+     * @param username: The new person's ID
+     * @param person: Person object
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddPerson(String username, Person person) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
@@ -212,7 +249,17 @@ public class Database {
         }
 
     }
-
+    /**
+     * Adds a new group to the data stored
+     *
+     * This method parses a JSON file and adds the group's information
+     * Data includes the group's name, events, scores, group members
+     *
+     * @param groupUserName: The new group's ID
+     * @param group: Group object
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddGroup(String groupUserName, Group group) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
@@ -263,8 +310,12 @@ public class Database {
         }
     }
 
-    /*
-    * Return a string array of all usernames
+    /**
+     * This method retrieves the array of stored usernames
+     *
+     * @return Array of usernames representing people in the database
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
      */
     public String[] GetPeople() throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
@@ -278,8 +329,12 @@ public class Database {
         return strArray;
     }
 
-    /*
-    * Return a string array of all group usernames
+    /**
+     * This method retrieves the array of stored group names
+     *
+     * @return Array of group names representing groups in the database
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
      */
     public String[] GetGroups() throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
@@ -300,7 +355,16 @@ public class Database {
 
 
     }
-
+    /**
+     * This method updates the scores of a specified solo event for the
+     * username given.
+     *
+     * @param Username: The person's id for the scores to be added
+     * @param eventName: Event name for the scores to be added
+     * @param scores: Array of scores for the specified event
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddSoloScores(String Username, String eventName, int[] scores) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);
@@ -329,11 +393,23 @@ public class Database {
         }
     }
 
-    /*
-    * Group scores must be inputed in the SAME order that their names appear in the people ArrayList in the Group class
-    * Ex, if Braeden is index 0 people ArrayList in the Group Class
-    * then his scores MUST ALSO be at index 0 of the scores array
-    * */
+
+
+    /**
+     * This method updates the scores of a specified group event for the
+     * group name given and the person whose scores are to be added
+     *
+     * Group scores must be inputted in the SAME order that their names appear in the people ArrayList in the Group class
+     * Ex, if Braeden is index 0 people ArrayList in the Group Class
+     * then his scores MUST ALSO be at index 0 of the scores array
+     *
+     * @param groupUsername: The group's id to reference members
+     * @param eventName: Event name for the scores to be added
+     * @param scores: Array of scores for the specified event
+     * @param personUsername: person's id for scores to be added to
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddGroupScores(String groupUsername,String eventName, int[] scores, String personUsername) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
@@ -397,7 +473,15 @@ public class Database {
         }
 
     }
-
+    /**
+     * This method adds a new group event and empty score array to the group specified
+     *
+     * @param groupUsername: The group's id to reference members
+     * @param eventName: Event name for the scores to be added
+     * @param eventType: Type of event
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddGroupEvent(String groupUsername, String eventName, String eventType) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject groupHT = (JSONObject) array.get(1);
@@ -423,7 +507,16 @@ public class Database {
         }
 
     }
-
+    /**
+     * This method adds a new solo event and empty score array
+     * to the person specified
+     *
+     * @param Username: The person's id to reference the person
+     * @param eventName: Event name for the scores to be added
+     * @param eventType: Type of event
+     * @throws ParseException: Parse Error in JSON file
+     * @throws IOException: Error reading the file
+     */
     public void AddSoloEvent(String Username, String eventName, String eventType) throws IOException, ParseException {
         JSONArray array = (JSONArray) parser.parse(new FileReader(filePath));
         JSONObject personHT = (JSONObject) array.get(0);

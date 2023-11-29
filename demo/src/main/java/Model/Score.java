@@ -24,25 +24,29 @@ public class Score {
             scores = new int[1];
     }
 
-
+    /* Checks if the score length is correct */
     public void inputScore(int[] inputScores){
         if (inputScores.length != this.scores.length)
             throw new RuntimeException("Array Sizes do not match in inputScores()");
         /* This needs to be tested */
         this.scores = inputScores.clone();
     }
+    /* Get the name of the person */
     public String getPersonsName(){
         return this.personsName;
     }
 
+    /* Get the number of times the event has been played */
     public int getEventCounter(){
         return this.eventCounter;
     }
 
+    /* Get the type of the event */
     public String getType(){
         return this.type;
     }
 
+    /* Get the scores */
     public int[] getScores() {
         return scores;
     }

@@ -16,26 +16,27 @@ public class Person {
         personalEvents = new ArrayList<>();
         groups = new ArrayList<>();
     }
-
+    /* Get the name of the person */
     public String getName() {
         return this.name;
     }
 
+    /* Get the groups associated to this person */
     public ArrayList<String> getGroups(){
         return this.groups;
     }
 
+    /* Get the personal events associated to this person */
     public ArrayList<Event> getPersonalEvents(){
         return this.personalEvents;
     }
 
+    /* Add a group to the person */
     public void addGroup(String g){
         groups.add(g);
     }
 
-    /*
-    * add an event to the personal events list
-     */
+    /* Add an event to the personal events list */
     public void addPersonalEvent(Event e){
         this.personalEvents.add(e);
     }
