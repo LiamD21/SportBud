@@ -171,7 +171,7 @@ public class GroupEventLeaderboard {
 
         BorderPane commentPane = new BorderPane();
         commentPane.setPadding(new Insets(10, 10, 10, 10));
-        Text commentsTitle = new Text("Comments on " + handler.getEventName());
+        Text commentsTitle = new Text("Notes on " + handler.getEventName());
         commentsTitle.setTextAlignment(TextAlignment.CENTER);
         ListView<String> commentView = new ListView<>();
         for (String s: handler.getComments()) {
