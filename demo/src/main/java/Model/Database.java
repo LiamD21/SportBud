@@ -16,7 +16,7 @@ import org.json.simple.parser.*;
 
 // Database class is intializing JSON file where data is being stored
 public class Database {
-    private String filePath = "databaseTEST.json";
+    private String filePath = "database.json";
     private JSONArray jsonArray;
     private JSONParser parser;
     public Database() throws FileNotFoundException, ParseException {
